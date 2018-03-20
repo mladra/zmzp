@@ -1,2 +1,3 @@
 # zwinne-wks
-Projekt
+Projekt na przedmiot ZMZP
+Grupa: Wybrzeze Klatki Schodowej
