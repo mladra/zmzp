@@ -8,5 +8,5 @@ public class WksRecruiterApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WksRecruiterApplication.class, args);
-	}
+    }
 }
