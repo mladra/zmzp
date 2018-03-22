@@ -1,16 +1,16 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
 public class AttemptAnswer {
-    private int question_number;
+    private int questionNumber;
     private String answer;
 
     public AttemptAnswer(){}
-    public AttemptAnswer(int question_number, String answer) {
-        this.question_number = question_number;
+    public AttemptAnswer(int questionNumber, String answer) {
+        this.questionNumber = questionNumber;
         this.answer = answer;
     }
-    public int getQuestion_number() { return question_number; }
-    public void setQuestion_number(int question_number) { this.question_number = question_number; }
+    public int getQuestionNumber() { return questionNumber; }
+    public void setQuestionNumber(int questionNumber) { this.questionNumber = questionNumber; }
     public String getAnswer() { return answer; }
     public void setAnswer(String answer) { this.answer = answer; }
 }

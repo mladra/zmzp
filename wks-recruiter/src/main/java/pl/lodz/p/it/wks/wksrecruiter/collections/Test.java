@@ -1,6 +1,7 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
@@ -9,50 +10,59 @@ import java.util.Collection;
 public class Test {
     @Id
     private String id;
+    @DBRef
+    private Account author;
     private String name;
-    private int max_points;
+    private int maxPoints;
     private String language;
     private Collection<QuestionInfo> questions;
-    private Collection<String> position;
+    private Collection<Position> positions;
 
     @Override
     public String toString() {
         return "Test{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", max_points=" + max_points +
+                ", maxPoints=" + maxPoints +
                 ", language='" + language + '\'' +
                 ", questions=" + questions +
-                ", position=" + position +
+                ", positions=" + positions +
                 '}';
     }
     public Test(){}
-    public Test(String name, int max_points, String language, Collection<QuestionInfo> questions, Collection<String> position) {
+
+    public Test(String id, Account author, String name, int maxPoints, String language, Collection<QuestionInfo> questions, Collection<Position> positions) {
+        this.id = id;
+        this.author = author;
         this.name = name;
-        this.max_points = max_points;
+        this.maxPoints = maxPoints;
         this.language = language;
         this.questions = questions;
-        this.position = position;
+        this.positions = positions;
     }
 
-    public Test(String id, String name, int max_points, String language, Collection<QuestionInfo> questions, Collection<String> position) {
-        this.id = id;
+    public Test(Account author, String name, int maxPoints, String language, Collection<QuestionInfo> questions, Collection<Position> positions) {
+
+        this.author = author;
         this.name = name;
-        this.max_points = max_points;
+        this.maxPoints = maxPoints;
         this.language = language;
         this.questions = questions;
-        this.position = position;
+        this.positions = positions;
     }
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public int getMax_points() { return max_points; }
-    public void setMax_points(int max_points) { this.max_points = max_points; }
+    public int getMaxPoints() { return maxPoints; }
+    public void setMaxPoints(int maxPoints) { this.maxPoints = maxPoints; }
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }
     public Collection<QuestionInfo> getQuestions() { return questions; }
     public void setQuestions(Collection<QuestionInfo> questions) { this.questions = questions; }
-    public Collection<String> getPosition() { return position; }
-    public void setPosition(Collection<String> position) { this.position = position; }
+    public Collection<Position> getPositions() { return positions; }
+    public void setPositions(Collection<Position> positions) { this.positions = positions; }
+    public Account getAuthor() { return author; }
+    public void setAuthor(Account author) { this.author = author; }
 }

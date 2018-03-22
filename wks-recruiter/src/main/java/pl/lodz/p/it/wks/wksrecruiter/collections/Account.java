@@ -1,7 +1,6 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Collection;
@@ -15,6 +14,7 @@ public class Account {
     private String surname;
     private String password;
     private Collection<String> roles;
+    private Collection<TestAttempt> solvedTests;
 
     public Account(){}
     @Override
@@ -25,27 +25,27 @@ public class Account {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", roles=" + roles +
-                ", solved_tests=" + solved_tests +
+                ", solvedTests=" + solvedTests +
                 '}';
     }
 
-    public Account(String id, String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solved_tests) {
+    public Account(String id, String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solvedTests) {
         this.id = id;
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.roles = roles;
-        this.solved_tests = solved_tests;
+        this.solvedTests = solvedTests;
     }
 
-    public Account(String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solved_tests) {
+    public Account(String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solvedTests) {
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.roles = roles;
-        this.solved_tests = solved_tests;
+        this.solvedTests = solvedTests;
     }
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -59,7 +59,7 @@ public class Account {
     public void setPassword(String password) { this.password = password; }
     public Collection<String> getRoles() { return roles; }
     public void setRoles(Collection<String> roles) { this.roles = roles; }
-    public Collection<TestAttempt> getSolved_tests() { return solved_tests; }
-    public void setSolved_tests(Collection<TestAttempt> solved_tests) { this.solved_tests = solved_tests; }
-    private Collection<TestAttempt> solved_tests;
+    public Collection<TestAttempt> getSolvedTests() { return solvedTests; }
+    public void setSolvedTests(Collection<TestAttempt> solvedTests) { this.solvedTests = solvedTests; }
+
 }
