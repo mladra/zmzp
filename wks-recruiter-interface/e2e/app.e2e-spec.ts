@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('wks-recruiter-interface App', () => {
+describe('test-ng4 App', () => {
   let page: AppPage;
 
   beforeEach(() => {
@@ -9,6 +9,6 @@ describe('wks-recruiter-interface App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    expect(page.getParagraphText()).toEqual('SB Admin BS4 Angular5');
   });
 });
