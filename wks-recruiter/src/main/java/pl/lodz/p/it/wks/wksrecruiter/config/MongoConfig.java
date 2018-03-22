@@ -13,7 +13,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
     @Autowired
     private Environment env;
     @Override
-    public MongoClient mongoClient() { return new MongoClient(env.getProperty("spring.data.mongodb.host"), Integer.parseInt(env.getProperty("spring.data.mongodb.port"))); }
+    public MongoClient mongoClient() { return new MongoClient("localhost", 27017); }
     @Override
-    protected String getDatabaseName() { return env.getProperty("spring.data.mongodb.database"); }
+    protected String getDatabaseName() { return "wks"; }
 }
