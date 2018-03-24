@@ -1,0 +1,16 @@
+1. Umieszczamy folder BACKUPWKS.bak na tym samym dysku co znajduje się katalog /data/db (miejsce inicjalizacji bazy Mongo)
+2. Uruchamiamy serwer bazy w terminalu(przy założeniu że do $PATH dodany jest katalog /bin Mongo):
+    
+    >   mongod
+   
+   Jeśli nie to pełną ścieżkę wpisujemy(poniżej domyślna):
+
+    >   C:\\Program Files\MongoDB\Server\{wersja}\bin\mongod.exe
+
+3. Otwieramy osobny terminal (przy założeniu że do $PATH dodany jest katalog /bin Mongo) i wklepujemy:
+    
+    >   mongorestore BACKUPWKS.bak\
+
+   Jeśli nie to używamy poprzedniej ścieżki i wykonujemy program mongorestore.exe
+   
+
