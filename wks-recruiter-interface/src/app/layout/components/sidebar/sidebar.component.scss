@@ -19,7 +19,7 @@ $topnav-background-color: #222;
     -ms-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
-    // border-top: 1px solid rgba(255,255,255,0.3);
+    //border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
         a.list-group-item {
             background: $topnav-background-color;
@@ -79,7 +79,7 @@ $topnav-background-color: #222;
             background: darken($topnav-background-color, 5%);
         }
         .panel-collapse {
-            border-radious: 0;
+            border-radius: 0;
             border: none;
             .panel-body {
                 .list-group-item {
@@ -121,6 +121,7 @@ $topnav-background-color: #222;
                     color: #fff;
                     padding: 10px;
                     display: block;
+                    text-decoration: none;
                 }
             }
         }

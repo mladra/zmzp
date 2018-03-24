@@ -4,6 +4,10 @@ $topnav-background-color: #222;
         background-color: $topnav-background-color;
         .navbar-brand {
             color: #fff;
+            img {
+                height: 2.2rem;
+                width: auto;
+            }
         }
         .nav-item > a {
             color: #999;
