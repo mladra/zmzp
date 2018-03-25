@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccountsModule } from "./accounts/accounts.module";
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -13,8 +14,9 @@ import { HeaderComponent } from './components/header/header.component';
         CommonModule,
         LayoutRoutingModule,
         TranslateModule,
+        AccountsModule,
         NgbDropdownModule.forRoot()
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent]
 })
-export class LayoutModule {}
+export class LayoutModule { }

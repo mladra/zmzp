@@ -21,9 +21,12 @@ $topnav-background-color: #222;
     transition: all 0.2s ease-in-out;
     //border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
+        padding-top: 5px;
         a.list-group-item {
             background: $topnav-background-color;
             border: 0;
+            border-bottom: 1px solid rgb(97, 97, 97);
+            margin-bottom: 0;
             border-radius: 0;
             color: #999;
             text-decoration: none;
@@ -131,6 +134,14 @@ $topnav-background-color: #222;
     .sidebar {
         top: 54px;
         left: 0px;
+    }
+    .header-fields {
+        margin-top: -10px;
+        .nested-menu{
+            a.list-group-item{
+                border: none;
+            }
+        }
     }
 }
 @media (min-width: 992px) {

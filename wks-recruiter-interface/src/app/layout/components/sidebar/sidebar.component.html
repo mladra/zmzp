@@ -1,7 +1,10 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
-        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/dashboard']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;Dashboard
+        </a>
+        <a [routerLink]="['/accounts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-users"></i>&nbsp;Accounts
         </a>
         <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;Charts
@@ -23,18 +26,28 @@
         </a>
         <div class="nested-menu">
             <a class="list-group-item" (click)="addExpandClass('pages')">
-                <span><i class="fa fa-plus"></i>&nbsp; Nested menu</span>
+                <span>
+                    <i class="fa fa-plus"></i>&nbsp; Nested menu</span>
             </a>
             <li class="nested" [class.expand]="showMenu === 'pages'">
                 <ul class="submenu">
                     <li>
-                        <a href="javascript:void(0)"><span><i class="fa fa-file-o"></i>&nbsp; Submenu1</span></a>
+                        <a href="javascript:void(0)">
+                            <span>
+                                <i class="fa fa-file-o"></i>&nbsp; Submenu1</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><span><i class="fa fa-file-o"></i>&nbsp; Submenu2</span></a>
+                        <a href="javascript:void(0)">
+                            <span>
+                                <i class="fa fa-file-o"></i>&nbsp; Submenu2</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)"><span><i class="fa fa-file-o"></i>&nbsp; Submenu3</span></a>
+                        <a href="javascript:void(0)">
+                            <span>
+                                <i class="fa fa-file-o"></i>&nbsp; Submenu3</span>
+                        </a>
                     </li>
                 </ul>
             </li>
@@ -42,5 +55,36 @@
         <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-file-o"></i>&nbsp;Blank Page
         </a>
+        <div class="header-fields">
+            <div class="nested-menu">
+                <a class="list-group-item dropdown-toggle" (click)="addExpandClass('profile')">
+                    <span>
+                        <i class="fa fa-user"></i>&nbsp; {{currentUser.login}} (<span *ngFor="let role of currentUser.roles; let i=index">{{(i > 0 ? ", " + role + " ": " " + role) | lowercase}}</span>)<b class="caret"></b>
+                    </span>
+                </a>
+                <li class="nested" [class.expand]="showMenu === 'profile'">
+                    <ul class="submenu">
+                        <li>
+                            <a href="javascript:void(0)">
+                                <span>
+                                    <i class="fa fa-fw fa-user"></i> Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">
+                                <span>
+                                    <i class="fa fa-fw fa-gear"></i> Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/login']" (click)="onLoggedout()">
+                                <span>
+                                    <i class="fa fa-fw fa-power-off"></i> Log out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
     </div>
 </nav>

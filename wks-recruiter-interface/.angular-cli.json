@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "project": {
-        "name": "test-ng4"
+        "name": "wks-recruiter"
     },
     "apps": [
         {
@@ -17,9 +17,14 @@
             "prefix": "app",
             "styles": [
                 "../node_modules/font-awesome/css/font-awesome.css",
-                "styles/app.scss"
+                "styles/app.scss",
+                "assets/datatables/datatables.min.css"
             ],
-            "scripts": ["../node_modules/chart.js/dist/Chart.js"],
+            "scripts": [
+                "assets/jquery/jquery-3.3.1.min.js",
+                "../node_modules/chart.js/dist/Chart.js",
+                "assets/datatables/datatables.min.js"
+            ],
             "environmentSource": "environments/environment.ts",
             "environments": {
                 "dev": "environments/environment.ts",

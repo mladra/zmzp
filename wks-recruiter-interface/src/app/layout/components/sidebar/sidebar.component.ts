@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Account } from "../../../entities/account";
+import { CurrentUserService } from "../../../services/current-user.service";
 
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
     isActive: boolean = false;
     showMenu: string = '';
     pushRightClass: string = 'push-right';
-
-    constructor(private translate: TranslateService, public router: Router) {
+    public currentUser: Account;
+    constructor(private currentUserService: CurrentUserService, private translate: TranslateService, public router: Router) {
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();
@@ -27,6 +29,11 @@ export class SidebarComponent {
                 this.toggleSidebar();
             }
         });
+    }
+
+    ngOnInit() {
+        this.currentUserService.getCurrentUser()
+            .subscribe(x => this.currentUser = x);
     }
 
     eventCalled() {
