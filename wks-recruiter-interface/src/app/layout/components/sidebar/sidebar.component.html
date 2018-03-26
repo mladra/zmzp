@@ -1,7 +1,7 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
-        <a [routerLink]="['/dashboard']" [routerLinkActive]="['router-link-active']" class="list-group-item">
-            <i class="fa fa-fw fa-dashboard"></i>&nbsp;Dashboard
+        <a [routerLink]="['/home']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-home"></i>&nbsp;Home
         </a>
         <a [routerLink]="['/accounts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-users"></i>&nbsp;Accounts
@@ -59,7 +59,9 @@
             <div class="nested-menu">
                 <a class="list-group-item dropdown-toggle" (click)="addExpandClass('profile')">
                     <span>
-                        <i class="fa fa-user"></i>&nbsp; {{currentUser.login}} (<span *ngFor="let role of currentUser.roles; let i=index">{{(i > 0 ? ", " + role + " ": " " + role) | lowercase}}</span>)<b class="caret"></b>
+                        <i class="fa fa-user"></i>&nbsp; {{currentUser.login}} (
+                        <span *ngFor="let role of currentUser.roles; let i=index">{{(i > 0 ? ", " + role + " ": " " + role) | lowercase}}</span>)
+                        <b class="caret"></b>
                     </span>
                 </a>
                 <li class="nested" [class.expand]="showMenu === 'profile'">
