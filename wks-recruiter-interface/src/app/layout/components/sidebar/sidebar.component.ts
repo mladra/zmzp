@@ -14,12 +14,30 @@ export class SidebarComponent implements OnInit {
     showMenu: string = '';
     pushRightClass: string = 'push-right';
     public currentUser: Account;
+
+    //Lista elementów menu z możliwymi dla nich rolami
+    private allMenuItems: MenuItem[] = [
+        {
+            link: "/home",
+            icon: "home",
+            name: "Home",
+            rolesAllowed: ["moderator", "editor", "candidate"]
+        },
+        {
+            link: "/accounts",
+            icon: "users",
+            name: "Accounts",
+            rolesAllowed: ["moderator"]
+        }
+    ];
+    public userMenuItems: MenuItem[];
+
     constructor(private currentUserService: CurrentUserService, private translate: TranslateService, public router: Router) {
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();
         this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de/) ? browserLang : 'en');
-
+        this.userMenuItems = [];
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -33,7 +51,23 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit() {
         this.currentUserService.getCurrentUser()
-            .subscribe(x => this.currentUser = x);
+            .subscribe(x => this.setUserAndMenu(x));
+    }
+
+    setUserAndMenu(user: Account) {
+        this.currentUser = user;
+        this.getMenuItemsForRoles(user.roles);
+    }
+
+    getMenuItemsForRoles(roles: String[]) {
+        for (let item of this.allMenuItems) {
+            for (let role of roles) {
+                if (item.rolesAllowed.indexOf(role.toLowerCase()) != -1) {
+                    this.userMenuItems.push(item);
+                    break;
+                }
+            }
+        }
     }
 
     eventCalled() {
@@ -70,4 +104,11 @@ export class SidebarComponent implements OnInit {
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
     }
+}
+
+export class MenuItem {
+    link: String;
+    icon: String;
+    name: String;
+    rolesAllowed: String[];
 }

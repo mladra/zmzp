@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertsService } from "../services/alerts.service";
 
 @Component({
     selector: 'app-layout',
@@ -6,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
-    constructor() {}
-
-    ngOnInit() {}
+    constructor(private alertService: AlertsService) {
+        this.alerts = this.alertService.getAlerts();
+    }
+    public alerts: any[];
+    ngOnInit() {
+    }
+    closeAlert(alert: any) {
+        this.alertService.closeAlert(alert);
+    }
 }

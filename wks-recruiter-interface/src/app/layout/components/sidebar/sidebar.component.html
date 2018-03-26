@@ -1,6 +1,9 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
     <div class="list-group">
-        <a [routerLink]="['/home']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a *ngFor="let item of userMenuItems" routerLink="{{item.link}}" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-fw fa-{{item.icon}}"></i>&nbsp;{{item.name}}
+        </a>
+        <!-- <a [routerLink]="['/home']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-home"></i>&nbsp;Home
         </a>
         <a [routerLink]="['/accounts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
@@ -54,7 +57,7 @@
         </div>
         <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-file-o"></i>&nbsp;Blank Page
-        </a>
+        </a> -->
         <div class="header-fields">
             <div class="nested-menu">
                 <a class="list-group-item dropdown-toggle" (click)="addExpandClass('profile')">

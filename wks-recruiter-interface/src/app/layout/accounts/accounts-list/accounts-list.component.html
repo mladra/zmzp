@@ -37,7 +37,7 @@
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td><span *ngFor="let role of user.roles; let j=index">{{(j > 0 ? ", " + role + " ": " " + role) | lowercase}}</span></td>
-                <td><button class="btn btn-sm btn-success">Modify</button> <button class="btn btn-sm btn-danger">Delete</button></td>
+                <td><button (click)="modifyAccount(user.id)" class="btn btn-sm btn-success">Modify</button> <button (click)="deleteAccount(user.id)" class="btn btn-sm btn-danger">Delete</button></td>
               </tr>
             </tbody>
           </table>
