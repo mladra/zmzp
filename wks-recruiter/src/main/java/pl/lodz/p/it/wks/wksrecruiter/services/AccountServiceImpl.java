@@ -75,7 +75,9 @@ public class AccountServiceImpl implements AccountService {
                 throw new WKSRecruiterException(new WKSRecruiterException.Error("ROLE_ERROR", "Wrong role name!"));
             }
             account.get().setRoles(roles);
-            return accountsRepository.save(account.get());
+            accountsRepository.save(account.get());
+            account.get().setPassword(null);
+            return account.get();
         } else {
             throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
         }
