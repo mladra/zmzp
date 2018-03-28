@@ -20,7 +20,6 @@ public class Account {
     @NotNull(message = "Login can not be empty")
     @NotEmpty(message = "Login can not be empty")
     @Email(message = "Email address must be well-formed")
-    @Pattern(regexp = "^.\\S*", message = "Email should not contain whitespaces")
     @Indexed(unique = true)
     private String login;
 
@@ -31,7 +30,6 @@ public class Account {
     private String name;
 
     @NotNull(message = "Surname can not be empty")
-    @NotEmpty(message = "Surname can not be empty")
     @Length(min = 2, message = "Surname must contain at least 2 characters")
     @Pattern(regexp = "^[A-Z].*", message = "Surname should start with capital letter")
     private String surname;
