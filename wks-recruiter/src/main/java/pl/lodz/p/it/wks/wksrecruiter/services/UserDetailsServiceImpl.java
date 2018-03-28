@@ -1,23 +1,22 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
-import pl.lodz.p.it.wks.wksrecruiter.config.security.MongoUserDetails;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 
-@Primary
-@Component
-public class MongoUserDetailsService implements UserDetailsService {
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final AccountsRepository accountsRepository;
 
     @Autowired
-    public MongoUserDetailsService(AccountsRepository accountsRepository) {
+    public UserDetailsServiceImpl(AccountsRepository accountsRepository) {
         this.accountsRepository = accountsRepository;
     }
 
@@ -29,6 +28,10 @@ public class MongoUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Username with provided login doesn't exist.");
         }
 
-        return new MongoUserDetails(account);
+        return new User(
+                account.getLogin(),
+                account.getPassword(),
+                AuthorityUtils.createAuthorityList(account.getRoles().toArray(new String[account.getRoles().size()]))
+        );
     }
 }
