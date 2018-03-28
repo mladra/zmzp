@@ -58,7 +58,9 @@ public class AccountServiceImpl implements AccountService {
             }
             account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             account.setSolvedTests(new ArrayList<>());
-            return accountsRepository.save(account);
+            accountsRepository.save(account);
+            account.setPassword(null);
+            return account;
         } catch (DuplicateKeyException exc) {
             throw new WKSRecruiterException(new WKSRecruiterException.Error("LOGIN_NOT_UNIQUE",
                     "Account with such login already exists. Try another one."));
