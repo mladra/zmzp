@@ -12,6 +12,7 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -27,14 +28,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private boolean checkIfRolesInEnum(Collection<String> roles) {
-        boolean rolesFlag = true;
-        for (String role : roles) {
+        AtomicBoolean rolesFlag = new AtomicBoolean(true);
+        roles.forEach(role -> {
             if (!RolesEnum.getEnums().contains(role)) {
-                rolesFlag = false;
-                break;
+                rolesFlag.set(false);
             }
-        }
-        return rolesFlag;
+        });
+        return rolesFlag.get();
     }
 
     @Override
