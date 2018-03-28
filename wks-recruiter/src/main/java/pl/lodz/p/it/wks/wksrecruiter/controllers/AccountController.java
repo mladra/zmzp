@@ -3,13 +3,12 @@ package pl.lodz.p.it.wks.wksrecruiter.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
-import pl.lodz.p.it.wks.wksrecruiter.exceptions.AppException;
+import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.AccountService;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping(value = "/accounts")
@@ -22,15 +21,23 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public ResponseEntity register(@RequestBody Account account) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity createAccount(@RequestBody Account account) {
         try {
-            return ResponseEntity.ok(accountService.register(account));
-        } catch (AppException ex) {
+            return ResponseEntity.ok(accountService.createAccount(account));
+        } catch (WKSRecruiterException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
-        } catch (Exception e) {
-            AppException appex = AppException.of(e);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(appex.toString());
+        } catch (Throwable e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e).toString());
+        }
+    }
+
+    @RequestMapping(value = "/{login}", method = RequestMethod.PUT)
+    public ResponseEntity editRoles(@PathVariable String login, @RequestBody Collection<String> roles) {
+        try {
+            return ResponseEntity.ok(accountService.editRoles(login, roles));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
         }
     }
 }

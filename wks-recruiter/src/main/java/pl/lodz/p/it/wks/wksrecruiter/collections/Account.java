@@ -2,6 +2,7 @@ package pl.lodz.p.it.wks.wksrecruiter.collections;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
@@ -20,6 +21,7 @@ public class Account {
     @NotEmpty(message = "Login can not be empty")
     @Email(message = "Email address must be well-formed")
     @Pattern(regexp = "^.\\S*", message = "Email should not contain whitespaces")
+    @Indexed(unique = true)
     private String login;
 
     @NotNull(message = "Name can not be empty")
