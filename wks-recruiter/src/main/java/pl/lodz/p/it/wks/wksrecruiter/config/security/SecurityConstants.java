@@ -2,7 +2,7 @@ package pl.lodz.p.it.wks.wksrecruiter.config.security;
 
 public class SecurityConstants {
 
-    static final String SECRET = "SecretKeyToGenJWTs";
+    static final String SECRET = "tTmAyENEKNMWBmWKKYnRGyywp5X0gpVUoZHnHGOw2drxl9UtB6KCBlXCziKMzOF";
     static final long EXPIRATION_TIME = 864_000_000;
     static final String TOKEN_PREFIX = "Token ";
     static final String AUTHORIZATION_HEADER_NAME = "Authorization";
