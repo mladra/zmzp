@@ -5,4 +5,6 @@ import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 
 public interface PositionService {
     Position addPosition(Position position) throws WKSRecruiterException;
+
+    boolean modifyPosition(String name, boolean value) throws WKSRecruiterException;
 }
