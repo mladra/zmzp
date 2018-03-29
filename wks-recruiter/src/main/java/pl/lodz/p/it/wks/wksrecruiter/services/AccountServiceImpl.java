@@ -82,4 +82,15 @@ public class AccountServiceImpl implements AccountService {
             throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
         }
     }
+
+    @Override
+    public Account deleteAccount(String login) throws WKSRecruiterException {
+        Optional<Account> account = accountsRepository.findByLogin(login);
+        if (account.isPresent()) {
+            accountsRepository.delete(account.get());
+            return account.get();
+        } else {
+            throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
+        }
+    }
 }

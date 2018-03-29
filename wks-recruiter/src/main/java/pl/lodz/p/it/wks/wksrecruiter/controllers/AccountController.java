@@ -40,4 +40,13 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
         }
     }
+
+    @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteAccount(@PathVariable String login) {
+        try {
+            return ResponseEntity.ok(accountService.deleteAccount(login));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        }
+    }
 }
