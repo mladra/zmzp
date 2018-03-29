@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 
+import java.util.Optional;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -22,16 +24,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountsRepository.findAccountByLogin(username);
+        Optional<Account> account = accountsRepository.findByLogin(username);
 
-        if (account == null) {
+        if (!account.isPresent()) {
             throw new UsernameNotFoundException("Username with provided login doesn't exist.");
         }
 
         return new User(
-                account.getLogin(),
-                account.getPassword(),
-                AuthorityUtils.createAuthorityList(account.getRoles().toArray(new String[account.getRoles().size()]))
+                account.get().getLogin(),
+                account.get().getPassword(),
+                AuthorityUtils.createAuthorityList(account.get().getRoles().toArray(new String[0]))
         );
     }
 }

@@ -22,6 +22,17 @@ export class AuthenticationService {
     }
 
     logout() {
-        localStorage.removeItem('Token');
+        if (localStorage.getItem('Token')) {
+            localStorage.removeItem('Token');
+            this.http.post(this.rootUrl + '/logout', null, { observe: 'response' }).subscribe();
+        }
+    }
+
+    getToken() {
+        return localStorage.getItem('Token');
+    }
+
+    saveToken(response: any) {
+        localStorage.setItem('Token', response.headers.get('Authorization'));
     }
 }

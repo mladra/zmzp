@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import pl.lodz.p.it.wks.wksrecruiter.repositories.InvalidTokensRepository;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,8 +26,11 @@ import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    private final InvalidTokensRepository invalidTokensRepository;
+
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, InvalidTokensRepository invalidTokensRepository) {
         super(authenticationManager);
+        this.invalidTokensRepository = invalidTokensRepository;
     }
 
     @Override
@@ -48,9 +52,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(AUTHORIZATION_HEADER_NAME);
 
         if (token != null) {
+            token = token.replace(TOKEN_PREFIX, "");
+
+            if (invalidTokensRepository.existsByValue(token)) {
+                return null;
+            }
+
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(SECRET.getBytes())
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""));
+                    .parseClaimsJws(token);
 
             ArrayList<LinkedHashMap<String, String>> authorityClaim =
                     (ArrayList<LinkedHashMap<String, String>>) claims.getBody().get(ROLES_CLAIM_NAME);

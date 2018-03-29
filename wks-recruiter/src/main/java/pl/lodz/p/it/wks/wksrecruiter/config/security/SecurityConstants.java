@@ -8,7 +8,8 @@ public class SecurityConstants {
     static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     static final String ROLES_CLAIM_NAME = "roles";
 
-    static final String LOGIN_URL = "/login";
-    static final String REGISTER_URL = "/register";
+    public static final String LOGOUT_URL = "/logout";
+    public static final String LOGIN_URL = "/login";
+    public static final String REGISTER_URL = "/register";
 
 }
