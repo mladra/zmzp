@@ -62,8 +62,8 @@ public class AccountServiceImpl implements AccountService {
             account.setPassword(null);
             return account;
         } catch (DuplicateKeyException exc) {
-            throw new WKSRecruiterException(new WKSRecruiterException.Error("LOGIN_NOT_UNIQUE",
-                    "Account with such login already exists. Try another one."));
+            throw WKSRecruiterException.createException("LOGIN_NOT_UNIQUE",
+                    "Account with such login already exists. Try another one.");
         }
     }
 
@@ -72,14 +72,14 @@ public class AccountServiceImpl implements AccountService {
         Optional<Account> account = accountsRepository.findByLogin(login);
         if (account.isPresent()) {
             if (!checkIfRolesInEnum(roles)) {
-                throw new WKSRecruiterException(new WKSRecruiterException.Error("ROLE_ERROR", "Wrong role name!"));
+                throw WKSRecruiterException.createException("ROLE_ERROR", "Wrong role name!");
             }
             account.get().setRoles(roles);
             accountsRepository.save(account.get());
             account.get().setPassword(null);
             return account.get();
         } else {
-            throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
+            throw WKSRecruiterException.createAccountNotFoundException();
         }
     }
 }
