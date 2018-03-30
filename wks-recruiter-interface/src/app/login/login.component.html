@@ -3,17 +3,18 @@
         <div class="col-md-4">
             <img src="assets/images/logo.png" width="150px" class="user-avatar" />
             <h1>WKS Recruiter Login</h1>
-            <form role="form">
+            <form role="form" name="formLogin">
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="Email">
+                        <input type="text" [(ngModel)]="email" name="email" class="form-control input-underline input-lg" placeholder="Email">
                     </div>
-
+                    
                     <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                        <input type="password" [(ngModel)]="password" name="password" class="form-control input-underline input-lg" placeholder="Password">
                     </div>
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/home']" (click)="onLoggedin()"> Log in </a>
+                <ngb-alert class="custom-alert" *ngIf="errorMessage" [type]="error" (close)="errorMessage = null">{{ errorMessage }}</ngb-alert>
+                <a class="btn rounded-btn" (click)="login()"> Log in </a>
                 &nbsp;
                 <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>
             </form>
