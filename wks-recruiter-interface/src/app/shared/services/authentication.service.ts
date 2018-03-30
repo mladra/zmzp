@@ -23,8 +23,8 @@ export class AuthenticationService {
 
     logout() {
         if (localStorage.getItem('Token')) {
-            localStorage.removeItem('Token');
             this.http.post(this.rootUrl + '/logout', null, { observe: 'response' }).subscribe();
+            localStorage.removeItem('Token');
         }
     }
 
