@@ -40,4 +40,15 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
         }
     }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT)
+    public ResponseEntity editAccount(@RequestBody Account account) {
+        try {
+            return ResponseEntity.ok(accountService.editAccount(account));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        } catch (Throwable e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e).toString());
+        }
+    }
 }
