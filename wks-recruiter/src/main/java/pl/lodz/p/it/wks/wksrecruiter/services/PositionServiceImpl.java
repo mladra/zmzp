@@ -22,7 +22,17 @@ public class PositionServiceImpl implements PositionService {
         try {
             return positionsRepository.save(position);
         } catch (DuplicateKeyException e) {
-            throw new WKSRecruiterException(new WKSRecruiterException.Error("NAME_NOT_UNIQUE", "Position with such name already exists. Try another one."));
+            throw WKSRecruiterException.createException("NAME_NOT_UNIQUE", "Position with such name already exists. Try another one.");
         }
+    }
+
+    @Override
+    public boolean modifyPosition(String name, boolean value) throws WKSRecruiterException {
+        Position position = positionsRepository.findPositionByName(name);
+        if (position == null) {
+            throw WKSRecruiterException.createPositionNotFoundException();
+        }
+        position.setActive(value);
+        return positionsRepository.save(position).isActive();
     }
 }

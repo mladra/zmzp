@@ -37,33 +37,44 @@ public class AccountServiceImpl implements AccountService {
         return rolesFlag.get();
     }
 
-    @Override
-    public Account createAccount(Account account) throws WKSRecruiterException {
+    private Account validateAccount(Account account, boolean isEdit) throws WKSRecruiterException {
+        if (!checkIfRolesInEnum(account.getRoles())) {
+            throw new WKSRecruiterException(new WKSRecruiterException.Error("ROLE_ERROR", "Wrong role name!"));
+        }
+        if (!isEdit) {
+            validatePassword(account.getPassword());
+        }
+        return account;
+    }
+
+    private void validatePassword(String password) throws WKSRecruiterException {
         WKSRecruiterException ex = new WKSRecruiterException();
-        try {
-            if (!checkIfRolesInEnum(account.getRoles())) {
-                ex.add(new WKSRecruiterException.Error("ROLE_ERROR", "Wrong role name!"));
-            }
-            if (account.getPassword() == null || account.getPassword().equals("")) {
-                ex.add(new WKSRecruiterException.Error("PASSWORD_EMPTY", "Password can not be empty!"));
-            }
-            if (!account.getPassword().matches("^.\\S*")) {
+        if (password == null || password.equals("")) {
+            ex.add(new WKSRecruiterException.Error("PASSWORD_EMPTY", "Password can not be empty!"));
+        } else {
+            if (!password.matches("^.\\S*")) {
                 ex.add(new WKSRecruiterException.Error("PASSWORD_WHITE", "Password cannot contain whitespaces!"));
             }
-            if (account.getPassword().length() < 8 || account.getPassword().length() > 16) {
+            if (password.length() < 8 || password.length() > 16) {
                 ex.add(new WKSRecruiterException.Error("PASSWORD_LENGTH", "Password have to contain between 8 and 16 characters!"));
             }
-            if (!ex.getErrors().isEmpty()) {
-                throw ex;
-            }
-            account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        }
+        if (!ex.getErrors().isEmpty()) {
+            throw ex;
+        }
+    }
+
+    @Override
+    public Account createAccount(Account account) throws WKSRecruiterException {
+        try {
+            validateAccount(account, false).setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             account.setSolvedTests(new ArrayList<>());
             accountsRepository.save(account);
             account.setPassword(null);
             return account;
         } catch (DuplicateKeyException exc) {
-            throw new WKSRecruiterException(new WKSRecruiterException.Error("LOGIN_NOT_UNIQUE",
-                    "Account with such login already exists. Try another one."));
+            throw WKSRecruiterException.createException("LOGIN_NOT_UNIQUE",
+                    "Account with such login already exists. Try another one.");
         }
     }
 
@@ -72,14 +83,34 @@ public class AccountServiceImpl implements AccountService {
         Optional<Account> account = accountsRepository.findByLogin(login);
         if (account.isPresent()) {
             if (!checkIfRolesInEnum(roles)) {
-                throw new WKSRecruiterException(new WKSRecruiterException.Error("ROLE_ERROR", "Wrong role name!"));
+                throw WKSRecruiterException.createException("ROLE_ERROR", "Wrong role name!");
             }
             account.get().setRoles(roles);
             accountsRepository.save(account.get());
             account.get().setPassword(null);
             return account.get();
         } else {
-            throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
+            throw WKSRecruiterException.createAccountNotFoundException();
+        }
+    }
+
+    @Override
+    public Account editAccount(Account account) throws WKSRecruiterException {
+        validateAccount(account, true);
+        Optional<Account> accountToEdit = accountsRepository.findByLogin(account.getLogin());
+        if (accountToEdit.isPresent()) {
+            accountToEdit.get().setName(account.getName());
+            accountToEdit.get().setSurname(account.getSurname());
+            if (account.getPassword() != null) {
+                validatePassword(account.getPassword());
+                accountToEdit.get().setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+            }
+            accountToEdit.get().setRoles(account.getRoles());
+            accountsRepository.save(accountToEdit.get());
+            accountToEdit.get().setPassword(null);
+            return accountToEdit.get();
+        } else {
+            throw WKSRecruiterException.createAccountNotFoundException();
         }
     }
 }

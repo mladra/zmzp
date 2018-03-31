@@ -80,8 +80,20 @@ public class WKSRecruiterException extends Exception implements Serializable {
         if (ex instanceof ConstraintViolationException) {
             return new WKSRecruiterException(((ConstraintViolationException) ex).getConstraintViolations().stream().map(v -> new Error("VALIDATION_ERROR", v.getMessage())).collect(Collectors.toList()));
         } else {
-            return new WKSRecruiterException(new WKSRecruiterException.Error("ERR_001", ex.getMessage()));
+            return createException("ERR_001", ex.getMessage());
         }
+    }
+
+    public static WKSRecruiterException createException(String code, String description) {
+        return new WKSRecruiterException(new WKSRecruiterException.Error(code, description));
+    }
+
+    public static WKSRecruiterException createPositionNotFoundException() {
+        return createException("POSITION_NOT_FOUND", "Position with such name does not exist.");
+    }
+
+    public static WKSRecruiterException createAccountNotFoundException() {
+        return createException("ACCOUNT_NOT_FOUND", "Account with such login does not exist.");
     }
 
     @Override
