@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ account.name }} details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form name="userDetailsForm">
+        <div class="form-content">
+            <div class="form-group">
+                <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.name" [ngModelOptions]="{standalone: true}"
+                    placeholder="Name" [readonly]="true">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.surname" [ngModelOptions]="{standalone: true}"
+                    placeholder="Surname">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.login" [ngModelOptions]="{standalone: true}"
+                    placeholder="Email">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control input-underline input-lg" [(ngModel)]="account.password" [ngModelOptions]="{standalone: true}"
+                    placeholder="Password" autocomplete="new-password" [(ngModel)]="account.password">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control input-underline input-lg" name="confirm" placeholder="Repeat Password" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label for="roles1">Roles:</label>
+                <select multiple class="form-control" id="roles1">
+                    <option *ngFor="let role of roles" [selected]="account.roles.includes(role)">{{ role }}</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-success" (click)="submit()">Submit</button>
+    <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+</div>
