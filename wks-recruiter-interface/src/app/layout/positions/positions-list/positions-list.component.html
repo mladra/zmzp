@@ -1,0 +1,46 @@
+<div [@routerTransition]>
+  <div class="row">
+    <div class="col">
+      <h2 class="page-header">
+        Positions
+      </h2>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <i class="fa fa-home"></i>
+          <a [routerLink]="['/home']">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <i class="fa fa-id-card"></i> Positions
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">Positions list</div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Position</th>
+                <th>Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let position of positions; let i=index">
+                <td>{{i}}</td>
+                <td style="width:50%">{{position.name}}</td>
+                <td>{{position.isActive}}</td>
+                <td><a (click)="toggleActive(position.id)" class="btn btn-sm btn-primary" title="Toggle activity"><i class="fa fa-power-off"></i></a> 
+                  <a (click)="removePosition(position.id)" class="btn btn-sm btn-danger" title="Remove position"><i class="fa fa-trash"></i></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
