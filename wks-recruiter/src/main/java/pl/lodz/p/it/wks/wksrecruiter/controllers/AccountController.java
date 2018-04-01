@@ -9,6 +9,7 @@ import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.AccountService;
 
 import java.util.Collection;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/accounts")
@@ -41,7 +42,7 @@ public class AccountController {
         }
     }
 
-    @RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "delete/{login}", method = RequestMethod.PUT)
     public ResponseEntity deleteAccount(@PathVariable String login) {
         try {
             return ResponseEntity.ok(accountService.deleteAccount(login));
