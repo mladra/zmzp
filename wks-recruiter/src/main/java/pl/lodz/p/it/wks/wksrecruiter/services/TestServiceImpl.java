@@ -48,9 +48,7 @@ public class TestServiceImpl implements TestService {
             throw WKSRecruiterException.createPositionNotFoundException();
         }
         if (test.isPresent()) {
-            for (Position position : positions) {
-                test.get().getPositions().removeIf(positionToRemove -> positionToRemove.getName().equals(position.getName()));
-            }
+            positions.forEach(position -> test.get().getPositions().removeIf(positionToRemove -> positionToRemove.getName().equals(position.getName())));
             return testsRepository.save(test.get());
         } else {
             throw WKSRecruiterException.createTestNotFoundException();
