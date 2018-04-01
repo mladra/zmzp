@@ -30,4 +30,15 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(ex).toString());
         }
     }
+
+    @RequestMapping(value = "/removePosition/{testId}", method = RequestMethod.PUT)
+    public ResponseEntity removePosition(@PathVariable String testId, @RequestBody Collection<String> positionNames) {
+        try {
+            return ResponseEntity.ok(testService.removePositionsFromTest(positionNames, testId));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        } catch (Throwable ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(ex).toString());
+        }
+    }
 }

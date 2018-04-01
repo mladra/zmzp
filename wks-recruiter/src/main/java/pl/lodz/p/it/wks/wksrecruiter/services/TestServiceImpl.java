@@ -34,7 +34,24 @@ public class TestServiceImpl implements TestService {
         }
         if (test.isPresent()) {
             test.get().getPositions().addAll(positions);
-            return test.get();
+            return testsRepository.save(test.get());
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
+    }
+
+    @Override
+    public Test removePositionsFromTest(Collection<String> positionNames, String testId) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        Collection<Position> positions = positionsRepository.findAllByNameIn(positionNames);
+        if (positions.isEmpty() || positionNames.size() != positions.size()) {
+            throw WKSRecruiterException.createPositionNotFoundException();
+        }
+        if (test.isPresent()) {
+            for (Position position : positions) {
+                test.get().getPositions().removeIf(positionToRemove -> positionToRemove.getName().equals(position.getName()));
+            }
+            return testsRepository.save(test.get());
         } else {
             throw WKSRecruiterException.createTestNotFoundException();
         }
