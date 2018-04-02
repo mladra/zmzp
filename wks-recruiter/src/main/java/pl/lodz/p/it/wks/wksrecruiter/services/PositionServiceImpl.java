@@ -35,4 +35,9 @@ public class PositionServiceImpl implements PositionService {
         position.setActive(value);
         return positionsRepository.save(position).isActive();
     }
+
+    @Override
+    public Iterable<Position> getPositions() {
+        return positionsRepository.findAll();
+    }
 }

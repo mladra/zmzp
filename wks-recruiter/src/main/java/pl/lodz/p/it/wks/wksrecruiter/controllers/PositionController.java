@@ -38,4 +38,9 @@ public class PositionController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.toString());
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getPositions() {
+        return ResponseEntity.ok(positionService.getPositions());
+    }
 }
