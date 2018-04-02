@@ -7,20 +7,19 @@
 <div class="modal-body">
     <form name="userDetailsForm" (ngSubmit)="userDetailsForm.form.valid && submit()" #userDetailsForm="ngForm" novalidate>
         <div class="form-content">
-            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && email.invalid }">
+            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && !name.valid }">
                 <label for="email">Email</label>
                 <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.login" name="email" placeholder="Email"
-                    [readonly]="!createAccount" required id="email" #email="ngModel">
-                <div *ngIf="userDetailsForm.submitted && email.invalid" class="alert alert-danger">
-                    Invalid email.
+                    [readonly]="!createAccount" required id="email" #email="ngModel" pattern="^[A-Za-z].*@[A-Za-z].*$">
+                <div *ngIf="userDetailsForm.submitted && email.invalid">
+                    Email address must be well-formed.
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && !name.valid }">
                 <label for="name">Name</label>
                 <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="account.name"
                     #name="ngModel" required minlength="2" pattern="^[A-Z].*">
-
-                <div *ngIf="userDetailsForm.submitted && name.invalid" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && name.invalid">
                     <div *ngIf="name.errors.required">
                         Name can not be empty.
                     </div>
@@ -32,12 +31,12 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && !name.valid }">
                 <label for="surname">Surname</label>
                 <input type="text" class="form-control input-underline input-lg" placeholder="Surname" id="surname" name="surname" [(ngModel)]="account.surname"
                     #surname="ngModel" required minlength="2" pattern="^[A-Z].*">
 
-                <div *ngIf="userDetailsForm.submitted && surname.invalid" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && surname.invalid">
                     <div *ngIf="surname.errors.required">
                         Surname can not be empty.
                     </div>
@@ -49,42 +48,38 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && !password.valid }">
                 <label for="password">Password</label>
                 <input type="password" class="form-control input-underline input-lg" placeholder="Password" id="password" name="password"
-                    [(ngModel)]="account.password" #password="ngModel" [required]="createAccount" minlength="8">
+                    [(ngModel)]="account.password" #password="ngModel" [required]="createAccount" minlength="8" pattern="[^\s]+"
+                    maxlength="16">
 
-                <div *ngIf="userDetailsForm.submitted && password.invalid" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && password.invalid">
                     <div *ngIf="password.errors.required">
                         Password can not be empty.
                     </div>
-                    <div *ngIf="password.errors.minlength">
-                        Password must have at least 8 characters.
+                    <div *ngIf="password.errors.minlength || password.errors.maxlength">
+                        Password must have between 8 and 16 characters.
+                    </div>
+                    <div *ngIf="password.errors.pattern">
+                        Password cannot contain whitespaces.
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && !confirmPassword.valid }">
                 <label for="confirmPassword">Confirm password</label>
                 <input type="password" class="form-control input-underline input-lg" placeholder="Repeat password" id="confirmPassword" name="confirmPassword"
                     [(ngModel)]="confirm" #confirmPassword="ngModel" [required]="createAccount" minlength="8">
 
-                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && createAccount" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && createAccount">
                     Passwords do not match.
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        Is active
-                        <input type="checkbox" [checked]="account.active" (change)="account.active = !account.active">
-                    </label>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="roles1">Roles:</label>
-                <select multiple class="form-control" id="roles1" name="roles1" [(ngModel)]="account.roles">
-                    <option *ngFor="let role of roles" [selected]="account.roles.includes(role)" [value]="role">{{ role }}</option>
+                <select multiple class="form-control select-picker" id="roles1" name="roles1" [(ngModel)]="account.roles">
+                    <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
                 </select>
             </div>
 

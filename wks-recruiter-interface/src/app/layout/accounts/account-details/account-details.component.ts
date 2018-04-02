@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Account } from '../../../entities/account';
 import { AccountsService } from '../../../shared/services';
@@ -7,9 +7,12 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-account-details-component',
-    templateUrl: './account-details.component.html'
+    templateUrl: './account-details.component.html',
+    styles: ['account-details.component.scss'],
 })
 export class AccountDetilsComponent implements OnInit {
+
+    @Output() emiter: EventEmitter<Account> = new EventEmitter<Account>();
 
     public account: Account;
     public createAccount: boolean;
@@ -37,6 +40,7 @@ export class AccountDetilsComponent implements OnInit {
             this.accountService.createAccount(this.account).subscribe(
                 response => {
                     this.alertsService.addAlert('success', 'Successfully created account with email ' + this.account.login);
+                    this.emiter.emit(this.account);
                 },
                 error => {
                     this.alertsService.addAlert('danger', error.error);
@@ -46,6 +50,7 @@ export class AccountDetilsComponent implements OnInit {
             this.accountService.editAccount(this.account).subscribe(
                 response => {
                     this.alertsService.addAlert('success', 'Successfully edited account with email ' + this.account.login);
+                    this.emiter.emit(this.account);
                 },
                 error => {
                     this.alertsService.addAlert('danger', error.error);

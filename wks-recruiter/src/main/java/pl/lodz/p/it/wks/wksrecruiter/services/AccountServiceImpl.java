@@ -71,6 +71,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             validateAccount(account, false).setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             account.setSolvedTests(new ArrayList<>());
+            account.setEnabled(Boolean.TRUE);
             accountsRepository.save(account);
             account.setPassword(null);
             return account;

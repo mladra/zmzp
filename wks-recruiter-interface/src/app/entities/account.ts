@@ -4,7 +4,6 @@ export class Account {
     name: string;
     surname: string;
     password: string;
-    active: boolean;
     roles: string[];
     // solvedTests: Test[];
 }

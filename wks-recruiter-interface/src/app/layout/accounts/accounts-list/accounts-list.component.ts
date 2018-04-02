@@ -6,12 +6,14 @@ import { AlertsService } from '../../../services/alerts.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountDetilsComponent } from '../account-details/account-details.component';
 import { AccountsService } from '../../../shared/services';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { Local } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-accounts-list',
   templateUrl: './accounts-list.component.html',
   styleUrls: ['./accounts-list.component.scss'],
-  animations: [routerTransition()]
+  animations: [routerTransition()],
 })
 export class AccountsListComponent implements OnInit {
 
@@ -32,38 +34,40 @@ export class AccountsListComponent implements OnInit {
 
   createAccount() {
     const modalRef = this.modalService.open(AccountDetilsComponent);
-    modalRef.result.then(
-      d => {
-        console.log(d);
-        this.getAllUsers();
-    },
-      error => {
-        console.log(error);
-    });
     modalRef.componentInstance.name = 'Create account';
+
     const newAccount = new Account();
     newAccount.roles = new Array<string>();
+    newAccount.roles.push('Editor');
+
     modalRef.componentInstance.setAccount(newAccount, true);
+    modalRef.componentInstance.emiter.subscribe(
+      account => {
+        this.users.push(account);
+      }
+    );
   }
 
   modifyAccount(account) {
     const modalRef = this.modalService.open(AccountDetilsComponent);
-    modalRef.result.then(
-      data => {
-        console.log(data);
-        this.getAllUsers();
-    },
-      error => {
-        console.log(error);
-    });
     modalRef.componentInstance.name = 'Modify account';
     modalRef.componentInstance.setAccount(account, false);
+    modalRef.componentInstance.emiter.subscribe(
+      modifiedAccount => {
+        console.log(modifiedAccount);
+      }
+    );
   }
 
-  deleteAccount(login: String) {
-    this.accountsService.deleteAccount(login).subscribe(
+  deleteAccount(account: Account) {
+    this.accountsService.deleteAccount(account.login).subscribe(
       response => {
-        this.alertsService.addAlert('success', 'Successfully deleted account with id ${login}');
+        this.alertsService.addAlert('success', 'Successfully deleted account with email: ' + account.login);
+
+        const index = this.users.indexOf(account);
+        if (index > -1) {
+          this.users.splice(index, 1);
+        }
       },
       error => {
         this.alertsService.addAlert('danger', 'Error occurred during deleting user.');
