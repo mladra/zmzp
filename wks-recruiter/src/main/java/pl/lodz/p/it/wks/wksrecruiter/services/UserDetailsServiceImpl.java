@@ -1,6 +1,7 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (!account.isPresent()) {
             throw new UsernameNotFoundException("Username with provided login doesn't exist.");
+        } else if (!account.get().getEnabled()) {
+            throw new DisabledException("Your account is being deleted.");
         }
 
         return new User(

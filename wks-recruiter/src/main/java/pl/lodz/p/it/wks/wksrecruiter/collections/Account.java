@@ -37,11 +37,14 @@ public class Account {
     @Length(min = 60, max = 60)
     private String password;
 
-    private boolean isActive;
     private Collection<String> roles;
     private Collection<TestAttempt> solvedTests;
 
-    public Account(){}
+    private Boolean isEnabled;
+
+    public Account() {
+    }
+
     @Override
     public String toString() {
         return "Account{" +
@@ -54,49 +57,105 @@ public class Account {
                 '}';
     }
 
-  public Account(String login, String name, String surname, String password, boolean isActive, Collection<String> roles) {
-    this.login = login;
-    this.name = name;
-    this.surname = surname;
-    this.password = password;
-    this.isActive = isActive;
-    this.roles = roles;
-  }
+    public Account(String login, String name, String surname, String password, Collection<String> roles) {
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.roles = roles;
+    }
 
-  public Account(String id, String login, String name, String surname, String password, boolean isActive, Collection<String> roles, Collection<TestAttempt> solvedTests) {
+    public Account(String id, String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solvedTests) {
         this.id = id;
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.password = password;
-        this.isActive = isActive;
         this.roles = roles;
         this.solvedTests = solvedTests;
     }
 
-    public Account(String login, String name, String surname, String password, boolean isActive, Collection<String> roles, Collection<TestAttempt> solvedTests) {
+    public Account(String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solvedTests) {
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.password = password;
-        this.isActive = isActive;
         this.roles = roles;
         this.solvedTests = solvedTests;
     }
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public String getLogin() { return login; }
-    public void setLogin(String login) { this.login = login; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getSurname() { return surname; }
-    public void setSurname(String surname) { this.surname = surname; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public Collection<String> getRoles() { return roles; }
-    public void setRoles(Collection<String> roles) { this.roles = roles; }
-    public Collection<TestAttempt> getSolvedTests() { return solvedTests; }
-    public void setSolvedTests(Collection<TestAttempt> solvedTests) { this.solvedTests = solvedTests; }
-    public boolean isActive() { return isActive; }
-    public void setActive(boolean active) { isActive = active; }
+
+    public Account(String id, String login, String name, String surname, String password, Boolean isEnabled, Collection<String> roles, Collection<TestAttempt> solvedTests) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.isEnabled = isEnabled;
+        this.roles = roles;
+        this.solvedTests = solvedTests;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Collection<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<String> roles) {
+        this.roles = roles;
+    }
+
+    public Collection<TestAttempt> getSolvedTests() {
+        return solvedTests;
+    }
+
+    public void setSolvedTests(Collection<TestAttempt> solvedTests) {
+        this.solvedTests = solvedTests;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
 }

@@ -117,9 +117,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account deleteAccount(String login) throws WKSRecruiterException {
+        Optional<Account> account = accountsRepository.findByLogin(login);
+        if (account.isPresent()) {
+            account.get().setEnabled(false);
+            accountsRepository.save(account.get());
+            return account.get();
+        } else {
+            throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
+        }
+    }
+
+    @Override
     public List<Account> getAll() {
         List<Account> accounts = accountsRepository.findAll();
-        accounts = accounts.stream().filter(Account::isActive).collect(Collectors.toList());
+        accounts = accounts.stream().filter(Account::getEnabled).collect(Collectors.toList());
         accounts.forEach(account -> account.setPassword(null));
         return accounts;
     }
