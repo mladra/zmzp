@@ -20,6 +20,7 @@
       <div class="card">
         <div class="card-header">Positions list</div>
         <div class="card-body table-responsive">
+          <button type="button" class="btn btn-sm btn-success" (click)="addPosition()" style="margin-bottom: 10px">+ Add</button>
           <table class="table table-hover table-striped">
             <thead>
               <tr>
@@ -33,7 +34,7 @@
               <tr *ngFor="let position of positions; let i=index">
                 <td>{{i}}</td>
                 <td style="width:50%">{{position.name}}</td>
-                <td>{{position.isActive}}</td>
+                <td>{{position.isActive ? 'Active' : 'Inactive'}}</td>
                 <td><a (click)="toggleActive(position.id)" class="btn btn-sm btn-primary" title="Toggle activity"><i class="fa fa-power-off"></i></a> 
                   <a (click)="removePosition(position.id)" class="btn btn-sm btn-danger" title="Remove position"><i class="fa fa-trash"></i></a></td>
               </tr>

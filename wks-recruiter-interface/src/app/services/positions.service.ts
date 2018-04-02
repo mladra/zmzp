@@ -21,4 +21,8 @@ export class PositionsService {
         return this.http.put(this.rootUrl+'/'+name, value, {observe: 'response'});
     }
 
+    getAll(){
+        return this.http.get(this.rootUrl, { observe: 'response' });
+    }
+
 }

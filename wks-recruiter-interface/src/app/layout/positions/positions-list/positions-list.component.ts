@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
 import { Position } from '../../../entities/position';
 import { PositionsService } from '../../../services/positions.service';
 import { AlertsService } from '../../../services/alerts.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { PositionsCreateComponent } from "../positions-create/positions-create.component";
 
 @Component({
   selector: 'app-positions-list',
@@ -24,18 +25,17 @@ export class PositionsListComponent implements OnInit {
   }
 
   addPosition(){
-    // const modalRef = this.modalService.open(PositionsCreateComponent);
-    // modalRef.result.then(
-    //   d => {
-    //     console.log(d);
-    //     this.getAllPositions();
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   }
-    // );
-    // modalRef.componentInstance.name = 'Create position';
-
+    const modalRef = this.modalService.open(PositionsCreateComponent);
+    modalRef.result.then(
+      d => {
+        console.log(d);
+        this.getAllPositions();
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    modalRef.componentInstance.name = 'Create position';
   }
 
   modifyPosition(position: Position){
@@ -54,7 +54,15 @@ export class PositionsListComponent implements OnInit {
   }
 
   getAllPositions(){
-    
+    // this.positionService.getAll().subscribe(
+    //   data => {
+    //     const positionString = JSON.stringify(data.body);
+    //     this.positions = JSON.parse(positionString);
+    //   },
+    //   error => {
+    //     console.log(error);
+    //     this.alertsService.addAlert('danger', 'Error occured while loading positions');
+    //   });
   }
 
 }
