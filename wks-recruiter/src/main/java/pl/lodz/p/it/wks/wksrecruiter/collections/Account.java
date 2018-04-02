@@ -37,6 +37,7 @@ public class Account {
     @Length(min = 60, max = 60)
     private String password;
 
+    private boolean isActive;
     private Collection<String> roles;
     private Collection<TestAttempt> solvedTests;
 
@@ -53,29 +54,32 @@ public class Account {
                 '}';
     }
 
-  public Account(String login, String name, String surname, String password, Collection<String> roles) {
+  public Account(String login, String name, String surname, String password, boolean isActive, Collection<String> roles) {
     this.login = login;
     this.name = name;
     this.surname = surname;
     this.password = password;
+    this.isActive = isActive;
     this.roles = roles;
   }
 
-  public Account(String id, String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solvedTests) {
+  public Account(String id, String login, String name, String surname, String password, boolean isActive, Collection<String> roles, Collection<TestAttempt> solvedTests) {
         this.id = id;
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.password = password;
+        this.isActive = isActive;
         this.roles = roles;
         this.solvedTests = solvedTests;
     }
 
-    public Account(String login, String name, String surname, String password, Collection<String> roles, Collection<TestAttempt> solvedTests) {
+    public Account(String login, String name, String surname, String password, boolean isActive, Collection<String> roles, Collection<TestAttempt> solvedTests) {
         this.login = login;
         this.name = name;
         this.surname = surname;
         this.password = password;
+        this.isActive = isActive;
         this.roles = roles;
         this.solvedTests = solvedTests;
     }
@@ -93,5 +97,6 @@ public class Account {
     public void setRoles(Collection<String> roles) { this.roles = roles; }
     public Collection<TestAttempt> getSolvedTests() { return solvedTests; }
     public void setSolvedTests(Collection<TestAttempt> solvedTests) { this.solvedTests = solvedTests; }
-
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
 }

@@ -5,6 +5,7 @@ import { CurrentUserService } from '../../../services/current-user.service';
 import { AlertsService } from '../../../services/alerts.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountDetilsComponent } from '../account-details/account-details.component';
+import { AccountsService } from '../../../shared/services';
 
 @Component({
   selector: 'app-accounts-list',
@@ -20,22 +21,32 @@ export class AccountsListComponent implements OnInit {
   constructor(
     private alertsService: AlertsService,
     private currentUserService: CurrentUserService,
+    private accountsService: AccountsService,
     private modalService: NgbModal) { }
 
   ngOnInit() {
     this.currentUserService.getCurrentUser()
             .subscribe(x => this.current = x);
-    this.users = [this.current, this.current, this.current, this.current, this.current];
+    this.accountsService.getAll().subscribe(
+      data => {
+        let userString = JSON.stringify(data.body);
+        this.users = JSON.parse(userString);
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
   modifyAccount(account) {
     const modalRef = this.modalService.open(AccountDetilsComponent);
     modalRef.componentInstance.name = 'User details';
     modalRef.componentInstance.account = account;
+    modalRef.componentInstance.createAccount = false;
   }
 
   deleteAccount(id: String) {
-    this.alertsService.addAlert('success', 'Account ' + id + ' has been removed');
+    //TODO: to implement
   }
 
 }

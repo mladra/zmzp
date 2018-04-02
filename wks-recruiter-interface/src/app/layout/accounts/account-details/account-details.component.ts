@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Account } from '../../../entities/account';
+import { AccountsService } from '../../../shared/services';
+import { AlertsService } from '../../../services/alerts.service';
 
 @Component({
     selector: 'app-account-details-component',
@@ -9,13 +11,17 @@ import { Account } from '../../../entities/account';
 export class AccountDetilsComponent implements OnInit {
 
     public account: Account;
-    private accountName: string;
+    public createAccount: boolean;
     private roles: Array<String>;
+    private confirm: string;
 
-    constructor(public activeModal: NgbActiveModal) { }
+    constructor(
+        public activeModal: NgbActiveModal,
+        private accountService: AccountsService,
+        private alertsService: AlertsService) { }
 
     ngOnInit(): void {
-        this.roles = ['Moderator', 'Publisher', 'Candidate'];
+        this.roles = ['Moderator', 'Editor', 'Candidate'];
     }
 
     close() {
@@ -24,6 +30,28 @@ export class AccountDetilsComponent implements OnInit {
 
     submit() {
         this.activeModal.close();
-        console.log(this.account);
+        if (this.createAccount) {
+            this.accountService.createAccount(this.account).subscribe(
+                response => {
+                    this.alertsService.addAlert('success', 'Successfully created account with email ' + this.account.login);
+                },
+                error => {
+                    this.alertsService.addAlert('danger', error.error);
+                }
+            );
+        } else {
+            this.accountService.editAccount(this.account).subscribe(
+                response => {
+                    this.alertsService.addAlert('success', 'Successfully edited account with email ' + this.account.login);
+                },
+                error => {
+                    this.alertsService.addAlert('danger', error.error);
+                }
+            );
+        }
+    }
+
+    checkIfPasswordsMatch() {
+        return this.account.password !== this.confirm;
     }
 }

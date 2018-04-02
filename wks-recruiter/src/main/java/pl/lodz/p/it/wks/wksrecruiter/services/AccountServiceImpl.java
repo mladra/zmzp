@@ -11,8 +11,10 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -112,5 +114,13 @@ public class AccountServiceImpl implements AccountService {
         } else {
             throw WKSRecruiterException.createAccountNotFoundException();
         }
+    }
+
+    @Override
+    public List<Account> getAll() {
+        List<Account> accounts = accountsRepository.findAll();
+        accounts = accounts.stream().filter(Account::isActive).collect(Collectors.toList());
+        accounts.forEach(account -> account.setPassword(null));
+        return accounts;
     }
 }
