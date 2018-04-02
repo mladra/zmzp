@@ -22,6 +22,8 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.InvalidTokensRepository;
 
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Arrays;
+
 import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.LOGIN_URL;
 import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.LOGOUT_URL;
 import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.REGISTER_URL;
@@ -48,7 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http
+                .cors().configurationSource(corsConfigurationSource())
+                .and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
                 .antMatchers(HttpMethod.POST, REGISTER_URL).permitAll()
                 .anyRequest().authenticated()
@@ -67,8 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE"));
+        configuration.setMaxAge(3600L);
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
         return source;
     }
 

@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { CurrentUserService } from './services/current-user.service';
-import { AuthenticationService } from './shared/services';
+import { AuthenticationService, AccountsService } from './shared/services';
 import { TokenInterceptor, HttpResponseCodesInterceptor } from './shared/interceptors';
 
 // AoT requires an exported function for factories
@@ -50,6 +50,7 @@ export function createTranslateLoader(http: HttpClient) {
             useClass: HttpResponseCodesInterceptor,
             multi: true
         },
+        AccountsService
     ],
     bootstrap: [AppComponent]
 })

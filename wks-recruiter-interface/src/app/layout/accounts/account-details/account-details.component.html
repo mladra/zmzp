@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ title }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form name="userDetailsForm" (ngSubmit)="userDetailsForm.form.valid && submit()" #userDetailsForm="ngForm"
+        novalidate>
+        <div class="form-content">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.login" name="email" placeholder="Email"
+                    [readonly]="!createAccount" required id="email" #email="ngModel" pattern="^[A-Za-z].*@[A-Za-z].*$" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !name.valid }">
+                <div *ngIf="userDetailsForm.submitted && email.invalid" class="p-2 text-danger">
+                    Email address must be well-formed.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="account.name"
+                    #name="ngModel" required minlength="2" pattern="^[A-Z].*" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !name.valid }">
+                <div *ngIf="userDetailsForm.submitted && name.invalid" class="p-2 text-danger">
+                    <div *ngIf="name.errors.required">
+                        Name can not be empty.
+                    </div>
+                    <div *ngIf="name.errors.minlength">
+                        Name must have at least 2 characters.
+                    </div>
+                    <div *ngIf="name.errors.pattern">
+                        Name should start with capital letter.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname</label>
+                <input type="text" class="form-control input-underline input-lg" placeholder="Surname" id="surname" name="surname" [(ngModel)]="account.surname"
+                    #surname="ngModel" required minlength="2" pattern="^[A-Z].*" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !name.valid }">
+
+                <div *ngIf="userDetailsForm.submitted && surname.invalid" class="p-2 text-danger">
+                    <div *ngIf="surname.errors.required">
+                        Surname can not be empty.
+                    </div>
+                    <div *ngIf="surname.errors.minlength">
+                        Surname must have at least 2 characters.
+                    </div>
+                    <div *ngIf="surname.errors.pattern">
+                        Surname should start with capital letter.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control input-underline input-lg" placeholder="Password" id="password" name="password"
+                    [(ngModel)]="account.password" #password="ngModel" [required]="createAccount" minlength="8" pattern="[^\s]+"
+                    maxlength="16" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !password.valid }">
+
+                <div *ngIf="userDetailsForm.submitted && password.invalid" class="p-2 text-danger">
+                    <div *ngIf="password.errors.required">
+                        Password can not be empty.
+                    </div>
+                    <div *ngIf="password.errors.minlength || password.errors.maxlength">
+                        Password must have between 8 and 16 characters.
+                    </div>
+                    <div *ngIf="password.errors.pattern">
+                        Password cannot contain whitespaces.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm password</label>
+                <input type="password" class="form-control input-underline input-lg" placeholder="Repeat password" id="confirmPassword" name="confirmPassword"
+                    [(ngModel)]="confirm" #confirmPassword="ngModel" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && checkIfPasswordsMatch() }">
+
+                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && createAccount" class="p-2 text-danger">
+                    Passwords do not match.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roles1">Roles:</label>
+                <select multiple class="form-control select-picker" id="roles1" name="roles1" [(ngModel)]="account.roles">
+                    <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+                </select>
+            </div>
+
+            <div class="form-group float-right">
+                <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -17,7 +17,11 @@
   <div class="row">
     <div class="col col-xl-12 col-lg-12">
       <div class="card">
-        <div class="card-header">Accounts list</div>
+        <div class="card-header">Accounts list
+
+          <button type="button" class="btn btn-sm btn-success float-right" (click)="createAccount()">+ Add</button>
+
+        </div>
         <div class="card-body table-responsive">
           <table class="table table-hover table-striped">
             <thead>
@@ -36,8 +40,13 @@
                 <td>{{user.login}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
-                <td><span *ngFor="let role of user.roles; let j=index">{{(j > 0 ? ", " + role + " ": " " + role) | lowercase}}</span></td>
-                <td><button (click)="modifyAccount(user.id)" class="btn btn-sm btn-success">Modify</button> <button (click)="deleteAccount(user.id)" class="btn btn-sm btn-danger">Delete</button></td>
+                <td>
+                  <span *ngFor="let role of user.roles; let j=index">{{(j > 0 ? ", " + role + " ": " " + role) | lowercase}}</span>
+                </td>
+                <td>
+                  <button (click)="modifyAccount(user)" class="btn btn-sm btn-success">Modify</button>
+                  <button (click)="deleteAccount(user)" class="btn btn-sm btn-danger">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>
