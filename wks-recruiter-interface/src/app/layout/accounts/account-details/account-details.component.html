@@ -5,13 +5,12 @@
     </button>
 </div>
 <div class="modal-body">
-    <form name="userDetailsForm" (ngSubmit)="userDetailsForm.form.valid && submit()" #userDetailsForm="ngForm"
-        novalidate>
+    <form name="userDetailsForm" (ngSubmit)="userDetailsForm.form.valid && submit()" #userDetailsForm="ngForm" novalidate>
         <div class="form-content">
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.login" name="email" placeholder="Email"
-                    [readonly]="!createAccount" required id="email" #email="ngModel" pattern="^[A-Za-z].*@[A-Za-z].*$" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !name.valid }">
+                    [readonly]="!createAccount" required id="email" #email="ngModel" pattern="^[A-Za-z].*@[A-Za-z].*$" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !email.valid }">
                 <div *ngIf="userDetailsForm.submitted && email.invalid" class="p-2 text-danger">
                     Email address must be well-formed.
                 </div>
@@ -35,7 +34,7 @@
             <div class="form-group">
                 <label for="surname">Surname</label>
                 <input type="text" class="form-control input-underline input-lg" placeholder="Surname" id="surname" name="surname" [(ngModel)]="account.surname"
-                    #surname="ngModel" required minlength="2" pattern="^[A-Z].*" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !name.valid }">
+                    #surname="ngModel" required minlength="2" pattern="^[A-Z].*" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && !surname.valid }">
 
                 <div *ngIf="userDetailsForm.submitted && surname.invalid" class="p-2 text-danger">
                     <div *ngIf="surname.errors.required">
@@ -70,9 +69,11 @@
             <div class="form-group">
                 <label for="confirmPassword">Confirm password</label>
                 <input type="password" class="form-control input-underline input-lg" placeholder="Repeat password" id="confirmPassword" name="confirmPassword"
-                    [(ngModel)]="confirm" #confirmPassword="ngModel" [ngClass]="{ 'border border-danger': userDetailsForm.submitted && checkIfPasswordsMatch() }">
+                    [(ngModel)]="confirm" #confirmPassword="ngModel" 
+                    [ngClass]="{ 'border border-danger': userDetailsForm.submitted && checkIfPasswordsMatch() && password.valid}">
 
-                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && createAccount" class="p-2 text-danger">
+                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && password.valid"
+                    class="p-2 text-danger">
                     Passwords do not match.
                 </div>
             </div>
