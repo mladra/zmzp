@@ -96,6 +96,10 @@ public class WKSRecruiterException extends Exception implements Serializable {
         return createException("ACCOUNT_NOT_FOUND", "Account with such login does not exist.");
     }
 
+    public static WKSRecruiterException createTestNotFoundException() {
+        return createException("TEST_NOT_FOUND", "Test with such name does not exist.");
+    }
+
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();
