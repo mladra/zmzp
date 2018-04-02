@@ -41,6 +41,15 @@ public class AccountController {
         }
     }
 
+    @RequestMapping(value = "delete/{login}", method = RequestMethod.PUT)
+    public ResponseEntity deleteAccount(@PathVariable String login) {
+        try {
+            return ResponseEntity.ok(accountService.deleteAccount(login));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        }
+    }
+
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public ResponseEntity editAccount(@RequestBody Account account) {
         try {

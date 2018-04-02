@@ -10,5 +10,7 @@ public interface AccountService {
 
     Account editRoles(String login, Collection<String> roles) throws WKSRecruiterException;
 
+    Account deleteAccount(String login) throws WKSRecruiterException;
+
     Account editAccount(Account account) throws WKSRecruiterException;
 }
