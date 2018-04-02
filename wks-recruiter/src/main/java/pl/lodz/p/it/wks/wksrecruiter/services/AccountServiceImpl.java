@@ -104,7 +104,7 @@ public class AccountServiceImpl implements AccountService {
         if (accountToEdit.isPresent()) {
             accountToEdit.get().setName(account.getName());
             accountToEdit.get().setSurname(account.getSurname());
-            if (account.getPassword() != null) {
+            if (account.getPassword() != null && !account.getPassword().isEmpty()) {
                 validatePassword(account.getPassword());
                 accountToEdit.get().setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             }
