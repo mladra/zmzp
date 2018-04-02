@@ -27,26 +27,60 @@ export class AccountsListComponent implements OnInit {
   ngOnInit() {
     this.currentUserService.getCurrentUser()
             .subscribe(x => this.current = x);
+    this.getAllUsers();
+  }
+
+  createAccount() {
+    const modalRef = this.modalService.open(AccountDetilsComponent);
+    modalRef.result.then(
+      d => {
+        console.log(d);
+        this.getAllUsers();
+    },
+      error => {
+        console.log(error);
+    });
+    modalRef.componentInstance.name = 'Create account';
+    const newAccount = new Account();
+    newAccount.roles = new Array<string>();
+    modalRef.componentInstance.setAccount(newAccount, true);
+  }
+
+  modifyAccount(account) {
+    const modalRef = this.modalService.open(AccountDetilsComponent);
+    modalRef.result.then(
+      data => {
+        console.log(data);
+        this.getAllUsers();
+    },
+      error => {
+        console.log(error);
+    });
+    modalRef.componentInstance.name = 'Modify account';
+    modalRef.componentInstance.setAccount(account, false);
+  }
+
+  deleteAccount(login: String) {
+    this.accountsService.deleteAccount(login).subscribe(
+      response => {
+        this.alertsService.addAlert('success', 'Successfully deleted account with id ${login}');
+      },
+      error => {
+        this.alertsService.addAlert('danger', 'Error occurred during deleting user.');
+      }
+    );
+  }
+
+  getAllUsers() {
     this.accountsService.getAll().subscribe(
       data => {
-        let userString = JSON.stringify(data.body);
+        const userString = JSON.stringify(data.body);
         this.users = JSON.parse(userString);
       },
       error => {
         console.log(error);
       }
-    )
-  }
-
-  modifyAccount(account) {
-    const modalRef = this.modalService.open(AccountDetilsComponent);
-    modalRef.componentInstance.name = 'User details';
-    modalRef.componentInstance.account = account;
-    modalRef.componentInstance.createAccount = false;
-  }
-
-  deleteAccount(id: String) {
-    //TODO: to implement
+    );
   }
 
 }

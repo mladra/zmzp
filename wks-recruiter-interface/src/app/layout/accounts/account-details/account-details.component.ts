@@ -3,6 +3,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Account } from '../../../entities/account';
 import { AccountsService } from '../../../shared/services';
 import { AlertsService } from '../../../services/alerts.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-account-details-component',
@@ -12,13 +13,15 @@ export class AccountDetilsComponent implements OnInit {
 
     public account: Account;
     public createAccount: boolean;
+    private title: string;
     private roles: Array<String>;
     private confirm: string;
 
     constructor(
         public activeModal: NgbActiveModal,
         private accountService: AccountsService,
-        private alertsService: AlertsService) { }
+        private alertsService: AlertsService,
+        private router: Router) { }
 
     ngOnInit(): void {
         this.roles = ['Moderator', 'Editor', 'Candidate'];
@@ -53,5 +56,15 @@ export class AccountDetilsComponent implements OnInit {
 
     checkIfPasswordsMatch() {
         return this.account.password !== this.confirm;
+    }
+
+    setAccount(account, createAccount) {
+        this.account = account;
+        this.createAccount = createAccount;
+        if (this.createAccount) {
+            this.title = 'Create account';
+        } else {
+            this.title = this.account.login + ' details';
+        }
     }
 }

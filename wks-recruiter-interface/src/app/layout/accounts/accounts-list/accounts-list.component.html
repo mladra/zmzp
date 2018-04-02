@@ -19,7 +19,7 @@
       <div class="card">
         <div class="card-header">Accounts list
 
-          <button type="button">Add</button>
+          <button type="button" class="btn btn-sm btn-success float-right" (click)="createAccount()">+ Add</button>
 
         </div>
         <div class="card-body table-responsive">
@@ -45,7 +45,7 @@
                 </td>
                 <td>
                   <button (click)="modifyAccount(user)" class="btn btn-sm btn-success">Modify</button>
-                  <button (click)="deleteAccount(user.id)" class="btn btn-sm btn-danger">Delete</button>
+                  <button (click)="deleteAccount(user.login)" class="btn btn-sm btn-danger">Delete</button>
                 </td>
               </tr>
             </tbody>

@@ -1,23 +1,26 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ account.login }} details</h4>
+    <h4 class="modal-title">{{ title }}</h4>
     <button type="button" class="close" aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-    <form name="userDetailsForm">
+    <form name="userDetailsForm" (ngSubmit)="userDetailsForm.form.valid && submit()" #userDetailsForm="ngForm" novalidate>
         <div class="form-content">
-            <label for="email">Email</label>
-            <div class="form-group">
-                <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.login" [ngModelOptions]="{standalone: true}"
-                    placeholder="Email" [readonly]="!createAccount" required id="email">
+            <div class="form-group" [ngClass]="{ 'has-error': userDetailsForm.submitted && email.invalid }">
+                <label for="email">Email</label>
+                <input type="text" class="form-control input-underline input-lg" [(ngModel)]="account.login" name="email" placeholder="Email"
+                    [readonly]="!createAccount" required id="email" #email="ngModel">
+                <div *ngIf="userDetailsForm.submitted && email.invalid" class="alert alert-danger">
+                    Invalid email.
+                </div>
             </div>
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="account.name"
                     #name="ngModel" required minlength="2" pattern="^[A-Z].*">
 
-                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && name.invalid" class="alert alert-danger">
                     <div *ngIf="name.errors.required">
                         Name can not be empty.
                     </div>
@@ -34,7 +37,7 @@
                 <input type="text" class="form-control input-underline input-lg" placeholder="Surname" id="surname" name="surname" [(ngModel)]="account.surname"
                     #surname="ngModel" required minlength="2" pattern="^[A-Z].*">
 
-                <div *ngIf="surname.invalid && (surname.dirty || surname.touched)" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && surname.invalid" class="alert alert-danger">
                     <div *ngIf="surname.errors.required">
                         Surname can not be empty.
                     </div>
@@ -49,9 +52,9 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control input-underline input-lg" placeholder="Password" id="password" name="password"
-                    [(ngModel)]="account.password" #password="ngModel" required minlength="8">
+                    [(ngModel)]="account.password" #password="ngModel" [required]="createAccount" minlength="8">
 
-                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && password.invalid" class="alert alert-danger">
                     <div *ngIf="password.errors.required">
                         Password can not be empty.
                     </div>
@@ -63,9 +66,9 @@
             <div class="form-group">
                 <label for="confirmPassword">Confirm password</label>
                 <input type="password" class="form-control input-underline input-lg" placeholder="Repeat password" id="confirmPassword" name="confirmPassword"
-                    [(ngModel)]="confirm" #confirmPassword="ngModel" required minlength="8">
+                    [(ngModel)]="confirm" #confirmPassword="ngModel" [required]="createAccount" minlength="8">
 
-                <div *ngIf="password.valid && (confirmPassword.dirty || confirmPassword.touched) && checkIfPasswordsMatch()" class="alert alert-danger">
+                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && createAccount" class="alert alert-danger">
                     Passwords do not match.
                 </div>
             </div>
@@ -80,14 +83,15 @@
 
             <div class="form-group">
                 <label for="roles1">Roles:</label>
-                <select multiple class="form-control" id="roles1">
-                    <option *ngFor="let role of roles">{{ role }}</option>
+                <select multiple class="form-control" id="roles1" name="roles1" [(ngModel)]="account.roles">
+                    <option *ngFor="let role of roles" [selected]="account.roles.includes(role)" [value]="role">{{ role }}</option>
                 </select>
+            </div>
+
+            <div class="form-group float-right">
+                <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
             </div>
         </div>
     </form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-sm btn-success" (click)="submit()">Submit</button>
-    <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
 </div>

@@ -22,6 +22,8 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.InvalidTokensRepository;
 
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Arrays;
+
 import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.LOGIN_URL;
 import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.LOGOUT_URL;
 import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.REGISTER_URL;
@@ -69,8 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE"));
+        configuration.setMaxAge(3600L);
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
         return source;
     }
 
