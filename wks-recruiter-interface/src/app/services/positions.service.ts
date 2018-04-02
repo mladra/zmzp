@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { of } from "rxjs/observable/of";
 import { Position } from "../entities/position";
-import { POSITIONS } from "../entities/mock_positions";
+
 
 @Injectable()
 export class PositionsService {
 
-  constructor() { }
+    rootUrl: string; 
 
-  getPositions(): Observable<Position[]> {
-    return of(POSITIONS);
-  }
+    constructor(private http: HttpClient) {
+        this.rootUrl = 'http://localhost:8080/positions';
+    }
+
+    addPosition(position: Position){
+        return this.http.post(this.rootUrl, position, {observe: 'response'});
+    }
+
+    modifyPosition(name: string, value: boolean){
+        return this.http.put(this.rootUrl+'/'+name, value, {observe: 'response'});
+    }
 
 }
