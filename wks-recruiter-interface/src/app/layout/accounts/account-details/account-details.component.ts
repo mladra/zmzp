@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-account-details-component',
     templateUrl: './account-details.component.html',
-    styles: ['account-details.component.scss'],
+    styles: ['./account-details.component.scss'],
 })
 export class AccountDetilsComponent implements OnInit {
 

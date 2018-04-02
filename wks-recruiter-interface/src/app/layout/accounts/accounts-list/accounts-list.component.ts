@@ -54,7 +54,8 @@ export class AccountsListComponent implements OnInit {
     modalRef.componentInstance.setAccount(account, false);
     modalRef.componentInstance.emiter.subscribe(
       modifiedAccount => {
-        console.log(modifiedAccount);
+        const index = this.users.findIndex((a: Account) => a.login === modifiedAccount.login);
+        this.users[index] = modifiedAccount;
       }
     );
   }
