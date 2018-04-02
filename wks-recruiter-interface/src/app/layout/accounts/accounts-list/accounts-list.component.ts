@@ -43,6 +43,8 @@ export class AccountsListComponent implements OnInit {
     modalRef.componentInstance.setAccount(newAccount, true);
     modalRef.componentInstance.emiter.subscribe(
       account => {
+        const userToAdd = account;
+        userToAdd.password = null;
         this.users.push(account);
       }
     );
@@ -56,6 +58,7 @@ export class AccountsListComponent implements OnInit {
       modifiedAccount => {
         const index = this.users.findIndex((a: Account) => a.login === modifiedAccount.login);
         this.users[index] = modifiedAccount;
+        this.users[index].password = null;
       }
     );
   }
