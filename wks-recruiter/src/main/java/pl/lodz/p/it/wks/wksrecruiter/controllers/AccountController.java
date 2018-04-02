@@ -21,6 +21,12 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(accountService.getAll());
+    }
+
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createAccount(@RequestBody Account account) {
         try {
@@ -50,6 +56,7 @@ public class AccountController {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public ResponseEntity editAccount(@RequestBody Account account) {
         try {

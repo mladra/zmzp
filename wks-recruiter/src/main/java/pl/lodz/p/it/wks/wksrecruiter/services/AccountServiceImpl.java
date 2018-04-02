@@ -11,8 +11,10 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -69,6 +71,7 @@ public class AccountServiceImpl implements AccountService {
         try {
             validateAccount(account, false).setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             account.setSolvedTests(new ArrayList<>());
+            account.setEnabled(Boolean.TRUE);
             accountsRepository.save(account);
             account.setPassword(null);
             return account;
@@ -101,7 +104,7 @@ public class AccountServiceImpl implements AccountService {
         if (accountToEdit.isPresent()) {
             accountToEdit.get().setName(account.getName());
             accountToEdit.get().setSurname(account.getSurname());
-            if (account.getPassword() != null) {
+            if (account.getPassword() != null && !account.getPassword().isEmpty()) {
                 validatePassword(account.getPassword());
                 accountToEdit.get().setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
             }
@@ -124,5 +127,13 @@ public class AccountServiceImpl implements AccountService {
         } else {
             throw new WKSRecruiterException(new WKSRecruiterException.Error("ACCOUNT_NOT_FOUND", "Account with such login does not exist."));
         }
+    }
+
+    @Override
+    public List<Account> getAll() {
+        List<Account> accounts = accountsRepository.findAll();
+        accounts = accounts.stream().filter(Account::getEnabled).collect(Collectors.toList());
+        accounts.forEach(account -> account.setPassword(null));
+        return accounts;
     }
 }
