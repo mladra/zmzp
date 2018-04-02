@@ -10,7 +10,9 @@ import { FormsModule, NgForm } from "@angular/forms";
 @NgModule({
   imports: [
     CommonModule,
-    PositionsRoutingModule
+    PositionsRoutingModule,
+    CommonModule,
+    FormsModule
   ],
   declarations: [PositionsComponent, PositionsListComponent, PositionsCreateComponent],
   entryComponents: [PositionsCreateComponent]

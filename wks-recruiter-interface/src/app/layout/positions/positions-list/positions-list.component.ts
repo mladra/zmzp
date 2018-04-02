@@ -39,12 +39,12 @@ export class PositionsListComponent implements OnInit {
   }
 
   modifyPosition(position: Position){
-    if(position.isActive){
-      position.isActive = false;
+    if(position.active){
+      position.active = false;
     } else {
-      position.isActive = true;
+      position.active = true;
     }
-    this.positionService.modifyPosition(position.name, position.isActive).subscribe(
+    this.positionService.modifyPosition(position.name, position.active).subscribe(
       response => {
         this.alertsService.addAlert('success', 'Successfully toggled activity of position '+position.name);
       },
@@ -54,15 +54,15 @@ export class PositionsListComponent implements OnInit {
   }
 
   getAllPositions(){
-    // this.positionService.getAll().subscribe(
-    //   data => {
-    //     const positionString = JSON.stringify(data.body);
-    //     this.positions = JSON.parse(positionString);
-    //   },
-    //   error => {
-    //     console.log(error);
-    //     this.alertsService.addAlert('danger', 'Error occured while loading positions');
-    //   });
+    this.positionService.getAll().subscribe(
+      data => {
+        const positionString = JSON.stringify(data.body);
+        this.positions = JSON.parse(positionString);
+      },
+      error => {
+        console.log(error);
+        this.alertsService.addAlert('danger', 'Error occured while loading positions');
+      });
   }
 
 }

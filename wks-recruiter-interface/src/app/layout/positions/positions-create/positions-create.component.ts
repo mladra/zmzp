@@ -21,6 +21,8 @@ export class PositionsCreateComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+    this.position = new Position();
+    this.position.active = false;
   }
 
   close(){

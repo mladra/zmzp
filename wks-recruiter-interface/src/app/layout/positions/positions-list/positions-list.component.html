@@ -34,9 +34,8 @@
               <tr *ngFor="let position of positions; let i=index">
                 <td>{{i}}</td>
                 <td style="width:50%">{{position.name}}</td>
-                <td>{{position.isActive ? 'Active' : 'Inactive'}}</td>
-                <td><a (click)="toggleActive(position.id)" class="btn btn-sm btn-primary" title="Toggle activity"><i class="fa fa-power-off"></i></a> 
-                  <a (click)="removePosition(position.id)" class="btn btn-sm btn-danger" title="Remove position"><i class="fa fa-trash"></i></a></td>
+                <td>{{position.active ? 'Yes' : 'No'}}</td>
+                <td><a (click)="modifyPosition(position)" class="btn btn-sm btn-primary" title="Toggle activity"><i class="fa fa-power-off"></i></a> 
               </tr>
             </tbody>
           </table>
