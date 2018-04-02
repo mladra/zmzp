@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { Position } from "../entities/position";
+import { Position } from "../../entities/position";
 
 
 @Injectable()
@@ -13,7 +13,7 @@ export class PositionsService {
         this.rootUrl = 'http://localhost:8080/positions';
     }
 
-    addPosition(position: Position){
+    addPosition(position){
         return this.http.post(this.rootUrl, position, {observe: 'response'});
     }
 

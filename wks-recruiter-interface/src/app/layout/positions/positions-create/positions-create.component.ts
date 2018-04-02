@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Position } from "../../../entities/position";
-import { PositionsService } from "../../../services/positions.service";
+import { PositionsService } from "../../../shared/services/positions.service";
 import { AlertsService } from "../../../services/alerts.service";
 import { Router } from '@angular/router';
 

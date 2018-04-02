@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
 import { Position } from '../../../entities/position';
-import { PositionsService } from '../../../services/positions.service';
+import { PositionsService } from '../../../shared/services/positions.service';
 import { AlertsService } from '../../../services/alerts.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PositionsCreateComponent } from "../positions-create/positions-create.component";
@@ -44,9 +44,10 @@ export class PositionsListComponent implements OnInit {
     } else {
       position.active = true;
     }
+    alert("test");
     this.positionService.modifyPosition(position.name, position.active).subscribe(
       response => {
-        this.alertsService.addAlert('success', 'Successfully toggled activity of position '+position.name);
+        this.alertsService.addAlert('success', 'Successfully toggled activity of '+position.name+' position');
       },
       error => {
         this.alertsService.addAlert('darger', error.error);
