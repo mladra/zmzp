@@ -8,6 +8,7 @@ import { Position } from "../../entities/position";
 export class PositionsService {
 
     rootUrl: string; 
+    header: HttpHeaders;
 
     constructor(private http: HttpClient) {
         this.rootUrl = 'http://localhost:8080/positions';
@@ -18,7 +19,8 @@ export class PositionsService {
     }
 
     modifyPosition(name: string, value: boolean){
-        return this.http.put(this.rootUrl+'/'+name, value, {observe: 'response'});
+        this.header = new HttpHeaders({'Content-Type': 'application/json'});
+        return this.http.put(this.rootUrl+'/'+name, value, {observe: 'response', headers: this.header});
     }
 
     getAll(){
