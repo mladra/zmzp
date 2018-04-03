@@ -44,7 +44,6 @@ export class PositionsListComponent implements OnInit {
     } else {
       position.active = true;
     }
-    alert("test");
     this.positionService.modifyPosition(position.name, position.active).subscribe(
       response => {
         this.alertsService.addAlert('success', 'Successfully toggled activity of '+position.name+' position');
