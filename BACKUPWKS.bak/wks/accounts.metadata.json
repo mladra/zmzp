@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"wks.accounts"},{"v":2,"unique":true,"key":{"login":1},"name":"login","ns":"wks.accounts"}],"uuid":"85f3bdf8d3cf4193889cd51eed68b9bf"}
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"wks.accounts"},{"v":2,"unique":true,"key":{"login":1},"name":"login","ns":"wks.accounts"}],"uuid":"cd78a5c1ce494d308ada8057f8190408"}
