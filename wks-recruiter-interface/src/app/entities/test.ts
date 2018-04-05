@@ -1,5 +1,5 @@
 import { Account } from "./account";
-//import { Position } from "./position";
+import { Position } from "./position";
 
 export class Test{
     id: string;
@@ -7,6 +7,6 @@ export class Test{
     name: string;
     maxPoints: number;
     language: string;
-    //positions: Position[];
+    positions: Position[];
     //questions: QuestionInfo[];
 }

@@ -31,7 +31,17 @@
             </tr>
           </thead>
           <tbody>
-            
+            <tr *ngFor="let tests of tests; let i=index">
+              <td>{{i}}</td>
+              <td>{{test.name}}</td>
+              <td>
+                <span *ngFor="let position of positions; let j=index">{{(j>0 ? ", "+position : position) | lowercase}}</span>
+              </td>
+              <td>
+                <button (click)="addPositions()" class="btn btn-sm btn-success">Add positions</button>
+                <button (click)="removePositions()" class="btn btn-sm btn-danger">Remove positions</button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
