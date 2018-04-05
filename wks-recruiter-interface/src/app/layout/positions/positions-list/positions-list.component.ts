@@ -32,16 +32,6 @@ export class PositionsListComponent implements OnInit {
         this.getAllPositions();
       }
     )
-    // modalRef.result.then(
-    //   d => {
-    //     console.log(d);
-    //     console.log("outside modal");
-    //     this.getAllPositions();
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   }
-    // );
   }
 
   modifyPosition(position: Position){
