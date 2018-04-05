@@ -26,16 +26,22 @@ export class PositionsListComponent implements OnInit {
 
   addPosition(){
     const modalRef = this.modalService.open(PositionsCreateComponent);
-    modalRef.result.then(
-      d => {
-        console.log(d);
-        this.getAllPositions();
-      },
-      error => {
-        console.log(error);
-      }
-    );
     modalRef.componentInstance.name = 'Create position';
+    modalRef.componentInstance.emitter.subscribe(
+      emittedBoolean => {
+        this.getAllPositions();
+      }
+    )
+    // modalRef.result.then(
+    //   d => {
+    //     console.log(d);
+    //     console.log("outside modal");
+    //     this.getAllPositions();
+    //   },
+    //   error => {
+    //     console.log(error);
+    //   }
+    // );
   }
 
   modifyPosition(position: Position){

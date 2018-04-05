@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgbModal, NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Position } from "../../../entities/position";
 import { PositionsService } from "../../../shared/services/positions.service";
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
   templateUrl: './positions-create.component.html'
 })
 export class PositionsCreateComponent implements OnInit {
+
+  @Output() emitter: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
   public position: Position;
   public isActive: boolean;
@@ -34,6 +36,7 @@ export class PositionsCreateComponent implements OnInit {
     this.positionsService.addPosition(this.position).subscribe(
       response => {
         this.alertsService.addAlert('success', 'New position: '+this.position.name+' added successfully.');
+        this.emitter.emit(true);
       },
       error => {
         this.alertsService.addAlert('danger', error.error);
