@@ -1,3 +1,40 @@
-<p>
-  tests-list works!
-</p>
+<div [@routerTransition]>
+  <div class="row">
+    <div class="col">
+      <h2 class="page-header">
+        Tests
+      </h2>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <i class="fa fa-home"></i>
+          <a [routerLink]="['/home']">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <i class="fa fa-file"></i> Tests
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">Tests list</div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Test</th>
+              <th>Positions</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,7 @@ import { CurrentUserService } from './services/current-user.service';
 import { PositionsService } from './shared/services/positions.service';
 import { AuthenticationService, AccountsService } from './shared/services';
 import { TokenInterceptor, HttpResponseCodesInterceptor } from './shared/interceptors';
+import { TestsService } from './shared/services/tests.service';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -52,7 +53,8 @@ export function createTranslateLoader(http: HttpClient) {
             useClass: HttpResponseCodesInterceptor,
             multi: true
         },
-        AccountsService
+        AccountsService,
+        TestsService
     ],
     bootstrap: [AppComponent]
 })
