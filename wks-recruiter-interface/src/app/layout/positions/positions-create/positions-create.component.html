@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create position</h4>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="positionCreationForm" (ngSubmit)="positionCreationForm.form.valid && submit()" #positionCreationForm="ngForm" novalidate>
+    <div class="form-group">
+      <label for="positionName">Name</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="position.name" #name="ngModel" required minlength="4" pattern="^[A-Z].*">
+
+      <div *ngIf="positionCreationForm.submitted && name.invalid" class="alert alert-danger">
+          <div *ngIf="name.errors.required">
+            Position name can not be empty.
+          </div>
+          <div *ngIf="name.errors.minlength">
+            Position name must have at least 4 characters.
+          </div>
+          <div *ngIf="name.errors.pattern">
+            Position name should start with capital letter.
+          </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="checkbox">
+        <label>Is active</label>
+        <input type="checkbox" [checked]="position.active" (change)="position.active = !position.active">  
+      </div>
+    </div>
+    <div class="form-group float-right">
+      <button type="submit" class="btn btn-sm btn-success">Submit</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+    </div>
+  </form>
+</div>

@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgbDropdownModule, NgbAlertModule, NgbModal, NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountsModule } from './accounts/accounts.module';
 import { TestsModule } from './tests/tests.module';
+import { PositionsModule } from './positions/positions.module';
 
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout.component';
@@ -17,6 +18,7 @@ import { AlertsService } from '../services/alerts.service';
         LayoutRoutingModule,
         TranslateModule,
         AccountsModule,
+        PositionsModule,
         NgbAlertModule.forRoot(),
         NgbDropdownModule.forRoot(),
         NgbModule.forRoot(),
