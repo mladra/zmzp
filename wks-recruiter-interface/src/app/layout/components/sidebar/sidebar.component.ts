@@ -28,6 +28,12 @@ export class SidebarComponent implements OnInit {
             icon: "users",
             name: "Accounts",
             rolesAllowed: ["moderator"]
+        },
+        {
+            link: "/positions",
+            icon: "id-card",
+            name: "Positions",
+            rolesAllowed: ["moderator"]
         }
     ];
     public userMenuItems: MenuItem[];

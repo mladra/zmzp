@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { CurrentUserService } from './services/current-user.service';
+import { PositionsService } from './shared/services/positions.service';
 import { AuthenticationService, AccountsService } from './shared/services';
 import { TokenInterceptor, HttpResponseCodesInterceptor } from './shared/interceptors';
 
@@ -39,6 +40,7 @@ export function createTranslateLoader(http: HttpClient) {
     providers: [
         AuthGuard,
         CurrentUserService,
+        PositionsService,
         AuthenticationService,
         {
             provide: HTTP_INTERCEPTORS,
