@@ -41,4 +41,9 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(ex).toString());
         }
     }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getTests() {
+        return ResponseEntity.ok(testService.getTests());
+    }
 }

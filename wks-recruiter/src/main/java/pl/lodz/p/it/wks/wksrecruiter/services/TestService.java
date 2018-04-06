@@ -9,4 +9,6 @@ public interface TestService {
     Test addPositionsToTest(Collection<String> positionNames, String testId) throws WKSRecruiterException;
 
     Test removePositionsFromTest(Collection<String> positionNames, String testId) throws WKSRecruiterException;
+
+    Iterable<Test> getTests();
 }

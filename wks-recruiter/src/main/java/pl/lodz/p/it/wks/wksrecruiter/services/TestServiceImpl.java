@@ -54,4 +54,9 @@ public class TestServiceImpl implements TestService {
             throw WKSRecruiterException.createTestNotFoundException();
         }
     }
+
+    @Override
+    public Iterable<Test> getTests() {
+        return testsRepository.findAll();
+    }
 }
