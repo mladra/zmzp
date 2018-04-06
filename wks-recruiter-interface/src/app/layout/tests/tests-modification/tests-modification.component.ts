@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TestsService } from '../../../shared/services/tests.service';
 import { AlertsService } from '../../../services/alerts.service';
 import { Router } from '@angular/router';
+import { Position } from '../../../entities/position';
 
 @Component({
   selector: 'app-tests-modification',
@@ -12,11 +13,11 @@ import { Router } from '@angular/router';
 })
 export class TestsModificationComponent implements OnInit {
 
-  @Output() emitter: EventEmitter<String[]> = new EventEmitter<String[]>();
+  @Output() emitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public test: Test;
-  public potentialPositions: String[];
-  public selectedPositions: String[];
+  public potentialPositions: Array<String>;
+  public selectedPositions: Array<String>;
   public addingPositions: boolean;
   private title: string
 
@@ -36,10 +37,11 @@ export class TestsModificationComponent implements OnInit {
   submit(){
     this.activeModal.close();
     if(this.addingPositions){
+      console.log(this.selectedPositions);
       this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
         response => {
           this.alertsService.addAlert('success', 'Successfully added positions to test: '+ this.test.name);
-          this.emitter.emit(this.selectedPositions);
+          this.emitter.emit(true);
         },
         error => {
           this.alertsService.addAlert('danger', error.error);
@@ -49,7 +51,7 @@ export class TestsModificationComponent implements OnInit {
       this.testsService.removePositions(this.test.id, this.selectedPositions).subscribe(
         response => {
           this.alertsService.addAlert('success', 'Successfully removed positions from test: '+this.test.name);
-          this.emitter.emit(this.selectedPositions);
+          this.emitter.emit(true);
         },
         error => {
           this.alertsService.addAlert('danger', error.error);

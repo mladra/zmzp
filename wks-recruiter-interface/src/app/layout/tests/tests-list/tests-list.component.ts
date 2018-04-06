@@ -6,6 +6,7 @@ import { AlertsService } from '../../../services/alerts.service';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
+import { Position } from '../../../entities/position';
 
 
 @Component({
@@ -16,61 +17,78 @@ import { TestsModificationComponent } from '../tests-modification/tests-modifica
 })
 export class TestsListComponent implements OnInit {
 
-  public tests: Test[];
-  private allPositions;
-  private testPositions;
-  private rolesToDelete;
-  private rolesToAdd;
+  public tests: Array<Test>;
+  private allPositions: Array<Position>;
+  private allPositionNames: Array<String>;
+  private testPositionNames: Array<String>;
+  private positionsToAdd: Array<String>;
 
   constructor(private alertsService: AlertsService,
               private testsService: TestsService,
               private positionsService: PositionsService,
               private modalService: NgbModal
-            ) {
-              //this.rolesToDelete = this.allRoles && this.testRoles;
-              //console.log(this.rolesToDelete);
-              //this.rolesToAdd = this.allRoles.filter(element => !this.testRoles.includes(element));
-              //console.log(this.rolesToAdd);
-             }
+            ) { }
 
   ngOnInit() {
     this.getAllTests();
-    this.allPositions = this.positionsService.getAll();
+    this.positionsService.getAll().subscribe(
+      data => {
+        const positionString = JSON.stringify(data.body);
+        this.allPositions = JSON.parse(positionString);
+        var that = this;
+        this.allPositionNames = [];
+        this.allPositions.forEach(x=> that.allPositionNames.push(x.name));
+        console.log(this.allPositionNames);
+      },
+      error => {
+        console.log(error);
+        this.alertsService.addAlert('danger', 'Error occured while loading positions');
+      });
   }
 
   addPositions(test: Test){
-    this.testPositions = test.positions;
-    this.rolesToAdd = this.allPositions.filter(element => !this.testPositions.includes(element));
+    var that = this;
+    that.testPositionNames = [];
+    test.positions.forEach(x => {that.testPositionNames.push(x.name)});
+    this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
+    console.log(this.positionsToAdd);
     const modalRef = this.modalService.open(TestsModificationComponent);
     modalRef.componentInstance.name = 'Add positions to test';
     //true means we are adding roles
-    modalRef.componentInstance.setTestAndPositions(test, this.rolesToAdd, true);
+    modalRef.componentInstance.setTestAndPositions(test, this.positionsToAdd, true);
     modalRef.componentInstance.emitter.subscribe(
-      addedPositions => {
-        test.positions.concat(addedPositions);
-        const index = this.tests.findIndex((t: Test) => t.id === test.id);
-        this.tests[index] = test;
+      refresh => {
+        this.getAllTests();
       }
     );
   }
 
   removePositions(test: Test){
-    this.testPositions = test.positions;
+    var that = this;
+    that.testPositionNames = [];
+    test.positions.forEach(x => {that.testPositionNames.push(x.name)});
     const modalRef = this.modalService.open(TestsModificationComponent);
     modalRef.componentInstance.name = "Remove positions from test";
     //false means we are removing roles
-    modalRef.componentInstance.setTestAndPositions(test, this.testPositions, false);
+    modalRef.componentInstance.setTestAndPositions(test, this.testPositionNames, false);
     modalRef.componentInstance.emitter.subscribe(
-      removedPositions => {
-        test.positions = test.positions.filter(element => !removedPositions.includes(element));
-        const index = this.tests.findIndex((t: Test) => t.id === test.id);
-        this.tests[index] = test;
+      refresh => {
+        this.getAllTests();
       }
     );
   }
   
   getAllTests(){
-    //TODO implement when endpoint is ready
+    this.testsService.getAll().subscribe(
+      data => {
+        const testsString = JSON.stringify(data.body);
+        this.tests = JSON.parse(testsString);
+      },
+      error => {
+        console.log(error);
+        this.alertsService.addAlert('danger', 'Error occurred while loading tests.');
+      }
+    );
   }
 
 }

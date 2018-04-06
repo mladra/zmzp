@@ -15,35 +15,35 @@
       </ol>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <div class="card-header">Tests list</div>
-      <div class="card-body table-responsive">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Test</th>
-              <th>Positions</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let tests of tests; let i=index">
-              <td>{{i}}</td>
-              <td>{{test.name}}</td>
-              <td>
-                <span *ngFor="let position of positions; let j=index">{{(j>0 ? ", "+position : position) | lowercase}}</span>
-              </td>
-              <td>
-                <button (click)="addPositions()" class="btn btn-sm btn-success">Add positions</button>
-                <button (click)="removePositions()" class="btn btn-sm btn-danger">Remove positions</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">Tests list</div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Test</th>
+                <th>Positions</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let test of tests; let i=index">
+                <td>{{i}}</td>
+                <td style="width: 25%">{{test.name}}</td>
+                <td style="width:50%">
+                  <span *ngFor="let position of test.positions; let j=index">{{(j>0 ? ", "+position.name : " "+position.name) | lowercase}}</span>
+                </td>
+                <td>
+                  <button (click)="addPositions(test)" class="btn btn-sm btn-success">Add positions</button>
+                  <button (click)="removePositions(test)" class="btn btn-sm btn-danger">Remove positions</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

@@ -19,6 +19,9 @@ export class TestsService {
     return this.http.put(this.rootUrl+"/removePosition/"+testId, positions, {observe: 'response'});
   }
 
+  getAll(){
+    return this.http.get(this.rootUrl, {observe: 'response'});
+  }
 
 
 }
