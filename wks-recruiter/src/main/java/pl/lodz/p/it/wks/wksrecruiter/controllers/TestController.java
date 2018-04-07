@@ -42,6 +42,17 @@ public class TestController {
         }
     }
 
+    @RequestMapping(value = "/{testId}", method = RequestMethod.DELETE)
+    public ResponseEntity removeTest(@PathVariable String testId) {
+        try {
+            return ResponseEntity.ok(testService.deleteTest(testId));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        } catch (Throwable ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(ex).toString());
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getTests() {
         return ResponseEntity.ok(testService.getTests());

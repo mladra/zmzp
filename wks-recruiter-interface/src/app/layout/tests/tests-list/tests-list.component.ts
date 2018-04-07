@@ -24,10 +24,10 @@ export class TestsListComponent implements OnInit {
   private positionsToAdd: Array<String>;
 
   constructor(private alertsService: AlertsService,
-              private testsService: TestsService,
-              private positionsService: PositionsService,
-              private modalService: NgbModal
-            ) { }
+    private testsService: TestsService,
+    private positionsService: PositionsService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.getAllTests();
@@ -37,7 +37,7 @@ export class TestsListComponent implements OnInit {
         this.allPositions = JSON.parse(positionString);
         var that = this;
         this.allPositionNames = [];
-        this.allPositions.forEach(x=> that.allPositionNames.push(x.name));
+        this.allPositions.forEach(x => that.allPositionNames.push(x.name));
         console.log(this.allPositionNames);
       },
       error => {
@@ -46,39 +46,56 @@ export class TestsListComponent implements OnInit {
       });
   }
 
-  addPositions(test: Test){
-    var that = this;
-    that.testPositionNames = [];
-    test.positions.forEach(x => {that.testPositionNames.push(x.name)});
-    this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
-    console.log(this.positionsToAdd);
-    const modalRef = this.modalService.open(TestsModificationComponent);
-    modalRef.componentInstance.name = 'Add positions to test';
-    //true means we are adding roles
-    modalRef.componentInstance.setTestAndPositions(test, this.positionsToAdd, true);
-    modalRef.componentInstance.emitter.subscribe(
-      refresh => {
-        this.getAllTests();
-      }
-    );
+  addPositions(test: Test) {
+    if (test.active === true) {
+      var that = this;
+      that.testPositionNames = [];
+      test.positions.forEach(x => { that.testPositionNames.push(x.name) });
+      this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
+      console.log(this.positionsToAdd);
+      const modalRef = this.modalService.open(TestsModificationComponent);
+      modalRef.componentInstance.name = 'Add positions to test';
+      //true means we are adding roles
+      modalRef.componentInstance.setTestAndPositions(test, this.positionsToAdd, true);
+      modalRef.componentInstance.emitter.subscribe(
+        refresh => {
+          this.getAllTests();
+        }
+      );
+    }
   }
 
-  removePositions(test: Test){
-    var that = this;
-    that.testPositionNames = [];
-    test.positions.forEach(x => {that.testPositionNames.push(x.name)});
-    const modalRef = this.modalService.open(TestsModificationComponent);
-    modalRef.componentInstance.name = "Remove positions from test";
-    //false means we are removing roles
-    modalRef.componentInstance.setTestAndPositions(test, this.testPositionNames, false);
-    modalRef.componentInstance.emitter.subscribe(
-      refresh => {
-        this.getAllTests();
-      }
-    );
+  removePositions(test: Test) {
+    if (test.active === true) {
+      var that = this;
+      that.testPositionNames = [];
+      test.positions.forEach(x => { that.testPositionNames.push(x.name) });
+      const modalRef = this.modalService.open(TestsModificationComponent);
+      modalRef.componentInstance.name = "Remove positions from test";
+      //false means we are removing roles
+      modalRef.componentInstance.setTestAndPositions(test, this.testPositionNames, false);
+      modalRef.componentInstance.emitter.subscribe(
+        refresh => {
+          this.getAllTests();
+        }
+      );
+    }
   }
-  
-  getAllTests(){
+
+  deleteTest(test: Test) {
+    if (test.active === true) {
+      this.testsService.deleteTest(test.id).subscribe(
+        response => {
+          this.alertsService.addAlert('success', 'Successfully removed '+test.name+' test');
+          this.getAllTests();
+        },
+        error => {
+          this.alertsService.addAlert('danger', error.error);
+        });
+    }
+  }
+
+  getAllTests() {
     this.testsService.getAll().subscribe(
       data => {
         const testsString = JSON.stringify(data.body);

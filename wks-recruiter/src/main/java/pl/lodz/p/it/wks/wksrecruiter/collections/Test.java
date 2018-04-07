@@ -15,6 +15,7 @@ public class Test {
     private String name;
     private int maxPoints;
     private String language;
+    private boolean isActive;
     private Collection<QuestionInfo> questions;
     private Collection<Position> positions;
 
@@ -31,22 +32,24 @@ public class Test {
     }
     public Test(){}
 
-    public Test(String id, Account author, String name, int maxPoints, String language, Collection<QuestionInfo> questions, Collection<Position> positions) {
+    public Test(String id, Account author, String name, int maxPoints, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
         this.id = id;
         this.author = author;
         this.name = name;
         this.maxPoints = maxPoints;
         this.language = language;
+        this.isActive = isActive;
         this.questions = questions;
         this.positions = positions;
     }
 
-    public Test(Account author, String name, int maxPoints, String language, Collection<QuestionInfo> questions, Collection<Position> positions) {
+    public Test(Account author, String name, int maxPoints, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
 
         this.author = author;
         this.name = name;
         this.maxPoints = maxPoints;
         this.language = language;
+        this.isActive = isActive;
         this.questions = questions;
         this.positions = positions;
     }
@@ -65,4 +68,6 @@ public class Test {
     public void setPositions(Collection<Position> positions) { this.positions = positions; }
     public Account getAuthor() { return author; }
     public void setAuthor(Account author) { this.author = author; }
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
 }
