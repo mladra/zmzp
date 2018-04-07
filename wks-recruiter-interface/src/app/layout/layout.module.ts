@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgbDropdownModule, NgbAlertModule, NgbModule, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { AccountsModule } from "./accounts/accounts.module";
+import { NgbDropdownModule, NgbAlertModule, NgbModal, NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccountsModule } from './accounts/accounts.module';
+import { TestsModule } from './tests/tests.module';
 import { PositionsModule } from './positions/positions.module';
 
 import { LayoutRoutingModule } from './layout-routing.module';
@@ -20,7 +21,8 @@ import { AlertsService } from '../services/alerts.service';
         PositionsModule,
         NgbAlertModule.forRoot(),
         NgbDropdownModule.forRoot(),
-        NgbModule.forRoot()
+        NgbModule.forRoot(),
+        TestsModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent],
     providers: [AlertsService]

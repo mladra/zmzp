@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-positions-create',
-  templateUrl: './positions-create.component.html'
+  templateUrl: './positions-create.component.html',
+  styles: ['./positions-create.components.scss']
 })
 export class PositionsCreateComponent implements OnInit {
 

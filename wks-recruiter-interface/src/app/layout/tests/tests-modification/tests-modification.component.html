@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="testsModificationForm" (ngSubmit)="submit()" #testsModificationForm="ngForm" novalidate>
+    <div class="form-group">
+      <label>Positions:</label>
+      <select multiple class="form-control select-picker" id="positions1" name="positions1" [(ngModel)]="selectedPositions">
+          <option *ngFor="let position of potentialPositions">{{ position }}</option>
+      </select>
+  </div>
+    <div class="form-group float-right">
+      <button type="submit" class="btn btn-sm btn-success">Submit</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+    </div>
+  </form>
+</div>

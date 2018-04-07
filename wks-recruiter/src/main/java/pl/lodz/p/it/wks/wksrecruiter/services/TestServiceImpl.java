@@ -32,7 +32,7 @@ public class TestServiceImpl implements TestService {
         if (positions.isEmpty()) {
             throw WKSRecruiterException.createPositionNotFoundException();
         }
-        if (test.isPresent()) {
+        if (test.isPresent() && test.get().isActive()) {
             test.get().getPositions().addAll(positions);
             return testsRepository.save(test.get());
         } else {
@@ -47,11 +47,28 @@ public class TestServiceImpl implements TestService {
         if (positions.isEmpty() || positionNames.size() != positions.size()) {
             throw WKSRecruiterException.createPositionNotFoundException();
         }
-        if (test.isPresent()) {
+        if (test.isPresent() && test.get().isActive()) {
             positions.forEach(position -> test.get().getPositions().removeIf(positionToRemove -> positionToRemove.getName().equals(position.getName())));
             return testsRepository.save(test.get());
         } else {
             throw WKSRecruiterException.createTestNotFoundException();
         }
+    }
+
+    @Override
+    public Test deleteTest(String testId) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) {
+            test.get().setActive(false);
+            this.testsRepository.save(test.get());
+            return test.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
+    }
+
+    @Override
+    public Iterable<Test> getTests() {
+        return testsRepository.findAll();
     }
 }

@@ -45,7 +45,7 @@ export class PositionsListComponent implements OnInit {
         this.alertsService.addAlert('success', 'Successfully toggled activity of '+position.name+' position');
       },
       error => {
-        this.alertsService.addAlert('darger', error.error);
+        this.alertsService.addAlert('danger', error.error);
       });
   }
 
