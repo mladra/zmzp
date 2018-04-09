@@ -1,0 +1,17 @@
+function copyToClipboard() {
+  var aux = document.createElement("input");
+  aux.setAttribute("value", "Print Screen Prohibited!");
+  document.body.appendChild(aux);
+  aux.select();
+  document.execCommand("copy");
+  document.body.removeChild(aux);
+  alert("Print Screen Prohibited!");
+}
+
+$(window).keyup(function(e){
+  if(e.keyCode == 44){
+    copyToClipboard();
+  }
+}); 
+
+document.addEventListener('contextmenu', event => event.preventDefault());
