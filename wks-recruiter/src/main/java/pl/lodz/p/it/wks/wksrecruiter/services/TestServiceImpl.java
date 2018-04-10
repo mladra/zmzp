@@ -15,8 +15,10 @@ import java.util.Optional;
 @Service
 public class TestServiceImpl implements TestService {
 
+    @Autowired
     private final TestsRepository testsRepository;
 
+    @Autowired
     private final PositionsRepository positionsRepository;
 
     @Autowired
@@ -71,4 +73,11 @@ public class TestServiceImpl implements TestService {
     public Iterable<Test> getTests() {
         return testsRepository.findAll();
     }
+	
+	@Override
+	public Test getTestById(String testId) throws WKSRecruiterException {
+        Optional<Test> test = this.testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) return test.get();
+        else throw WKSRecruiterException.createTestNotFoundException();
+	}
 }
