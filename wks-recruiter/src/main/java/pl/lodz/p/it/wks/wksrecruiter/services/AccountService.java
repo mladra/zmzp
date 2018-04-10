@@ -16,4 +16,6 @@ public interface AccountService {
     Account editAccount(Account account) throws WKSRecruiterException;
 
     List<Account> getAll();
+
+    Account register(Account account) throws WKSRecruiterException;
 }

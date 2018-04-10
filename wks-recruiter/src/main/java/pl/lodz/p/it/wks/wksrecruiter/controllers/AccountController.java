@@ -67,4 +67,16 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e).toString());
         }
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity register(@RequestBody Account account) {
+        try {
+            return ResponseEntity.ok().body(accountService.register(account));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        } catch (Throwable e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e).toString());
+        }
+    }
 }
