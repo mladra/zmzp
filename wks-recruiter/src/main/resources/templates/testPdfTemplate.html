@@ -1,10 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Title</title>
+    <link type="text/css" rel="stylesheet" media="all"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"/>
+    <script media="all"
+            src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link href="../static/css/myList.css" type="text/css" media="all" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css"
+          integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous"/>
+    <title><span th:text="${test.name}">Test name</span></title>
+    <style>
+        @page {
+            margin: 0cm;
+            size: A4 portrait;
+        }
+
+        .container {
+            margin: 0 auto !important;
+            max-width: 1280px !important;
+            width: 90% !important;
+            -webkit-box-sizing: inherit;
+            -moz-box-sizing: inherit;
+            box-sizing: inherit;
+        }
+    </style>
 </head>
-<body>
-HEHEHE
+<body style="background-color: #ddd">
+<nav class="grey darken-4">
+    <div class="nav-wrapper">
+        <div class="container blue-grey darken-2">
+            <a class="right">WKS Recruiter Test by <span th:text="${test.author.name} + ' ' + ${test.author.surname}">Name Surname</span></a>
+            <a class="left" th:text="${test.name}">Test name</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col s12 m12 l12">
+                            <div class="card light-blue darken-3">
+                                <div class="card-content">
+                                    <a class="btn white right black-text"><i class="fas fa-pencil-alt fa-fw"></i> ______
+                                        /
+                                        <span th:text="${test.maxPoints}">Max Points</span></a>
+                                    <span class="card-title white-text"><i class="fas fa-question"></i> <span
+                                            th:text="${test.name}">Test name</span></span>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col s8 m8 l8 left">
+                                            <div class="container">
+                                                <div class="collection black-text">
+                                                    <p class="collection-item"><i class="fas fa-user-circle"></i> Name:
+                                                    </p>
+                                                    <p class="collection-item"><i class="fas fa-user-circle"></i>
+                                                        Surname:
+                                                    </p>
+                                                    <p class="collection-item"><i class="fas fa-envelope"></i> Email
+                                                        address:</p>
+                                                    <p class="collection-item"><i class="fas fa-briefcase"></i> Chosen
+                                                        position:</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s4 m4 l4 right">
+                                            <div class="container">
+                                                <div class="collection">
+                                                    <p class="collection-item grey darken-3 white-text">Positions:</p>
+                                                    <th:block th:each="position : ${test.positions}">
+                                                        <h6 class="collection-item" th:text="${position.name}">position
+                                                            name</h6>
+
+                                                    </th:block>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <th:block th:each="question : ${test.questions}" class="container">
+                                <div class="row">
+                                    <div class="col s12 m12 l12">
+                                        <hr/>
+                                        <h3 th:text="${question.questionNumber}+'. '+${question.questionPhrase}">1.
+                                            Question</h3>
+                                        <div class="row" th:switch="${question.type}">
+                                            <div class="col s12 m12 l12" th:case="'STRING'">
+                                                <div class="collection">
+                                                    <h5 style="border: 2px solid;" class="collection-item"><i
+                                                            class="fas fa-pen-square fa-2x"></i></h5>
+                                                </div>
+                                            </div>
+                                            <div class="col s12 m12 l12" th:case="'SINGLE_CHOICE'">
+                                                <div class="collection" th:each="option : ${question.params.options}">
+                                                    <h5 class="collection-item"><i class="far fa-circle"></i> <span
+                                                            th:text="${option}">Option</span></h5>
+                                                </div>
+                                            </div>
+                                            <div class="col s12 m12 l12" th:case="'MULTIPLE_CHOICE'">
+                                                <div class="collection" th:each="option : ${question.params.options}">
+                                                    <h5 class="collection-item"><i class="far fa-square"></i> <span
+                                                            th:text="${option}">Option</span></h5>
+                                                </div>
+                                            </div>
+                                            <div class="col s12 m12 l12" th:case="'SCALE'">
+                                                <div style="width: 50%; align-content: center;"
+                                                     class="container center-align">
+                                                    <h5><span th:text="${question.params.minValue}">min</span> <input
+                                                            type="range" class="slider center-align"
+                                                            style="height: 0; width: 50%; align-self: center"
+                                                            id="myRange"/> <span th:text="${question.params.maxValue}">max</span>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col s12 m12 l12" th:case="'NUMBER'">
+                                                <div style="width: 50%; align-content: center;"
+                                                     class="container center-align">
+                                                    <h5><span th:text="${question.params.minValue}">min</span> <input
+                                                            type="range" class="slider center-align"
+                                                            style="height: 0; width: 50%; align-self: center"
+                                                            id="myRange"/> <span th:text="${question.params.maxValue}">max</span>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

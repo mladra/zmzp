@@ -1,19 +1,16 @@
 package pl.lodz.p.it.wks.wksrecruiter.controllers;
 
-import com.lowagie.text.DocumentException;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.lodz.p.it.wks.wksrecruiter.WksRecruiterApplication;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Collection;
 
@@ -77,10 +74,10 @@ public class TestController {
             byte[] out = this.pdfGeneratorUtil.generate(test);
             //return file
             HttpHeaders hHeaders = new HttpHeaders();
-            hHeaders.add("content-disposition", "attachment; filename=" + testId+".pdf");
+            hHeaders.add("content-disposition", "attachment; filename=" + test.getName()+".pdf");
             hHeaders.add("Content-Type","application/pdf");
             return new ResponseEntity(out,hHeaders,HttpStatus.OK);
-        } catch (DocumentException | WKSRecruiterException e) {
+        } catch (IOException | DocumentException | WKSRecruiterException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
         }
     }
