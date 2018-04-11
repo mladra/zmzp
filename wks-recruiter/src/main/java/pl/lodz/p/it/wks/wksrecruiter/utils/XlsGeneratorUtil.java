@@ -34,6 +34,7 @@ public class XlsGeneratorUtil {
 	CellStyle answerGrayAfterStyle;
 	CellStyle pointsStyle;
 	CellStyle indicatorBlackAltStyle;
+	CellStyle indicatorAltStyle;
 	
 	public byte[] generate(Test test) throws IOException {
 		byte[] out;
@@ -129,8 +130,8 @@ public class XlsGeneratorUtil {
 			r = sheet.createRow(sheet.getLastRowNum()+1);
 			this.renderContainer(r);
 			r.setHeight((short)(r.getHeight()*2));
-			r.getCell(2).setCellStyle(indicatorStyle);
-			r.getCell(2).setCellValue("\u26AA");
+			r.getCell(2).setCellStyle(indicatorAltStyle);
+			r.getCell(2).setCellValue("O");
 			for (int i=3; i<9; i++) r.getCell(i).setCellStyle(answerGrayStyle);
 			r.getCell(9).setCellStyle(answerGrayAfterStyle);
 			r.getCell(3).setCellValue(s);
@@ -268,6 +269,24 @@ public class XlsGeneratorUtil {
 		this.initAnswerGrayAfterStyle(workbook);
 		this.initPointsStyle(workbook);
 		this.initIndicatorBlackAltStyle(workbook);
+		this.initIndicatorGrayAltStyle(workbook);
+	}
+	
+	private void initIndicatorGrayAltStyle(Workbook workbook) {
+		indicatorAltStyle = workbook.createCellStyle();
+		indicatorAltStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		indicatorAltStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		indicatorAltStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		indicatorAltStyle.setAlignment(HorizontalAlignment.CENTER);
+		indicatorAltStyle.setBorderTop(BorderStyle.THIN);
+		indicatorAltStyle.setBorderBottom(BorderStyle.THIN);
+		indicatorAltStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.GREY_50_PERCENT.getIndex());
+		indicatorAltStyle.setBottomBorderColor(HSSFColor.HSSFColorPredefined.GREY_50_PERCENT.getIndex());
+		Font font = workbook.createFont();
+		font.setFontName("Liberation Sans");
+		font.setColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
+		font.setFontHeightInPoints((short)18);
+		indicatorAltStyle.setFont(font);
 	}
 	
 	private void initIndicatorBlackAltStyle(Workbook workbook) {
