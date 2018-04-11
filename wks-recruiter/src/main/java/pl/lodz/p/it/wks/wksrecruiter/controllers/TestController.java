@@ -1,12 +1,14 @@
 package pl.lodz.p.it.wks.wksrecruiter.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
+import pl.lodz.p.it.wks.wksrecruiter.utils.XlsGeneratorUtil;
 
 import java.util.Collection;
 
@@ -15,6 +17,9 @@ import java.util.Collection;
 public class TestController {
 
     private final TestService testService;
+    
+    @Autowired
+    private XlsGeneratorUtil xlsGeneratorUtil;
 
     @Autowired
     public TestController(TestService testService) {
@@ -63,7 +68,12 @@ public class TestController {
     public @ResponseBody ResponseEntity generateXLS(@PathVariable String testId) {
         try {
             Test test = this.testService.getTestById(testId);
-            
+            byte[] out = this.xlsGeneratorUtil.generate(test);
+            //return file
+            HttpHeaders hHeaders = new HttpHeaders();
+            hHeaders.add("content-disposition", "attachment; filename=" + test.getName()+".pdf");
+            hHeaders.add("Content-Type","application/pdf");
+            return new ResponseEntity(out,hHeaders,HttpStatus.OK);
         } catch (WKSRecruiterException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
         }
