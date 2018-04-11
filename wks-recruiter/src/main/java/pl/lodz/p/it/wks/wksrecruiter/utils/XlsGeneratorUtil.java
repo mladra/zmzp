@@ -7,13 +7,14 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.NumberQuestionParams;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.ScaleQuestionParams;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.SelectionQuestionParams;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Component
 public class XlsGeneratorUtil {
@@ -32,6 +33,7 @@ public class XlsGeneratorUtil {
 	CellStyle answerAfterStyle;
 	CellStyle answerGrayAfterStyle;
 	CellStyle pointsStyle;
+	CellStyle indicatorBlackAltStyle;
 	
 	public byte[] generate(Test test) throws IOException {
 		byte[] out;
@@ -50,17 +52,128 @@ public class XlsGeneratorUtil {
 		Cell col = null;
 		this.initCellStyles(workbook);
 		this.createHeader(sheet, test);
-		
+		row = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(row);
+		for(QuestionInfo question : test.getQuestions()) this.renderQuestion(sheet, question);
 		row = sheet.createRow(sheet.getLastRowNum()+1);
 		this.renderContainer(row);
 		row = sheet.createRow(sheet.getLastRowNum()+1);
 		this.renderBackground(row);
+		sheet.setColumnWidth(2,sheet.getColumnWidth(2)*2);
 		return workbook;
+	}
+	
+	private void renderQuestion(Sheet sheet, QuestionInfo question) {
+		Row questionRow = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(questionRow);
+		for(int i=2; i<10; i++) questionRow.createCell(i).setCellStyle(hrStyle);
+		questionRow = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(questionRow);
+		questionRow.getCell(9).setCellStyle(pointsStyle);
+		questionRow.getCell(9).setCellValue("___  /  "+question.getMaxPoints()+"  ");
+		questionRow = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(questionRow);
+		questionRow.getCell(2).setCellStyle(questionStyle);
+		questionRow.setHeightInPoints((short)16);
+		questionRow.getCell(2).setCellValue(question.getQuestionNumber()+". "+question.getQuestionPhrase());
+		questionRow = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(questionRow);
+		switch (question.getType()) {
+			case STRING: this.renderString(sheet); break;
+			case MULTIPLE_CHOICE: this.renderMultipleChoice(sheet, question); break;
+			case SINGLE_CHOICE: this.renderSingleChoice(sheet,question); break;
+			case NUMBER: this.renderNumber(sheet,question); break;
+			case SCALE: this.renderScale(sheet,question); break;
+		}
+	}
+	
+	private void renderScale(Sheet sheet, QuestionInfo question) {
+		Row r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r.setHeight((short)(r.getHeight()*2));
+		r.getCell(2).setCellStyle(indicatorBlackAltStyle);
+		double min = ((ScaleQuestionParams)question.getParams()).getMinValue();
+		double max = ((ScaleQuestionParams)question.getParams()).getMaxValue();
+		r.getCell(2).setCellValue("("+min+" - "+max+")");
+		for (int i=3; i<9; i++) r.getCell(i).setCellStyle(answerStyle);
+		r.getCell(9).setCellStyle(answerAfterStyle);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+	}
+	
+	private void renderMultipleChoice(Sheet sheet, QuestionInfo question) {
+		Row r;
+		Collection<String> options = ((SelectionQuestionParams)question.getParams()).getOptions();
+		for(String s : options) {
+			r = sheet.createRow(sheet.getLastRowNum()+1);
+			this.renderContainer(r);
+			r.setHeight((short)(r.getHeight()*2));
+			r.getCell(2).setCellStyle(indicatorStyle);
+			r.getCell(2).setCellValue("\uF06F");
+			for (int i=3; i<9; i++) r.getCell(i).setCellStyle(answerGrayStyle);
+			r.getCell(9).setCellStyle(answerGrayAfterStyle);
+			r.getCell(3).setCellValue(s);
+		}
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+	}
+	
+	private void renderSingleChoice(Sheet sheet, QuestionInfo question) {
+		Row r;
+		Collection<String> options = ((SelectionQuestionParams)question.getParams()).getOptions();
+		for(String s : options) {
+			r = sheet.createRow(sheet.getLastRowNum()+1);
+			this.renderContainer(r);
+			r.setHeight((short)(r.getHeight()*2));
+			r.getCell(2).setCellStyle(indicatorStyle);
+			r.getCell(2).setCellValue("\u26AA");
+			for (int i=3; i<9; i++) r.getCell(i).setCellStyle(answerGrayStyle);
+			r.getCell(9).setCellStyle(answerGrayAfterStyle);
+			r.getCell(3).setCellValue(s);
+		}
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+	}
+	
+	private void renderNumber(Sheet sheet, QuestionInfo question) {
+		Row r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r.getCell(2).setCellStyle(indicatorBlackAltStyle);
+		r.setHeight((short)(r.getHeight()*2));
+		double min = ((NumberQuestionParams)question.getParams()).getMinValue();
+		double max = ((NumberQuestionParams)question.getParams()).getMaxValue();
+		r.getCell(2).setCellValue("("+min+" - "+max+")");
+		for (int i=3; i<9; i++) r.getCell(i).setCellStyle(answerStyle);
+		r.getCell(9).setCellStyle(answerAfterStyle);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+	}
+	
+	private void renderString(Sheet sheet) {
+		Row r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r.setHeight((short)(r.getHeight()*2));
+		r.getCell(2).setCellStyle(indicatorBlackStyle);
+		r.getCell(2).setCellValue("\uF021");
+		for (int i=3; i<9; i++) r.getCell(i).setCellStyle(answerStyle);
+		r.getCell(9).setCellStyle(answerAfterStyle);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
+		r = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(r);
 	}
 	
 	private void createHeader(Sheet sheet, Test test) {
 		Row header = sheet.createRow(0);
-		header.setHeightInPoints((short)12);
+		header.setHeight((short)(header.getHeight()*2));
 		for(int i=0; i<12; i++) {
 			Cell currentCell = header.createCell(i);
 			if(i==1) currentCell.setCellValue(test.getName());
@@ -75,7 +188,7 @@ public class XlsGeneratorUtil {
 		sheet.getRow(4).getCell(3).setCellValue(test.getName());
 		sheet.getRow(4).getCell(7).setCellStyle(pointsStyle);
 		sheet.getRow(4).getCell(8).setCellStyle(pointsStyle);
-		sheet.getRow(4).getCell(8).setCellValue("/ MAX_POINTS  ");
+		sheet.getRow(4).getCell(8).setCellValue("/ "+test.getQuestions().stream().mapToInt(l->l.getMaxPoints()).sum()+"  ");
 		for (int i=3; i<9;i++) { sheet.getRow(6).getCell(i).setCellStyle(hrCardStyle); }
 		header = sheet.createRow(7);
 		this.renderCard(header);
@@ -154,6 +267,21 @@ public class XlsGeneratorUtil {
 		this.initAnswerAfterStyle(workbook);
 		this.initAnswerGrayAfterStyle(workbook);
 		this.initPointsStyle(workbook);
+		this.initIndicatorBlackAltStyle(workbook);
+	}
+	
+	private void initIndicatorBlackAltStyle(Workbook workbook) {
+		indicatorBlackAltStyle = workbook.createCellStyle();
+		indicatorBlackAltStyle = workbook.createCellStyle();
+		indicatorBlackAltStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
+		indicatorBlackAltStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		indicatorBlackAltStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		indicatorBlackAltStyle.setAlignment(HorizontalAlignment.CENTER);
+		Font font = workbook.createFont();
+		font.setFontName("Liberation Sans");
+		font.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		font.setFontHeightInPoints((short)12);
+		indicatorBlackAltStyle.setFont(font);
 	}
 	
 	private void initPointsStyle(Workbook workbook) {
@@ -301,8 +429,8 @@ public class XlsGeneratorUtil {
 		hrStyle = workbook.createCellStyle();
 		hrStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
 		hrStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		hrStyle.setBorderTop(BorderStyle.THICK);
-		hrStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
+		hrStyle.setBorderTop(BorderStyle.THIN);
+		hrStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.ROYAL_BLUE.getIndex());
 	}
 	
 	private void initHrCardStyle(Workbook workbook) {
