@@ -5,9 +5,15 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Component;
+import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 public class XlsGeneratorUtil {
@@ -43,9 +49,93 @@ public class XlsGeneratorUtil {
 		Row row = null;
 		Cell col = null;
 		this.initCellStyles(workbook);
+		this.createHeader(sheet, test);
 		
-		
+		row = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderContainer(row);
+		row = sheet.createRow(sheet.getLastRowNum()+1);
+		this.renderBackground(row);
 		return workbook;
+	}
+	
+	private void createHeader(Sheet sheet, Test test) {
+		Row header = sheet.createRow(0);
+		header.setHeightInPoints((short)12);
+		for(int i=0; i<12; i++) {
+			Cell currentCell = header.createCell(i);
+			if(i==1) currentCell.setCellValue(test.getName());
+			if(i==8) currentCell.setCellValue("WKS Recruiter Test by "+test.getAuthor().getName()+" "+test.getAuthor().getSurname());
+			currentCell.setCellStyle(headerStyle);
+		}
+		header = sheet.createRow(1);
+		this.renderBackground(header);
+		this.renderContainer(sheet.createRow(2));
+		for(int i=3; i<7; i++) { this.renderCard(sheet.createRow(i)); }
+		sheet.getRow(4).setHeightInPoints((short)16);
+		sheet.getRow(4).getCell(3).setCellValue(test.getName());
+		sheet.getRow(4).getCell(7).setCellStyle(pointsStyle);
+		sheet.getRow(4).getCell(8).setCellStyle(pointsStyle);
+		sheet.getRow(4).getCell(8).setCellValue("/ MAX_POINTS  ");
+		for (int i=3; i<9;i++) { sheet.getRow(6).getCell(i).setCellStyle(hrCardStyle); }
+		header = sheet.createRow(7);
+		this.renderCard(header);
+		header.getCell(7).setCellStyle(header2Style);
+		header.getCell(8).setCellStyle(header2Style);
+		header.getCell(7).setCellValue("Positions:");
+		header = sheet.createRow(8);
+		int m = sheet.getLastRowNum();
+		for (int i=m; i<m+test.getPositions().size(); i++) {
+			this.renderCard(header);
+			header.getCell(7).setCellValue(this.getPositionName(test.getPositions(), i-m+1));
+			header.getCell(7).setCellStyle(containerStyle);
+			header.getCell(8).setCellStyle(containerStyle);
+			int next = sheet.getLastRowNum() + 1;
+			header = sheet.createRow(next);
+		}
+		if (test.getPositions().size()<3) {
+			for (int i=0; i<3-test.getPositions().size(); i++ ) {
+				this.renderCard(header);
+				header = sheet.createRow(header.getRowNum()+1);
+			}
+		}
+		this.renderCard(header);
+		for (int rowH=7; rowH<11; rowH++) {
+			header = sheet.getRow(rowH);
+			for(int colH = 3; colH<6; colH++) { header.getCell(colH).setCellStyle(containerStyle); }
+		}
+		sheet.getRow(7).getCell(3).setCellValue("Name: ");
+		sheet.getRow(8).getCell(3).setCellValue("Surame: ");
+		sheet.getRow(9).getCell(3).setCellValue("Email address: ");
+		sheet.getRow(10).getCell(3).setCellValue("Chosen position: ");
+
+	}
+	
+	private String getPositionName(Collection<Position> positions, int i) {
+		String result = null;
+		Iterator<Position> iter = positions.iterator();
+		for(int j=0; j<i; j++) {
+			if(iter.hasNext()) result = iter.next().getName();
+		}
+		return result;
+	}
+	
+	private void renderCard(Row row) {
+		for (int i=0; i<12; i++) {
+			if (i==0 || i==11) row.createCell(i).setCellStyle(backgroundStyle);
+			else if (i==1 || i==10) row.createCell(i).setCellStyle(containerStyle);
+			else row.createCell(i).setCellStyle(cardStyle);
+		}
+	}
+	
+	private void renderContainer(Row row) {
+		for (int i=0; i<12; i++) {
+			if (i==0 || i==11) row.createCell(i).setCellStyle(backgroundStyle);
+			else row.createCell(i).setCellStyle(containerStyle);
+		}
+	}
+	
+	private void renderBackground(Row row) {
+		for (int i=0; i<12; i++) { row.createCell(i).setCellStyle(backgroundStyle); }
 	}
 	
 	private void initCellStyles(Workbook workbook) {
@@ -69,6 +159,7 @@ public class XlsGeneratorUtil {
 	private void initPointsStyle(Workbook workbook) {
 		pointsStyle = workbook.createCellStyle();
 		pointsStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		pointsStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		pointsStyle.setAlignment(HorizontalAlignment.RIGHT);
 		pointsStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		Font font = workbook.createFont();
@@ -81,6 +172,7 @@ public class XlsGeneratorUtil {
 	private void initAnswerGrayAfterStyle(Workbook workbook) {
 		answerGrayAfterStyle = workbook.createCellStyle();
 		answerGrayAfterStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		answerGrayAfterStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		answerGrayAfterStyle.setAlignment(HorizontalAlignment.LEFT);
 		answerGrayAfterStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		answerGrayAfterStyle.setBorderTop(BorderStyle.THIN);
@@ -99,6 +191,7 @@ public class XlsGeneratorUtil {
 	private void initAnswerAfterStyle(Workbook workbook) {
 		answerAfterStyle = workbook.createCellStyle();
 		answerAfterStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		answerAfterStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		answerAfterStyle.setAlignment(HorizontalAlignment.LEFT);
 		answerAfterStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		answerAfterStyle.setBorderTop(BorderStyle.THIN);
@@ -117,6 +210,7 @@ public class XlsGeneratorUtil {
 	private void initAnswerGrayStyle(Workbook workbook) {
 		answerGrayStyle = workbook.createCellStyle();
 		answerGrayStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		answerGrayStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		answerGrayStyle.setAlignment(HorizontalAlignment.LEFT);
 		answerGrayStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		answerGrayStyle.setBorderTop(BorderStyle.THIN);
@@ -133,6 +227,7 @@ public class XlsGeneratorUtil {
 	private void initAnswerStyle(Workbook workbook) {
 		answerStyle = workbook.createCellStyle();
 		answerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		answerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		answerStyle.setAlignment(HorizontalAlignment.LEFT);
 		answerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		answerStyle.setBorderTop(BorderStyle.THIN);
@@ -149,6 +244,7 @@ public class XlsGeneratorUtil {
 	private void initIndicatorBlackStyle(Workbook workbook) {
 		indicatorBlackStyle = workbook.createCellStyle();
 		indicatorBlackStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
+		indicatorBlackStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		indicatorBlackStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		indicatorBlackStyle.setAlignment(HorizontalAlignment.CENTER);
 		Font font = workbook.createFont();
@@ -161,6 +257,7 @@ public class XlsGeneratorUtil {
 	private void initIndicatorStyle(Workbook workbook) {
 		indicatorStyle = workbook.createCellStyle();
 		indicatorStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		indicatorStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		indicatorStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		indicatorStyle.setAlignment(HorizontalAlignment.CENTER);
 		indicatorStyle.setBorderTop(BorderStyle.THIN);
@@ -177,6 +274,7 @@ public class XlsGeneratorUtil {
 	private void initQuestionStyle(Workbook workbook) {
 		questionStyle = workbook.createCellStyle();
 		questionStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		questionStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		questionStyle.setAlignment(HorizontalAlignment.LEFT);
 		questionStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		Font font = workbook.createFont();
@@ -189,6 +287,7 @@ public class XlsGeneratorUtil {
 	private void initHeader2Style(Workbook workbook) {
 		header2Style = workbook.createCellStyle();
 		header2Style.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREY_80_PERCENT.getIndex());
+		header2Style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		header2Style.setVerticalAlignment(VerticalAlignment.CENTER);
 		header2Style.setAlignment(HorizontalAlignment.LEFT);
 		Font font = workbook.createFont();
@@ -201,6 +300,7 @@ public class XlsGeneratorUtil {
 	private void initHrStyle(Workbook workbook) {
 		hrStyle = workbook.createCellStyle();
 		hrStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		hrStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		hrStyle.setBorderTop(BorderStyle.THICK);
 		hrStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
 	}
@@ -208,6 +308,7 @@ public class XlsGeneratorUtil {
 	private void initHrCardStyle(Workbook workbook) {
 		hrCardStyle = workbook.createCellStyle();
 		hrCardStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ROYAL_BLUE.getIndex());
+		hrCardStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		hrCardStyle.setBorderTop(BorderStyle.THICK);
 		hrCardStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
 	}
@@ -215,6 +316,7 @@ public class XlsGeneratorUtil {
 	private void initCardStyle(Workbook workbook) {
 		cardStyle = workbook.createCellStyle();
 		cardStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ROYAL_BLUE.getIndex());
+		cardStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		cardStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		cardStyle.setAlignment(HorizontalAlignment.LEFT);
 		Font font = workbook.createFont();
@@ -228,6 +330,7 @@ public class XlsGeneratorUtil {
 	private void initContainerStyle(Workbook workbook) {
 		containerStyle = workbook.createCellStyle();
 		containerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		containerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		containerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		containerStyle.setAlignment(HorizontalAlignment.LEFT);
 		Font font = workbook.createFont();
@@ -240,11 +343,13 @@ public class XlsGeneratorUtil {
 	private void initBackgroundStyle(Workbook workbook) {
 		backgroundStyle = workbook.createCellStyle();
 		backgroundStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREY_25_PERCENT.getIndex());
+		backgroundStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 	}
 	
 	private void initHeaderStyle(Workbook workbook) {
 		headerStyle = workbook.createCellStyle();
-		headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.GREY_80_PERCENT.getIndex());
+		headerStyle.setFillForegroundColor(IndexedColors.GREY_80_PERCENT.getIndex());
+		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		headerStyle.setAlignment(HorizontalAlignment.CENTER);
 		headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		Font font = workbook.createFont();
