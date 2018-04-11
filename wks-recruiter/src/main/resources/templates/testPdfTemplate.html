@@ -25,6 +25,8 @@
             -moz-box-sizing: inherit;
             box-sizing: inherit;
         }
+
+        .row {margin-bottom: 0px !important;}
     </style>
 </head>
 <body style="background-color: #ddd">
@@ -47,7 +49,7 @@
                                 <div class="card-content">
                                     <a class="btn white right black-text"><i class="fas fa-pencil-alt fa-fw"></i> ______
                                         /
-                                        <span th:text="${test.maxPoints}">Max Points</span></a>
+                                        <span th:text="${#aggregates.sum(test.questions.![maxPoints])}">Max Points</span></a>
                                     <span class="card-title white-text"><i class="fas fa-question"></i> <span
                                             th:text="${test.name}">Test name</span></span>
                                     <hr/>
@@ -74,7 +76,6 @@
                                                     <th:block th:each="position : ${test.positions}">
                                                         <h6 class="collection-item" th:text="${position.name}">position
                                                             name</h6>
-
                                                     </th:block>
                                                 </div>
                                             </div>
@@ -86,45 +87,53 @@
                                 <div class="row">
                                     <div class="col s12 m12 l12">
                                         <hr/>
-                                        <h3 th:text="${question.questionNumber}+'. '+${question.questionPhrase}">1.
-                                            Question</h3>
+                                        <h3>
+                                            <span th:text="${question.questionNumber}+'. '+${question.questionPhrase}">1.
+                                                Question </span><a class="btn white right black-text"><i class="fas fa-pencil-alt fa-fw"></i> ______
+                                                /
+                                                <span th:text="${question.maxPoints}">Max Points</span></a></h3>
                                         <div class="row" th:switch="${question.type}">
-                                            <div class="col s12 m12 l12" th:case="'STRING'">
+                                            <div class="col s12 m12 l12"
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).STRING}">
                                                 <div class="collection">
                                                     <h5 style="border: 2px solid;" class="collection-item"><i
                                                             class="fas fa-pen-square fa-2x"></i></h5>
                                                 </div>
                                             </div>
-                                            <div class="col s12 m12 l12" th:case="'SINGLE_CHOICE'">
+                                            <div class="col s12 m12 l12"
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).SINGLE_CHOICE}">
+                                                <div class="collection" th:each="option : ${question.params.options}"
+                                                     style="vertical-align: middle;">
+                                                    <h4 class="collection-item"><i class="far fa-circle fa-2x"></i>
+                                                        <span
+                                                                th:text="${option}">Option</span></h4>
+                                                </div>
+                                            </div>
+                                            <div class="col s12 m12 l12"
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).MULTIPLE_CHOICE}">
                                                 <div class="collection" th:each="option : ${question.params.options}">
-                                                    <h5 class="collection-item"><i class="far fa-circle"></i> <span
-                                                            th:text="${option}">Option</span></h5>
+                                                    <h4 class="collection-item"><i class="far fa-square fa-2x"></i>
+                                                        <span th:text="${option}">Option</span></h4>
                                                 </div>
                                             </div>
-                                            <div class="col s12 m12 l12" th:case="'MULTIPLE_CHOICE'">
-                                                <div class="collection" th:each="option : ${question.params.options}">
-                                                    <h5 class="collection-item"><i class="far fa-square"></i> <span
-                                                            th:text="${option}">Option</span></h5>
+                                            <div class="col s12 m12 l12"
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).SCALE}">
+                                                <div class="collection">
+                                                    <h5 style="border: 2px solid;" class="collection-item"><i
+                                                            class="fas fa-calculator fa-2x"></i> <a
+                                                            class="btn grey darken-4 white-text"
+                                                            th:text="'('+${question.params.minValue} +' - '+ ${question.params.maxValue}+')'">min
+                                                        - max</a></h5>
                                                 </div>
                                             </div>
-                                            <div class="col s12 m12 l12" th:case="'SCALE'">
-                                                <div style="width: 50%; align-content: center;"
-                                                     class="container center-align">
-                                                    <h5><span th:text="${question.params.minValue}">min</span> <input
-                                                            type="range" class="slider center-align"
-                                                            style="height: 0; width: 50%; align-self: center"
-                                                            id="myRange"/> <span th:text="${question.params.maxValue}">max</span>
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="col s12 m12 l12" th:case="'NUMBER'">
-                                                <div style="width: 50%; align-content: center;"
-                                                     class="container center-align">
-                                                    <h5><span th:text="${question.params.minValue}">min</span> <input
-                                                            type="range" class="slider center-align"
-                                                            style="height: 0; width: 50%; align-self: center"
-                                                            id="myRange"/> <span th:text="${question.params.maxValue}">max</span>
-                                                    </h5>
+                                            <div class="col s12 m12 l12"
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).NUMBER}">
+                                                <div class="collection">
+                                                    <h5 style="border: 2px solid;" class="collection-item"><i
+                                                            class="fas fa-calculator fa-2x"></i> <a
+                                                            class="btn grey darken-4 white-text"
+                                                            th:text="'('+${question.params.minValue} +' - '+ ${question.params.maxValue}+')'">min
+                                                        - max</a></h5>
                                                 </div>
                                             </div>
                                         </div>
