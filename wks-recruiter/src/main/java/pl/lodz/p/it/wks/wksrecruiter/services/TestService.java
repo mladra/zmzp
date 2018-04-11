@@ -13,4 +13,6 @@ public interface TestService {
     Test deleteTest(String testId) throws WKSRecruiterException;
 
     Iterable<Test> getTests();
+	
+	Test getTestById(String testId) throws WKSRecruiterException;
 }

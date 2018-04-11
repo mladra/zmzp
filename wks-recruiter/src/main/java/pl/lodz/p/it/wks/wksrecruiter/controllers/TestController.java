@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 
@@ -56,5 +57,15 @@ public class TestController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getTests() {
         return ResponseEntity.ok(testService.getTests());
+    }
+    
+    @RequestMapping(value = "/{testId}/xls",method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity generateXLS(@PathVariable String testId) {
+        try {
+            Test test = this.testService.getTestById(testId);
+            
+        } catch (WKSRecruiterException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
+        }
     }
 }
