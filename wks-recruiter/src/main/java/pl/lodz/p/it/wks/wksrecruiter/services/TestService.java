@@ -1,5 +1,6 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 
@@ -13,6 +14,12 @@ public interface TestService {
     Test deleteTest(String testId) throws WKSRecruiterException;
 
     Iterable<Test> getTests();
-    
+
     Test getTestById(String testId) throws  WKSRecruiterException;
+
+    Test addQuestionsToTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException;
+
+    Test modifyQuestionsInTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException;
+
+    Test removeQuestionsFromTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException;
 }
