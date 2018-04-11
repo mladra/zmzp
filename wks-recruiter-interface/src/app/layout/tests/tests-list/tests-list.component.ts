@@ -7,6 +7,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class TestsListComponent implements OnInit {
   constructor(private alertsService: AlertsService,
     private testsService: TestsService,
     private positionsService: PositionsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -38,7 +40,6 @@ export class TestsListComponent implements OnInit {
         var that = this;
         this.allPositionNames = [];
         this.allPositions.forEach(x => that.allPositionNames.push(x.name));
-        console.log(this.allPositionNames);
       },
       error => {
         console.log(error);
@@ -108,4 +109,7 @@ export class TestsListComponent implements OnInit {
     );
   }
 
+  goToQuestions(id) {
+    this.router.navigate(['tests/details', id]);
+  }
 }

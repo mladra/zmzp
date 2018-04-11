@@ -1,0 +1,104 @@
+<div [@routerTransition]>
+  <div class="row">
+    <div class="col">
+      <h2 class="page-header">
+        Test questions
+      </h2>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <i class="fa fa-home"></i>
+          <a [routerLink]="['/home']">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <i class="fa fa-file"></i>
+          <a [routerLink]="['/tests']">Tests</a>
+        </li>
+        <li class="breadcrumb-item">
+          <i class="fa fa-file"></i> Test questions
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header font-weight-bold">Questions</div>
+        <div class="card-body p-3">
+          <div *ngFor="let question of test.questions">
+            <div *ngIf="question.type === 'STRING'">
+              <form>
+                <div class="form-content">
+                  <div class="form-group">
+                    <label for="{{question.questionNumber}}StringQuestion">{{ question.questionPhrase }}</label>
+                    <input id="{{question.questionNumber}}StringQuestion" class="w-50 form-control input-underline input-lg">
+                  </div>
+                </div>
+              </form>
+              <hr/>
+            </div>
+            <div *ngIf="question.type === 'SINGLE_CHOICE'">
+              <form>
+                <div class="form-content">
+                  <div class="form-group">
+                    <label for="{{question.questionNumber}}StringQuestion">{{ question.questionPhrase }}</label>
+                    <select class="form-control select-picker w-50">
+                      <option *ngFor="let option of question.params.options">{{ option }}</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+              <hr/>
+            </div>
+            <div *ngIf="question.type === 'MULTIPLE_CHOICE'">
+              <form>
+                <div class="form-content">
+                  <div class="form-group">
+                    <label for="{{question.questionNumber}}StringQuestion">{{ question.questionPhrase }}</label>
+                    <select multiple class="form-control select-picker w-50">
+                      <option *ngFor="let option of question.params.options">{{ option }}</option>
+                    </select>
+
+                    <!-- <div class="checkbox" *ngFor="let option of question.params.options">
+                      <label>
+                        <input type="checkbox" value="">{{ option }}</label>
+                    </div> -->
+                  </div>
+                </div>
+              </form>
+              <hr/>
+            </div>
+            <div *ngIf="question.type === 'NUMBER'">
+              <form>
+                <div class="form-content">
+                  <div class="form-group">
+                    <label for="{{question.questionNumber}}StringQuestion">{{ question.questionPhrase }}</label>
+                    <input type="number" max="{{ question.params.maxValue }}" min="{{ question.params.minValue }}" class="w-50 form-control input-underline input-lg"
+                      value="{{ question.params.minValue }}" placeholder="Podaj wzrost...">
+                  </div>
+                </div>
+              </form>
+              <hr/>
+            </div>
+            <div *ngIf="question.type === 'SCALE'">
+              <form>
+                <div class="form-content">
+                  <div class="form-group">
+                    <label for="{{question.questionNumber}}StringQuestion">{{ question.questionPhrase }}</label>
+                    <div class="row pl-3">
+                      <div class="slidecontainer">
+                        <input type="range" min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}" value="{{ question.params.minValue }}"
+                          class="slider w-50" id="{{question.questionNumber}}StringQuestion" step="{{ question.params.step }}">
+                          <label>Slider value</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr/>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

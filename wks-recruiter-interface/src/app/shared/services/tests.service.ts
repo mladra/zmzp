@@ -27,5 +27,7 @@ export class TestsService {
     return this.http.get(this.rootUrl, { observe: 'response' });
   }
 
-
+  getById(id) {
+    return this.http.get(this.rootUrl + "/" + id, { observe: 'response' });
+  }
 }

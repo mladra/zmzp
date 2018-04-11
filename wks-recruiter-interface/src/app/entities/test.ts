@@ -1,5 +1,6 @@
 import { Account } from "./account";
 import { Position } from "./position";
+import { QuestionInfo } from "./question.info";
 
 export class Test{
     id: string;
@@ -9,5 +10,5 @@ export class Test{
     language: string;
     active: boolean;
     positions: Position[];
-    //questions: QuestionInfo[];
+    questions: QuestionInfo[];
 }
