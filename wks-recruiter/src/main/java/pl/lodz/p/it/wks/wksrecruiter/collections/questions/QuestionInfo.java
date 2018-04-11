@@ -8,14 +8,16 @@ import java.util.Map;
 public class QuestionInfo {
 
     private int questionNumber;
+    private int maxPoints;
     private String questionPhrase;
     private QuestionTypeEnum type;
     private AbstractQuestionParams params;
 
     public QuestionInfo(){}
 
-    public QuestionInfo(int questionNumber, String questionPhrase, QuestionTypeEnum type, AbstractQuestionParams params) {
+    public QuestionInfo(int questionNumber, int maxPoints, String questionPhrase, QuestionTypeEnum type, AbstractQuestionParams params) {
         this.questionNumber = questionNumber;
+        this.maxPoints = maxPoints;
         this.questionPhrase = questionPhrase;
         this.type = type;
         this.params = params;
@@ -54,4 +56,6 @@ public class QuestionInfo {
     public void setType(QuestionTypeEnum type) { this.type = type; }
     public AbstractQuestionParams getParams() { return params; }
     public void setParams(AbstractQuestionParams params) { this.params = params; }
+    public int getMaxPoints() { return maxPoints; }
+    public void setMaxPoints(int maxPoints) { this.maxPoints = maxPoints; }
 }
