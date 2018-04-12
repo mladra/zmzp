@@ -11,8 +11,9 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
-
+import pl.lodz.p.it.wks.wksrecruiter.utils.XlsGeneratorUtil;
 import java.io.*;
+import java.io.IOException;
 import java.util.Collection;
 
 @RestController
@@ -21,6 +22,9 @@ public class TestController {
 
     @Autowired
     private final TestService testService;
+    
+    @Autowired
+    private XlsGeneratorUtil xlsGeneratorUtil;
 
     @Autowired
     private PdfGeneratorUtil pdfGeneratorUtil;
@@ -124,6 +128,21 @@ public class TestController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
         } catch (Throwable ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(ex).toString());
+        }
+    }
+
+    @RequestMapping(value = "/{testId}/xls",method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity generateXLS(@PathVariable String testId) {
+        try {
+            Test test = this.testService.getTestById(testId);
+            byte[] out = this.xlsGeneratorUtil.generate(test);
+            //return file
+            HttpHeaders hHeaders = new HttpHeaders();
+            hHeaders.add("content-disposition", "attachment; filename=" + test.getName()+".xls");
+            hHeaders.add("Content-Type","application/vnd.ms-excel");
+            return new ResponseEntity(out,hHeaders,HttpStatus.OK);
+        } catch (IOException | WKSRecruiterException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
         }
     }
 }
