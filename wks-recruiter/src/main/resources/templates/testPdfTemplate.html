@@ -84,42 +84,42 @@
                                 </div>
                             </div>
                             <th:block th:each="question : ${test.questions}" class="container">
-                                <div class="row">
-                                    <div class="col s12 m12 l12">
-                                        <hr/>
-                                        <h3>
-                                            <span th:text="${question.questionNumber}+'. '+${question.questionPhrase}">1.
-                                                Question </span><a class="btn white right black-text"><i class="fas fa-pencil-alt fa-fw"></i> ______
+                                <div class="row" style="page-break-inside: avoid;">
+                                    <div class="col s12 m12 l12" style="page-break-inside: avoid;">
+                                        <hr style="page-break-after: avoid;"/>
+                                        <h3 style="page-break-after: avoid;">
+                                            <span th:text="${question.questionNumber}+'. '+${question.questionPhrase}" style="page-break-after: avoid;">1.
+                                                Question </span><a class="btn white right black-text" style="page-break-after: avoid;"><i class="fas fa-pencil-alt fa-fw" style="page-break-after: avoid;"></i> ______
                                                 /
-                                                <span th:text="${question.maxPoints}">Max Points</span></a></h3>
-                                        <div class="row" th:switch="${question.type}">
+                                                <span th:text="${question.maxPoints}" style="page-break-after: avoid;">Max Points</span></a></h3>
+                                        <div class="row" th:switch="${question.type}" style="page-break-inside: avoid;">
                                             <div class="col s12 m12 l12"
-                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).STRING}">
-                                                <div class="collection">
-                                                    <h5 style="border: 2px solid;" class="collection-item"><i
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).STRING}" style="page-break-inside: avoid;">
+                                                <div class="collection" style="page-break-inside: avoid;">
+                                                    <h5 style="border: 2px solid; page-break-after: avoid;" class="collection-item"><i
                                                             class="fas fa-pen-square fa-2x"></i></h5>
                                                 </div>
                                             </div>
                                             <div class="col s12 m12 l12"
-                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).SINGLE_CHOICE}">
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).SINGLE_CHOICE}" style="page-break-inside: avoid;">
                                                 <div class="collection" th:each="option : ${question.params.options}"
-                                                     style="vertical-align: middle;">
-                                                    <h4 class="collection-item"><i class="far fa-circle fa-2x"></i>
+                                                     style="vertical-align: middle; page-break-inside: avoid;">
+                                                    <h4 class="collection-item" style="page-break-after: avoid;"><i class="far fa-circle fa-2x"></i>
                                                         <span
-                                                                th:text="${option}">Option</span></h4>
+                                                                th:text="${option}" style="page-break-after: avoid;">Option</span></h4>
                                                 </div>
                                             </div>
                                             <div class="col s12 m12 l12"
-                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).MULTIPLE_CHOICE}">
-                                                <div class="collection" th:each="option : ${question.params.options}">
-                                                    <h4 class="collection-item"><i class="far fa-square fa-2x"></i>
-                                                        <span th:text="${option}">Option</span></h4>
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).MULTIPLE_CHOICE}" style="page-break-inside: avoid;">
+                                                <div class="collection" th:each="option : ${question.params.options}" style="page-break-inside: avoid;">
+                                                    <h4 class="collection-item" style="page-break-after: avoid;"><i class="far fa-square fa-2x"></i>
+                                                        <span th:text="${option}" style="page-break-after: avoid;">Option</span></h4>
                                                 </div>
                                             </div>
                                             <div class="col s12 m12 l12"
-                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).SCALE}">
-                                                <div class="collection">
-                                                    <h5 style="border: 2px solid;" class="collection-item"><i
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).SCALE}" style="page-break-inside: avoid;">
+                                                <div class="collection" style="page-break-inside: avoid;">
+                                                    <h5 style="border: 2px solid; page-break-after: avoid;" class="collection-item"><i
                                                             class="fas fa-calculator fa-2x"></i> <a
                                                             class="btn grey darken-4 white-text"
                                                             th:text="'('+${question.params.minValue} +' - '+ ${question.params.maxValue}+')'">min
@@ -127,9 +127,9 @@
                                                 </div>
                                             </div>
                                             <div class="col s12 m12 l12"
-                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).NUMBER}">
-                                                <div class="collection">
-                                                    <h5 style="border: 2px solid;" class="collection-item"><i
+                                                 th:case="${T(pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionTypeEnum).NUMBER}" style="page-break-inside: avoid;">
+                                                <div class="collection" style="page-break-inside: avoid;">
+                                                    <h5 style="border: 2px solid; page-break-after: avoid;" class="collection-item"><i
                                                             class="fas fa-calculator fa-2x"></i> <a
                                                             class="btn grey darken-4 white-text"
                                                             th:text="'('+${question.params.minValue} +' - '+ ${question.params.maxValue}+')'">min
