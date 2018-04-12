@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public class WKSRecruiterException extends Exception implements Serializable {
     public static class Error {
-        private String code;
 
+        private String code;
         private String description;
 
         public Error() {
@@ -98,6 +98,20 @@ public class WKSRecruiterException extends Exception implements Serializable {
 
     public static WKSRecruiterException createTestNotFoundException() {
         return createException("TEST_NOT_FOUND", "Test with such name does not exist.");
+    }
+
+    public static WKSRecruiterException createTestNotFoundException(String testId) {
+        return createException("TEST_NOT_FOUND", "Test with id " + testId + " does not exist.");
+    }
+
+    public static WKSRecruiterException createQuestionNotFoundException(int number, String testId) {
+        return createException("QUESTION_NOT_FOUND", "Question with number " + number
+                + " in test with id " + testId + " does not exists.");
+    }
+
+    public static WKSRecruiterException createQuestionAlreadyExistsException(int questionNumber, String testId) {
+        return createException("QUESTION_ALREADY_EXISTS", "Question with number " + questionNumber
+                + " already exists in test with id " + testId + ".");
     }
 
     @Override
