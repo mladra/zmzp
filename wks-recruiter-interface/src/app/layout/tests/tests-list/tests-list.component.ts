@@ -8,7 +8,6 @@ import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
 
-
 @Component({
   selector: 'app-tests-list',
   templateUrl: './tests-list.component.html',
@@ -108,4 +107,6 @@ export class TestsListComponent implements OnInit {
     );
   }
 
+  pdf(test: Test) { this.testsService.getPDF(test.id); }
+  xls(test: Test) { this.testsService.getXLS(test.id); }
 }
