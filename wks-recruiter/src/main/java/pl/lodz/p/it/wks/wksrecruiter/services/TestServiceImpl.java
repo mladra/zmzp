@@ -3,20 +3,23 @@ package pl.lodz.p.it.wks.wksrecruiter.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TestServiceImpl implements TestService {
 
+    @Autowired
     private final TestsRepository testsRepository;
 
+    @Autowired
     private final PositionsRepository positionsRepository;
 
     @Autowired
@@ -71,4 +74,75 @@ public class TestServiceImpl implements TestService {
     public Iterable<Test> getTests() {
         return testsRepository.findAll();
     }
+
+    @Override
+    public Test addQuestionsToTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) {
+            Collection<Integer> questionNums = test.get()
+                    .getQuestions()
+                    .stream()
+                    .map(QuestionInfo::getQuestionNumber)
+                    .collect(Collectors.toList());
+
+            for (QuestionInfo question : questions) {
+                if (questionNums.contains(question.getQuestionNumber())) {
+                    throw WKSRecruiterException.createQuestionAlreadyExistsException(question.getQuestionNumber(), testId);
+                }
+                test.get().getQuestions().add(question);
+            }
+            this.testsRepository.save(test.get());
+            return test.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
+    }
+
+    @Override
+    public Test modifyQuestionsInTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) {
+            for (QuestionInfo question : questions) {
+                Optional<QuestionInfo> foundQuestion = test.get()
+                        .getQuestions()
+                        .stream()
+                        .filter(t -> t.getQuestionNumber() == question.getQuestionNumber()).findFirst();
+
+                if (foundQuestion.isPresent()) {
+                    foundQuestion.get().setQuestionPhrase(question.getQuestionPhrase());
+                    foundQuestion.get().setType(question.getType());
+                    foundQuestion.get().setParams(question.getParams());
+                } else {
+                    throw WKSRecruiterException.createQuestionNotFoundException(question.getQuestionNumber(), testId);
+                }
+            }
+
+            testsRepository.save(test.get());
+            return test.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
+    }
+
+    @Override
+    public Test removeQuestionsFromTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) {
+            for (QuestionInfo question : questions) {
+                test.get().getQuestions().removeIf(q -> q.getQuestionNumber() == question.getQuestionNumber());
+            }
+
+            testsRepository.save(test.get());
+            return test.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
+    }
+
+	@Override
+	public Test getTestById(String testId) throws WKSRecruiterException {
+        Optional<Test> test = this.testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) return test.get();
+        else throw WKSRecruiterException.createTestNotFoundException();
+	}
 }

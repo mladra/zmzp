@@ -3,6 +3,7 @@ package pl.lodz.p.it.wks.wksrecruiter.collections;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 
 import java.util.Collection;
 
@@ -13,7 +14,6 @@ public class Test {
     @DBRef
     private Account author;
     private String name;
-    private int maxPoints;
     private String language;
     private boolean isActive;
     private Collection<QuestionInfo> questions;
@@ -24,7 +24,6 @@ public class Test {
         return "Test{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", maxPoints=" + maxPoints +
                 ", language='" + language + '\'' +
                 ", questions=" + questions +
                 ", positions=" + positions +
@@ -32,22 +31,20 @@ public class Test {
     }
     public Test(){}
 
-    public Test(String id, Account author, String name, int maxPoints, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
+    public Test(String id, Account author, String name, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
         this.id = id;
         this.author = author;
         this.name = name;
-        this.maxPoints = maxPoints;
         this.language = language;
         this.isActive = isActive;
         this.questions = questions;
         this.positions = positions;
     }
 
-    public Test(Account author, String name, int maxPoints, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
+    public Test(Account author, String name, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
 
         this.author = author;
         this.name = name;
-        this.maxPoints = maxPoints;
         this.language = language;
         this.isActive = isActive;
         this.questions = questions;
@@ -58,8 +55,6 @@ public class Test {
     public void setId(String id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public int getMaxPoints() { return maxPoints; }
-    public void setMaxPoints(int maxPoints) { this.maxPoints = maxPoints; }
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }
     public Collection<QuestionInfo> getQuestions() { return questions; }
