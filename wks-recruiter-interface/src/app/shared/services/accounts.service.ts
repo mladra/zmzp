@@ -31,4 +31,8 @@ export class AccountsService {
     deleteAccount(login) {
         return this.http.put(this.rootUrl + '/delete/' + login, null, {observe: 'response'});
     }
+
+    register(account) {
+        return this.http.post(this.rootUrl + '/register', account, {observe: 'response'});
+    }
 }
