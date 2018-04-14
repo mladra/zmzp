@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
     email: string;
     password: string;
     errorMessage: string;
+    registerSuccess: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -24,6 +25,11 @@ export class LoginComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.route.queryParams.subscribe(params => {
+            if (params.signup) {
+                this.registerSuccess = 'Account registered successfully. You can now log in.';
+            }
+          });
         this.authenticationService.logout();
     }
 

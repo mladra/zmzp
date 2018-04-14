@@ -4,12 +4,14 @@ import { FormsModule, NgForm } from '@angular/forms';
 
 import { SignupRoutingModule } from './signup-routing.module';
 import { SignupComponent } from './signup.component';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
     SignupRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbAlertModule.forRoot()
   ],
   declarations: [SignupComponent]
 })
