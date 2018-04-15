@@ -1,0 +1,36 @@
+ul.my {
+    padding-left: 20px !important;
+    list-style: none !important;
+    margin-top: 0px;
+}
+
+ul.my li {
+    position: relative;
+    max-width: 100%;
+    word-wrap:break-word;
+}
+ul.my li:before {
+    position: absolute;
+    left: -15px;
+    top: 0px;
+    content: '';
+    display: block;
+    border-left: 1px solid #ddd;
+    height: 1em;
+    border-bottom: 1px solid #ddd;
+    width: 10px;
+}
+
+ul.my li:after {
+    position: absolute;
+    left: -15px;
+    bottom: -7px;
+    content: '';
+    display: block;
+    border-left: 1px solid #ddd;
+    height: 100%;
+}
+
+ul.my li:last-child:after {
+    display: none
+}

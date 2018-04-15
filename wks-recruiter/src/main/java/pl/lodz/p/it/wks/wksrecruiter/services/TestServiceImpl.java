@@ -4,6 +4,7 @@ import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.*;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
@@ -11,14 +12,16 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TestServiceImpl implements TestService {
 
+    @Autowired
     private final TestsRepository testsRepository;
 
+    @Autowired
     private final PositionsRepository positionsRepository;
 
     @Autowired
@@ -74,15 +77,12 @@ public class TestServiceImpl implements TestService {
         return testsRepository.findAll();
     }
 
-    @Override
-    public Test getTest(String testId) throws WKSRecruiterException {
-        Optional<Test> test = testsRepository.findById(testId);
-        if (test.isPresent() && test.get().isActive()) {
-            return test.get();
-        } else {
-            throw WKSRecruiterException.createTestNotFoundException(testId);
-        }
-    }
+	@Override
+	public Test getTestById(String testId) throws WKSRecruiterException {
+        Optional<Test> test = this.testsRepository.findById(testId);
+        if (test.isPresent() && test.get().isActive()) return test.get();
+        else throw WKSRecruiterException.createTestNotFoundException();
+	}
 
     @Override
     public Test setTestQuestions(String testId, List<QuestionInfo> questions) throws WKSRecruiterException {
