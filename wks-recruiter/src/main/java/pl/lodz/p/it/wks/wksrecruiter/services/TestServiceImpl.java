@@ -99,7 +99,7 @@ public class TestServiceImpl implements TestService {
             testsRepository.save(test.get());
             return test.get();
         } else {
-            throw WKSRecruiterException.createTestNotFoundException(testId);
+            throw WKSRecruiterException.createTestNotFoundException();
         }
     }
 
