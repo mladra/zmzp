@@ -9,7 +9,7 @@ public enum QuestionTypeEnum {
     NUMBER("NUMBER");
     private final String type;
     QuestionTypeEnum(String type) { this.type = type; }
-    
+
     @Override
     public String toString() { return this.type;}
 }

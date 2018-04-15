@@ -1,33 +1,14 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections.questions;
 
-public class ScaleQuestionParams extends AbstractQuestionParams {
+public class ScaleQuestionParams extends NumberQuestionParams {
 
-    private double minValue;
-    private double maxValue;
     private double step;
 
     public ScaleQuestionParams() {}
 
     public ScaleQuestionParams(double minValue, double maxValue, double step) {
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        super(minValue, maxValue);
         this.step = step;
-    }
-
-    public double getMinValue() {
-        return minValue;
-    }
-
-    public void setMinValue(double minValue) {
-        this.minValue = minValue;
-    }
-
-    public double getMaxValue() {
-        return maxValue;
-    }
-
-    public void setMaxValue(double maxValue) {
-        this.maxValue = maxValue;
     }
 
     public double getStep() {
