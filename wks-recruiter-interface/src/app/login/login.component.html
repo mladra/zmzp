@@ -8,14 +8,14 @@
                     <div class="form-group">
                         <input type="text" [(ngModel)]="email" name="email" class="form-control input-underline input-lg" placeholder="Email">
                     </div>
-                    
+
                     <div class="form-group">
                         <input type="password" [(ngModel)]="password" name="password" class="form-control input-underline input-lg" placeholder="Password">
                     </div>
                 </div>
                 <ngb-alert class="custom-alert" *ngIf="errorMessage" [type]="error" (close)="errorMessage = null">{{ errorMessage }}</ngb-alert>
                 <ngb-alert class="alert-success" *ngIf="registerSuccess" [type]="success" (close)="registerSuccess = null">{{registerSuccess}}</ngb-alert>
-                <a class="btn rounded-btn" (click)="login()"> Log in </a>
+                <button type="submit" class="btn rounded-btn" (click)="login()"> Log in </button>
                 &nbsp;
                 <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a>
             </form>
