@@ -1,8 +1,8 @@
-import { Account } from "./account";
-import { Position } from "./position";
-import { QuestionInfo } from "./question.info";
+import { Account } from './account';
+import { Position } from './position';
+import { QuestionInfo } from './question.info';
 
-export class Test{
+export class Test {
     id: string;
     author: Account;
     name: string;

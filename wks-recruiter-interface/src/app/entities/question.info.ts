@@ -1,10 +1,14 @@
-import { Account } from "./account";
-import { Position } from "./position";
-import { QuestionTypeEnum } from "./question.type.enum";
+import { Account } from './account';
+import { Position } from './position';
+import { QuestionTypeEnum } from './question.type.enum';
 
 export class QuestionInfo {
-    private questionNumber: Number;
-    private questionPhrase: String;
-    private type: QuestionTypeEnum;
-    private params: any;
+    questionNumber: Number;
+    questionPhrase: String;
+    type: string;
+    params: any;
+
+    constructor() {
+        this.type = 'NONE';
+    }
 }
