@@ -27,19 +27,23 @@
                 <th>Test</th>
                 <th>Active</th>
                 <th>Positions</th>
+                <th>Questions</th>
                 <th>Export</th>
-                <th></th>
+                <th>Actions</th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let test of tests; let i=index">
+              <tr *ngFor="let test of tests; let i = index;">
                 <td>{{i}}</td>
-                <td style="width: 25%">{{test.name}}</td>
+                <td>{{test.name}}</td>
                 <td>{{test.active ? 'Yes' : 'No'}}</td>
-                <td style="width:50%">
-                  <span *ngFor="let position of test.positions; let j=index">{{(j>0 ? ", "+position.name : " "+position.name)}}</span>
+                <td>
+                  <span *ngFor="let position of test.positions; let j=index">{{(j>0 ? ", "+position.name : " "+position.name) | lowercase}}</span>
+                </td>
+                <td>
+                  <button (click)="goToQuestions(test.id)" class="btn btn-sm btn-warning" [disabled]="!test.active">Edit</button>
                 </td>
                 <td>
                   <div class="btn-group">

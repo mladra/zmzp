@@ -7,6 +7,8 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-tests-list',
@@ -25,7 +27,8 @@ export class TestsListComponent implements OnInit {
   constructor(private alertsService: AlertsService,
     private testsService: TestsService,
     private positionsService: PositionsService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -104,6 +107,10 @@ export class TestsListComponent implements OnInit {
         this.alertsService.addAlert('danger', 'Error occurred while loading tests.');
       }
     );
+  }
+
+  goToQuestions(id) {
+    this.router.navigate(['tests/details', id]);
   }
 
   pdf(test: Test) { this.testsService.getPDF(test.id, test.name); }

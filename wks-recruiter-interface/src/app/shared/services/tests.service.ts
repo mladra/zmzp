@@ -30,6 +30,10 @@ export class TestsService {
     return this.http.get(this.rootUrl, { observe: 'response' });
   }
 
+  getById(id) {
+    return this.http.get(this.rootUrl + "/" + id, { observe: 'response' });
+  }
+
   getPDF(testId: String, testName: String) {
     return this.http.get(this.rootUrl + "/" + testId + "/pdf",
       { responseType: 'blob' }).subscribe(response => {
@@ -45,5 +49,4 @@ export class TestsService {
         saveAs(blob, testName+".xls");
       });
   }
-
 }

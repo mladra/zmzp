@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { CurrentUserService } from './services/current-user.service';
 import { PositionsService } from './shared/services/positions.service';
-import { AuthenticationService, AccountsService } from './shared/services';
+import { AuthenticationService, AccountsService, QuestionsService } from './shared/services';
 import { TokenInterceptor, HttpResponseCodesInterceptor } from './shared/interceptors';
 import { TestsService } from './shared/services/tests.service';
 
@@ -54,7 +54,8 @@ export function createTranslateLoader(http: HttpClient) {
             multi: true
         },
         AccountsService,
-        TestsService
+        TestsService,
+        QuestionsService
     ],
     bootstrap: [AppComponent]
 })
