@@ -111,7 +111,7 @@ export class TestQuestionsComponent implements OnInit {
   submit() {
 
     for (const question of this.test.questions) {
-      if (question.type === 'NONE') {
+      if (question.type === 'NONE' || question.maxPoints <= 0) {
         return;
       }
 

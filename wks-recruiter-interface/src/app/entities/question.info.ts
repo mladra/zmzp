@@ -1,10 +1,7 @@
-import { Account } from './account';
-import { Position } from './position';
-import { QuestionTypeEnum } from './question.type.enum';
-
 export class QuestionInfo {
     questionNumber: Number;
     questionPhrase: String;
+    maxPoints: Number;
     type: string;
     params: any;
 
