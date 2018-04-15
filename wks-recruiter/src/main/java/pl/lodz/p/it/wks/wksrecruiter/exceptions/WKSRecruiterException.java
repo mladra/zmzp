@@ -144,10 +144,6 @@ public class WKSRecruiterException extends Exception implements Serializable {
         return createException("TEST_NOT_FOUND", "Test with such name does not exist.");
     }
 
-    public static WKSRecruiterException createTestNotFoundException(String testId) {
-        return createException("TEST_NOT_FOUND", "Test with id " + testId + " does not exist.");
-    }
-
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();
