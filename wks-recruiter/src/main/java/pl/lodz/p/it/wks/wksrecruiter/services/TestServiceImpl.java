@@ -12,6 +12,7 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -107,6 +108,7 @@ public class TestServiceImpl implements TestService {
 
         checkQuestionType(questionTypes, question, exception);
         checkQuestionPhrase(question, exception);
+        checkQuestionMaxPoints(question, exception);
 
         switch (question.getType()) {
             case SINGLE_CHOICE:
@@ -135,6 +137,12 @@ public class TestServiceImpl implements TestService {
     private void checkQuestionPhrase(QuestionInfo question, WKSRecruiterException exception) {
         if (question.getQuestionPhrase() == null || question.getQuestionPhrase().isEmpty()) {
             exception.add(WKSRecruiterException.Error.createQuestionPhraseError());
+        }
+    }
+
+    private void checkQuestionMaxPoints(QuestionInfo question, WKSRecruiterException exception) {
+        if (question.getMaxPoints() <= 0) {
+            exception.add(WKSRecruiterException.Error.createQuestionMaxPointsError());
         }
     }
 

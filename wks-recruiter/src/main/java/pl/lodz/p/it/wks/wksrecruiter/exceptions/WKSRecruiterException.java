@@ -44,37 +44,44 @@ public class WKSRecruiterException extends Exception implements Serializable {
         }
 
         public static Error createQuestionTypeNotFoundError(String questionType) {
-            return new WKSRecruiterException.Error(
+            return new Error(
                     "QUESTION_TYPE_NOT_FOUND",
                     "Question type with name " + questionType + " doesn't exist.");
         }
 
         public static Error createQuestionPhraseError() {
-            return new WKSRecruiterException.Error(
+            return new Error(
                     "QUESTION_PHRASE_EMPTY",
                     "Question phrase cannot be empty.");
         }
 
+        public static Error createQuestionMaxPointsError() {
+            return new Error(
+                    "INVALID_MAX_POINTS",
+                    "Question max points value has to be greater than 0."
+            );
+        }
+
         public static Error createQuestionSelectionOptionsError() {
-            return new WKSRecruiterException.Error(
+            return new Error(
                     "EMPTY_SELECTION_LIST",
                     "Selection list cannot be empty.");
         }
 
         public static Error createQuestionNumberParamsError() {
-            return new WKSRecruiterException.Error(
+            return new Error(
                     "INVALID_VALUES",
                     "Maximum value has to be greater than minimum value.");
         }
 
         public static Error createQuestionScaleStepError() {
-            return new WKSRecruiterException.Error(
+            return new Error(
                     "INVALID_STEP",
                     "Step has to be lower or equal difference between maximum and minimum value");
         }
 
         public static Error createQuestionScaleMinusStepError() {
-            return new WKSRecruiterException.Error(
+            return new Error(
                     "INVALID_STEP",
                     "Step has to be positive number greater than 0."
             );
