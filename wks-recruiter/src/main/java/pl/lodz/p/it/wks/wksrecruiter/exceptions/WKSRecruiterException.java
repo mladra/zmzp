@@ -42,6 +42,43 @@ public class WKSRecruiterException extends Exception implements Serializable {
         public static Error of(final String code, final String description) {
             return new Error(code, description);
         }
+
+        public static Error createQuestionTypeNotFoundError(String questionType) {
+            return new WKSRecruiterException.Error(
+                    "QUESTION_TYPE_NOT_FOUND",
+                    "Question type with name " + questionType + " doesn't exist.");
+        }
+
+        public static Error createQuestionPhraseError() {
+            return new WKSRecruiterException.Error(
+                    "QUESTION_PHRASE_EMPTY",
+                    "Question phrase cannot be empty.");
+        }
+
+        public static Error createQuestionSelectionOptionsError() {
+            return new WKSRecruiterException.Error(
+                    "EMPTY_SELECTION_LIST",
+                    "Selection list cannot be empty.");
+        }
+
+        public static Error createQuestionNumberParamsError() {
+            return new WKSRecruiterException.Error(
+                    "INVALID_VALUES",
+                    "Maximum value has to be greater than minimum value.");
+        }
+
+        public static Error createQuestionScaleStepError() {
+            return new WKSRecruiterException.Error(
+                    "INVALID_STEP",
+                    "Step has to be lower or equal difference between maximum and minimum value");
+        }
+
+        public static Error createQuestionScaleMinusStepError() {
+            return new WKSRecruiterException.Error(
+                    "INVALID_STEP",
+                    "Step has to be positive number greater than 0."
+            );
+        }
     }
 
     private List<Error> errors = new ArrayList<>();
@@ -102,16 +139,6 @@ public class WKSRecruiterException extends Exception implements Serializable {
 
     public static WKSRecruiterException createTestNotFoundException(String testId) {
         return createException("TEST_NOT_FOUND", "Test with id " + testId + " does not exist.");
-    }
-
-    public static WKSRecruiterException createQuestionNotFoundException(int number, String testId) {
-        return createException("QUESTION_NOT_FOUND", "Question with number " + number
-                + " in test with id " + testId + " does not exists.");
-    }
-
-    public static WKSRecruiterException createQuestionAlreadyExistsException(int questionNumber, String testId) {
-        return createException("QUESTION_ALREADY_EXISTS", "Question with number " + questionNumber
-                + " already exists in test with id " + testId + ".");
     }
 
     @Override

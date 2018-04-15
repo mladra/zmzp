@@ -1,17 +1,18 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
+import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
-import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.*;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -74,76 +75,93 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Test addQuestionsToTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException {
-        Optional<Test> test = testsRepository.findById(testId);
-        if (test.isPresent() && test.get().isActive()) {
-            Collection<Integer> questionNums = test.get()
-                    .getQuestions()
-                    .stream()
-                    .map(QuestionInfo::getQuestionNumber)
-                    .collect(Collectors.toList());
-
-            for (QuestionInfo question : questions) {
-                if (questionNums.contains(question.getQuestionNumber())) {
-                    throw WKSRecruiterException.createQuestionAlreadyExistsException(question.getQuestionNumber(), testId);
-                }
-                test.get().getQuestions().add(question);
-            }
-            this.testsRepository.save(test.get());
-            return test.get();
-        } else {
-            throw WKSRecruiterException.createTestNotFoundException();
-        }
-    }
-
-    @Override
-    public Test modifyQuestionsInTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException {
-        Optional<Test> test = testsRepository.findById(testId);
-        if (test.isPresent() && test.get().isActive()) {
-            for (QuestionInfo question : questions) {
-                Optional<QuestionInfo> foundQuestion = test.get()
-                        .getQuestions()
-                        .stream()
-                        .filter(t -> t.getQuestionNumber() == question.getQuestionNumber()).findFirst();
-
-                if (foundQuestion.isPresent()) {
-                    foundQuestion.get().setQuestionPhrase(question.getQuestionPhrase());
-                    foundQuestion.get().setType(question.getType());
-                    foundQuestion.get().setParams(question.getParams());
-                } else {
-                    throw WKSRecruiterException.createQuestionNotFoundException(question.getQuestionNumber(), testId);
-                }
-            }
-
-            testsRepository.save(test.get());
-            return test.get();
-        } else {
-            throw WKSRecruiterException.createTestNotFoundException();
-        }
-    }
-
-    @Override
-    public Test removeQuestionsFromTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException {
-        Optional<Test> test = testsRepository.findById(testId);
-        if (test.isPresent() && test.get().isActive()) {
-            for (QuestionInfo question : questions) {
-                test.get().getQuestions().removeIf(q -> q.getQuestionNumber() == question.getQuestionNumber());
-            }
-
-            testsRepository.save(test.get());
-            return test.get();
-        } else {
-            throw WKSRecruiterException.createTestNotFoundException();
-        }
-    }
-
-    @Override
     public Test getTest(String testId) throws WKSRecruiterException {
         Optional<Test> test = testsRepository.findById(testId);
         if (test.isPresent() && test.get().isActive()) {
             return test.get();
         } else {
             throw WKSRecruiterException.createTestNotFoundException(testId);
+        }
+    }
+
+    @Override
+    public Test setTestQuestions(String testId, List<QuestionInfo> questions) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        List questionTypes = Collections.arrayToList(QuestionTypeEnum.values());
+        if (test.isPresent()) {
+            for (int i = 0; i < questions.size(); i++) {
+                validateQuestion(questionTypes, questions.get(i));
+                questions.get(i).setQuestionNumber(i + 1);
+            }
+
+            test.get().setQuestions(questions);
+            testsRepository.save(test.get());
+            return test.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException(testId);
+        }
+    }
+
+    private void validateQuestion(List questionTypes, QuestionInfo question) throws WKSRecruiterException {
+        WKSRecruiterException exception = new WKSRecruiterException();
+
+        checkQuestionType(questionTypes, question, exception);
+        checkQuestionPhrase(question, exception);
+
+        switch (question.getType()) {
+            case SINGLE_CHOICE:
+            case MULTIPLE_CHOICE:
+                checkQuestionSelectionOptions(question, exception);
+                break;
+            case NUMBER:
+                checkQuestionNumberParams(question, exception);
+                break;
+            case SCALE:
+                checkQuestionNumberParams(question, exception);
+                checkQuestionScaleParams(question, exception);
+        }
+
+        if (!exception.getErrors().isEmpty()) {
+            throw exception;
+        }
+    }
+
+    private void checkQuestionType(List questionTypes, QuestionInfo question, WKSRecruiterException exception) {
+        if (!questionTypes.contains(question.getType())) {
+            exception.add(WKSRecruiterException.Error.createQuestionTypeNotFoundError(question.getType().name()));
+        }
+    }
+
+    private void checkQuestionPhrase(QuestionInfo question, WKSRecruiterException exception) {
+        if (question.getQuestionPhrase() == null || question.getQuestionPhrase().isEmpty()) {
+            exception.add(WKSRecruiterException.Error.createQuestionPhraseError());
+        }
+    }
+
+    private void checkQuestionSelectionOptions(QuestionInfo question, WKSRecruiterException exception) {
+        SelectionQuestionParams selectionParams = (SelectionQuestionParams) question.getParams();
+        if (selectionParams.getOptions() == null || selectionParams.getOptions().isEmpty()) {
+            exception.add(WKSRecruiterException.Error.createQuestionSelectionOptionsError());
+        }
+    }
+
+    private void checkQuestionNumberParams(QuestionInfo question, WKSRecruiterException exception) {
+        NumberQuestionParams numberParams = (NumberQuestionParams) question.getParams();
+        if (numberParams.getMinValue() > numberParams.getMaxValue()) {
+            exception.add(WKSRecruiterException.Error.createQuestionNumberParamsError());
+        }
+    }
+
+    private void checkQuestionScaleParams(QuestionInfo question, WKSRecruiterException exception) {
+        ScaleQuestionParams scaleParams = (ScaleQuestionParams) question.getParams();
+
+        if (scaleParams.getStep() <= 0) {
+            exception.add(WKSRecruiterException.Error.createQuestionScaleMinusStepError());
+        }
+
+        if ((scaleParams.getStep() > scaleParams.getMaxValue() - scaleParams.getMinValue()) &&
+                scaleParams.getMaxValue() >= scaleParams.getMinValue()) {
+            exception.add(WKSRecruiterException.Error.createQuestionScaleStepError());
         }
     }
 }
