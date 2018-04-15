@@ -1,7 +1,7 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
-import com.mongodb.DuplicateKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
@@ -9,10 +9,7 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -135,5 +132,11 @@ public class AccountServiceImpl implements AccountService {
         accounts = accounts.stream().filter(Account::getEnabled).collect(Collectors.toList());
         accounts.forEach(account -> account.setPassword(null));
         return accounts;
+    }
+
+    @Override
+    public Account register(Account account) throws WKSRecruiterException {
+        account.setRoles(Collections.singletonList(RolesEnum.CAN.toString()));
+        return createAccount(account);
     }
 }

@@ -8,14 +8,16 @@ import java.util.Map;
 public class QuestionInfo {
 
     private int questionNumber;
+    private int maxPoints;
     private String questionPhrase;
     private QuestionTypeEnum type;
     private AbstractQuestionParams params;
 
     public QuestionInfo(){}
 
-    public QuestionInfo(int questionNumber, String questionPhrase, QuestionTypeEnum type, AbstractQuestionParams params) {
+    public QuestionInfo(int questionNumber, int maxPoints, String questionPhrase, QuestionTypeEnum type, AbstractQuestionParams params) {
         this.questionNumber = questionNumber;
+        this.maxPoints = maxPoints;
         this.questionPhrase = questionPhrase;
         this.type = type;
         this.params = params;
@@ -33,16 +35,25 @@ public class QuestionInfo {
                 this.params = new SelectionQuestionParams(options);
                 break;
             case SCALE:
-                double minValueScale = (double) params.get("minValue");
-                double maxValueScale = (double) params.get("maxValue");
-                double stepScale = (double) params.get("step");
+                double minValueScale = convertToDouble("minValue", params);
+                double maxValueScale = convertToDouble("maxValue", params);
+                double stepScale = convertToDouble("step", params);
                 this.params = new ScaleQuestionParams(minValueScale, maxValueScale, stepScale);
                 break;
             case NUMBER:
-                double minValueNumber = (double) params.get("minValue");
-                double maxValueNumber = (double) params.get("maxValue");
+                double minValueNumber = convertToDouble("minValue", params);
+                double maxValueNumber = convertToDouble("maxValue", params);
                 this.params = new NumberQuestionParams(minValueNumber, maxValueNumber);
                 break;
+        }
+    }
+
+    private double convertToDouble(String key, Map<String,Object> params) {
+        Object value = params.get(key);
+        if (value instanceof Integer) {
+            return ((Integer) value).doubleValue();
+        } else {
+            return (Double) value;
         }
     }
 
@@ -54,4 +65,6 @@ public class QuestionInfo {
     public void setType(QuestionTypeEnum type) { this.type = type; }
     public AbstractQuestionParams getParams() { return params; }
     public void setParams(AbstractQuestionParams params) { this.params = params; }
+    public int getMaxPoints() { return maxPoints; }
+    public void setMaxPoints(int maxPoints) { this.maxPoints = maxPoints; }
 }

@@ -112,4 +112,7 @@ export class TestsListComponent implements OnInit {
   goToQuestions(id) {
     this.router.navigate(['tests/details', id]);
   }
+
+  pdf(test: Test) { this.testsService.getPDF(test.id, test.name); }
+  xls(test: Test) { this.testsService.getXLS(test.id, test.name); }
 }

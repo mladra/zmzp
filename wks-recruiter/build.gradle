@@ -28,8 +28,12 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile("io.jsonwebtoken:jjwt:0.7.0")
+	compile group: 'org.xhtmlrenderer', name: 'flying-saucer-core', version: '9.1.12'
+	compile group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf-itext5', version: '9.1.12'
 	compile('com.google.code.gson:gson:2.8.2')
+	compile group: 'org.apache.poi', name: 'poi', version: '3.17'
 	runtime('org.springframework.boot:spring-boot-devtools')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')

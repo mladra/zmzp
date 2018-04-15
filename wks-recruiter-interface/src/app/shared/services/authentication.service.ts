@@ -25,6 +25,7 @@ export class AuthenticationService {
         if (localStorage.getItem('Token')) {
             this.http.post(this.rootUrl + '/logout', null, { observe: 'response' }).subscribe();
             localStorage.removeItem('Token');
+            window.location.assign("http://localhost:4200");
         }
     }
 
