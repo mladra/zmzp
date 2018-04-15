@@ -1,2 +1,30 @@
 // shared css for the login and signup page
 @import "../login/login.component.scss";
+
+form {
+    margin-top: -30px;
+}
+
+div.form-content {
+    margin-bottom: -40px;
+}
+
+button.rounded-btn {
+    margin-top: 15px;
+    width: 120px;
+}
+
+.register-form-alert {
+    color: red;
+    text-align: left;
+    padding: 15px 0 0 10px;
+    margin-bottom: -20px;
+}
+
+.register-form-border-alert {
+    border-bottom-color: red !important;
+}
+
+.register-form-border-success {
+    border-bottom-color: green !important;
+}
