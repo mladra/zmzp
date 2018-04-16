@@ -114,6 +114,10 @@ public class WKSRecruiterException extends Exception implements Serializable {
                 + " already exists in test with id " + testId + ".");
     }
 
+    public static WKSRecruiterException createAcessDeniedException() {
+        return createException("FORBIDDEN", "Access denied");
+    }
+
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();

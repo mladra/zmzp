@@ -3,7 +3,7 @@ import { routerTransition } from '../../../router.animations';
 import { Test } from '../../../entities/test';
 import { TestsService } from '../../../shared/services/tests.service';
 import { AlertsService } from '../../../services/alerts.service';
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
@@ -34,7 +34,7 @@ export class TestsListComponent implements OnInit {
       data => {
         const positionString = JSON.stringify(data.body);
         this.allPositions = JSON.parse(positionString);
-        var that = this;
+        const that = this;
         this.allPositionNames = [];
         this.allPositions.forEach(x => that.allPositionNames.push(x.name));
       },
@@ -46,14 +46,14 @@ export class TestsListComponent implements OnInit {
 
   addPositions(test: Test) {
     if (test.active === true) {
-      var that = this;
+      const that = this;
       that.testPositionNames = [];
-      test.positions.forEach(x => { that.testPositionNames.push(x.name) });
+      test.positions.forEach(x => { that.testPositionNames.push(x.name); });
       this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
       console.log(this.positionsToAdd);
       const modalRef = this.modalService.open(TestsModificationComponent);
       modalRef.componentInstance.name = 'Add positions to test';
-      //true means we are adding roles
+      // true means we are adding roles
       modalRef.componentInstance.setTestAndPositions(test, this.positionsToAdd, true);
       modalRef.componentInstance.emitter.subscribe(
         refresh => {
@@ -65,12 +65,12 @@ export class TestsListComponent implements OnInit {
 
   removePositions(test: Test) {
     if (test.active === true) {
-      var that = this;
+      const that = this;
       that.testPositionNames = [];
-      test.positions.forEach(x => { that.testPositionNames.push(x.name) });
+      test.positions.forEach(x => { that.testPositionNames.push(x.name); });
       const modalRef = this.modalService.open(TestsModificationComponent);
-      modalRef.componentInstance.name = "Remove positions from test";
-      //false means we are removing roles
+      modalRef.componentInstance.name = 'Remove positions from tes';
+      // false means we are removing roles
       modalRef.componentInstance.setTestAndPositions(test, this.testPositionNames, false);
       modalRef.componentInstance.emitter.subscribe(
         refresh => {
@@ -84,7 +84,7 @@ export class TestsListComponent implements OnInit {
     if (test.active === true) {
       this.testsService.deleteTest(test.id).subscribe(
         response => {
-          this.alertsService.addAlert('success', 'Successfully removed '+test.name+' test');
+          this.alertsService.addAlert('success', 'Successfully removed ' + test.name + ' test');
           this.getAllTests();
         },
         error => {
@@ -94,7 +94,8 @@ export class TestsListComponent implements OnInit {
   }
 
   getAllTests() {
-    this.testsService.getAll().subscribe(
+    // this.testsService.getAll().subscribe(
+    this.testsService.getModeratorTests().subscribe(
       data => {
         const testsString = JSON.stringify(data.body);
         this.tests = JSON.parse(testsString);

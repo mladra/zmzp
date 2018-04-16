@@ -1,10 +1,12 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
-import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
+import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
@@ -71,8 +73,30 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Iterable<Test> getTests() {
+    public Iterable<Test> getModeratorTests() {
         return testsRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Test> getCandidateTests() {
+        return testsRepository.findAllByIsActiveIsTrue();
+    }
+
+    @Override
+    public Iterable<Test> getTests(String role, Authentication authentication) throws WKSRecruiterException {
+        if (role.equals(RolesEnum.CAN.toString())) {
+            if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.CAN.toString()))) {
+                throw WKSRecruiterException.createAcessDeniedException();
+            }
+            return testsRepository.findAllByIsActiveIsTrue();
+        } else if (role.equals(RolesEnum.MOD.toString())) {
+            if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.MOD.toString()))) {
+                throw WKSRecruiterException.createAcessDeniedException();
+            }
+            return testsRepository.findAll();
+        } else {
+            throw WKSRecruiterException.createException("ROLE_NOT_FOUND", "Such role does not exist.");
+        }
     }
 
     @Override
@@ -139,10 +163,10 @@ public class TestServiceImpl implements TestService {
         }
     }
 
-	@Override
-	public Test getTestById(String testId) throws WKSRecruiterException {
+    @Override
+    public Test getTestById(String testId) throws WKSRecruiterException {
         Optional<Test> test = this.testsRepository.findById(testId);
         if (test.isPresent() && test.get().isActive()) return test.get();
         else throw WKSRecruiterException.createTestNotFoundException();
-	}
+    }
 }
