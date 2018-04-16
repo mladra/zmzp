@@ -14,10 +14,6 @@ public interface TestService {
 
     Test deleteTest(String testId) throws WKSRecruiterException;
 
-    Iterable<Test> getModeratorTests();
-
-    Iterable<Test> getCandidateTests();
-
     Iterable<Test> getTests(String role, Authentication authentication) throws WKSRecruiterException;
 
     Test getTestById(String testId) throws WKSRecruiterException;

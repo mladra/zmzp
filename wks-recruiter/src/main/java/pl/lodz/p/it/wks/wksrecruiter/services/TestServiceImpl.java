@@ -73,16 +73,6 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Iterable<Test> getModeratorTests() {
-        return testsRepository.findAll();
-    }
-
-    @Override
-    public Iterable<Test> getCandidateTests() {
-        return testsRepository.findAllByIsActiveIsTrue();
-    }
-
-    @Override
     public Iterable<Test> getTests(String role, Authentication authentication) throws WKSRecruiterException {
         if (role.equals(RolesEnum.CAN.toString())) {
             if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.CAN.toString()))) {

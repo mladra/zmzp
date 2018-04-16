@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 @RestController
-//@RequestMapping(value = "/tests")
+@RequestMapping(value = "/tests")
 public class TestController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class TestController {
         this.testService = testService;
     }
 
-    @RequestMapping(value = "/tests/addQuestions/{testId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/addQuestions/{testId}", method = RequestMethod.PUT)
     public ResponseEntity addQuestions(@PathVariable String testId, @RequestBody Collection<QuestionInfo> questions) {
         try {
             return ResponseEntity.ok(testService.addQuestionsToTest(testId, questions));
@@ -46,7 +46,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/modifyQuestions/{testId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/modifyQuestions/{testId}", method = RequestMethod.PUT)
     public ResponseEntity modifyQuestions(@PathVariable String testId, @RequestBody Collection<QuestionInfo> questions) {
         try {
             return ResponseEntity.ok(testService.modifyQuestionsInTest(testId, questions));
@@ -57,7 +57,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/removeQuestion/{testId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/removeQuestion/{testId}", method = RequestMethod.PUT)
     public ResponseEntity removeQuestions(@PathVariable String testId, @RequestBody Collection<QuestionInfo> questions) {
         try {
             return ResponseEntity.ok(testService.removeQuestionsFromTest(testId, questions));
@@ -68,7 +68,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/addPosition/{testId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/addPosition/{testId}", method = RequestMethod.PUT)
     public ResponseEntity addPosition(@PathVariable String testId, @RequestBody Collection<String> positionNames) {
         try {
             return ResponseEntity.ok(testService.addPositionsToTest(positionNames, testId));
@@ -79,7 +79,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/removePosition/{testId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/removePosition/{testId}", method = RequestMethod.PUT)
     public ResponseEntity removePosition(@PathVariable String testId, @RequestBody Collection<String> positionNames) {
         try {
             return ResponseEntity.ok(testService.removePositionsFromTest(positionNames, testId));
@@ -90,7 +90,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/{testId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{testId}", method = RequestMethod.DELETE)
     public ResponseEntity removeTest(@PathVariable String testId) {
         try {
             return ResponseEntity.ok(testService.deleteTest(testId));
@@ -101,7 +101,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/{testId}/pdf", method = RequestMethod.GET)
+    @RequestMapping(value = "/{testId}/pdf", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity generatePdf(@PathVariable String testId) {
         try {
@@ -117,7 +117,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getTests(@RequestParam String role, Authentication authentication) {
         try {
             return ResponseEntity.ok(testService.getTests(role, authentication));
@@ -129,17 +129,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "candidate-tests", method = RequestMethod.GET)
-    public ResponseEntity getCandidateTests() {
-        return ResponseEntity.ok(testService.getCandidateTests());
-    }
-
-    @RequestMapping(value = "moderator-tests", method = RequestMethod.GET)
-    public ResponseEntity getModeratorTests() {
-        return ResponseEntity.ok(testService.getModeratorTests());
-    }
-
-    @RequestMapping(value = "/tests/{testId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{testId}", method = RequestMethod.GET)
     public ResponseEntity getTest(@PathVariable String testId) {
         try {
             return ResponseEntity.ok(testService.getTestById(testId));
@@ -150,7 +140,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/tests/{testId}/xls", method = RequestMethod.GET)
+    @RequestMapping(value = "/{testId}/xls", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity generateXLS(@PathVariable String testId) {
         try {

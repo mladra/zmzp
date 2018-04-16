@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.config.security.JWTAuthenticationFilter;
 import pl.lodz.p.it.wks.wksrecruiter.config.security.JWTAuthorizationFilter;
 import pl.lodz.p.it.wks.wksrecruiter.config.security.WKSLogoutHandler;

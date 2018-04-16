@@ -16,7 +16,7 @@ import { Position } from '../../../entities/position';
 })
 export class TestsListComponent implements OnInit {
 
-  public tests: Array<Test>;
+  public tests: any;
   private allPositions: Array<Position>;
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
@@ -97,8 +97,9 @@ export class TestsListComponent implements OnInit {
     // this.testsService.getAll().subscribe(
     this.testsService.getModeratorTests().subscribe(
       data => {
-        const testsString = JSON.stringify(data.body);
-        this.tests = JSON.parse(testsString);
+        this.tests = data;
+        // const testsString = JSON.stringify(data.body);
+        // this.tests = JSON.parse(testsString);
       },
       error => {
         console.log(error);
