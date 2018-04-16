@@ -8,7 +8,6 @@ import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
 
-
 @Component({
   selector: 'app-tests-list',
   templateUrl: './tests-list.component.html',
@@ -38,7 +37,6 @@ export class TestsListComponent implements OnInit {
         var that = this;
         this.allPositionNames = [];
         this.allPositions.forEach(x => that.allPositionNames.push(x.name));
-        console.log(this.allPositionNames);
       },
       error => {
         console.log(error);
@@ -108,4 +106,6 @@ export class TestsListComponent implements OnInit {
     );
   }
 
+  pdf(test: Test) { this.testsService.getPDF(test.id, test.name); }
+  xls(test: Test) { this.testsService.getXLS(test.id, test.name); }
 }
