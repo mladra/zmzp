@@ -44,7 +44,7 @@ export class TestQuestionsComponent implements OnInit {
           this.test = data.body as Test;
         },
         error => {
-          this.alertsService.addAlert('danger', error.error);
+          this.alertsService.addAlert('danger', "Couldn't retrieve test questions from server.");
         }
       );
     });
@@ -122,8 +122,8 @@ export class TestQuestionsComponent implements OnInit {
       }
 
       if (question.type === 'SCALE') {
-        if (question.params.step <= 0 || question.params.step > ((question.params.maxValue - question.params.minValue) &&
-          (question.params.maxValue > question.params.minValue))) {
+        if (question.params.step <= 0 || (question.params.step > question.params.maxValue - question.params.minValue &&
+          question.params.maxValue > question.params.minValue)) {
           return;
         }
       }
