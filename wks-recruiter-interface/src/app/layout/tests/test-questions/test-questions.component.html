@@ -209,8 +209,8 @@
                     <div class="col-5">
                       <input type="number" class="w-75 form-control input-underline input-md" placeholder="Step" name="{{j}}ScaleQuestionStep"
                         [(ngModel)]="question.params.step" required #step="ngModel" [ngClass]="{'border border-danger': questionsForm.submitted && 
-                        (step.invalid || question.params.step <= 0 || question.params.step > ((question.params.maxValue - question.params.minValue) && 
-                        question.params.maxValue >= question.params.minValue))}">
+                        (step.invalid || question.params.step <= 0 || question.params.step > (question.params.maxValue - question.params.minValue) && 
+                        question.params.maxValue >= question.params.minValue)}">
                     </div>
                     <div class="col-5">
                       <div *ngIf="questionsForm.submitted">
@@ -218,9 +218,9 @@
                           Step value is required.
                         </div>
                         <div *ngIf="question.params.step <= 0" class="text-danger pt-1">
-                          Step value has to be positive number and greater than zero.
+                          Step value has to be positive number.
                         </div>
-                        <div *ngIf="question.params.step > ((question.params.maxValue - question.params.minValue) && question.params.maxValue >= question.params.minValue)"
+                        <div *ngIf="question.params.step > (question.params.maxValue - question.params.minValue) && question.params.maxValue >= question.params.minValue"
                           class="text-danger pt-1">
                           Step value has to be smaller than difference between max value and min value.
                         </div>
