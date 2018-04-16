@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { routerTransition } from '../router.animations';
 import { Account } from '../entities/account';
 import { AccountsService } from '../shared/services';
-import { AlertsService } from '../services/alerts.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signup',
@@ -14,37 +14,31 @@ export class SignupComponent implements OnInit {
 
     @Output() emiter: EventEmitter<Account> = new EventEmitter<Account>();
 
+    errorMessage: string;
     private account: Account;
+    private repeatPassword: string;
 
     constructor(
         private accountService: AccountsService,
-        private alertsService: AlertsService
-    ) { }
+        private router: Router,
+    ) {}
 
     ngOnInit() {
         this.account = new Account();
     }
 
     submit() {
+        if (this.account.password !== this.repeatPassword) {
+            return;
+        }
         this.accountService.register(this.account).subscribe(
             response => {
-                this.alertsService.addAlert('success', 'Successfully created account with email ' + this.account.login);
-                // this.emiter.emit(this.account);
-                // console.log(response);
+                this.router.navigate(['/login'], { queryParams: { signup: true } });
             },
             error => {
-                this.alertsService.addAlert('danger', error.error);
+                this.errorMessage = error.error;
             }
         );
-        // this.positionsService.addPosition(this.position).subscribe(
-        // response => {
-        // this.alertsService.addAlert('success', 'New position: ' + this.position.name + ' added successfully.');
-        // this.emitter.emit(true);
-        // },
-        // error => {
-        // this.alertsService.addAlert('danger', error.error);
-        // }
-        // )
     }
 
 }

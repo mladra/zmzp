@@ -6,6 +6,7 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface TestService {
     Test addPositionsToTest(Collection<String> positionNames, String testId) throws WKSRecruiterException;
@@ -18,9 +19,5 @@ public interface TestService {
 
     Test getTestById(String testId) throws WKSRecruiterException;
 
-    Test addQuestionsToTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException;
-
-    Test modifyQuestionsInTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException;
-
-    Test removeQuestionsFromTest(String testId, Collection<QuestionInfo> questions) throws WKSRecruiterException;
+    Test setTestQuestions(String testId, List<QuestionInfo> questions) throws WKSRecruiterException;
 }

@@ -35,16 +35,25 @@ public class QuestionInfo {
                 this.params = new SelectionQuestionParams(options);
                 break;
             case SCALE:
-                double minValueScale = (double) params.get("minValue");
-                double maxValueScale = (double) params.get("maxValue");
-                double stepScale = (double) params.get("step");
+                double minValueScale = convertToDouble("minValue", params);
+                double maxValueScale = convertToDouble("maxValue", params);
+                double stepScale = convertToDouble("step", params);
                 this.params = new ScaleQuestionParams(minValueScale, maxValueScale, stepScale);
                 break;
             case NUMBER:
-                double minValueNumber = (double) params.get("minValue");
-                double maxValueNumber = (double) params.get("maxValue");
+                double minValueNumber = convertToDouble("minValue", params);
+                double maxValueNumber = convertToDouble("maxValue", params);
                 this.params = new NumberQuestionParams(minValueNumber, maxValueNumber);
                 break;
+        }
+    }
+
+    private double convertToDouble(String key, Map<String,Object> params) {
+        Object value = params.get(key);
+        if (value instanceof Integer) {
+            return ((Integer) value).doubleValue();
+        } else {
+            return (Double) value;
         }
     }
 

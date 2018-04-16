@@ -35,39 +35,6 @@ public class TestController {
         this.testService = testService;
     }
 
-    @RequestMapping(value = "/addQuestions/{testId}", method = RequestMethod.PUT)
-    public ResponseEntity addQuestions(@PathVariable String testId, @RequestBody Collection<QuestionInfo> questions) {
-        try {
-            return ResponseEntity.ok(testService.addQuestionsToTest(testId, questions));
-        } catch (WKSRecruiterException exception) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.toString());
-        } catch (Throwable throwable) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(throwable.toString());
-        }
-    }
-
-    @RequestMapping(value = "/modifyQuestions/{testId}", method = RequestMethod.PUT)
-    public ResponseEntity modifyQuestions(@PathVariable String testId, @RequestBody Collection<QuestionInfo> questions) {
-        try {
-            return ResponseEntity.ok(testService.modifyQuestionsInTest(testId, questions));
-        } catch (WKSRecruiterException exception) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.toString());
-        } catch (Throwable throwable) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(throwable.toString());
-        }
-    }
-
-    @RequestMapping(value = "/removeQuestion/{testId}", method = RequestMethod.PUT)
-    public ResponseEntity removeQuestions(@PathVariable String testId, @RequestBody Collection<QuestionInfo> questions) {
-        try {
-            return ResponseEntity.ok(testService.removeQuestionsFromTest(testId, questions));
-        } catch (WKSRecruiterException exception) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.toString());
-        } catch (Throwable throwable) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(throwable.toString());
-        }
-    }
-
     @RequestMapping(value = "/addPosition/{testId}", method = RequestMethod.PUT)
     public ResponseEntity addPosition(@PathVariable String testId, @RequestBody Collection<String> positionNames) {
         try {
