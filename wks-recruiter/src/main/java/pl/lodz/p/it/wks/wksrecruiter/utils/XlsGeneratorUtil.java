@@ -1,6 +1,5 @@
 package pl.lodz.p.it.wks.wksrecruiter.utils;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -12,6 +11,7 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.ScaleQuestionParams;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.SelectionQuestionParams;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -38,10 +38,10 @@ public class XlsGeneratorUtil {
 	
 	public byte[] generate(Test test) throws IOException {
 		byte[] out;
-		ByteOutputStream os = new ByteOutputStream();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Workbook workbook = this.createWorkbook(test);
 		workbook.write(os);
-		out = os.getBytes();
+		out = os.toByteArray();
 		os.close();
 		return out;
 	}
@@ -49,8 +49,7 @@ public class XlsGeneratorUtil {
 	private Workbook createWorkbook(Test test) {
 		Workbook workbook = new HSSFWorkbook();
 		Sheet sheet = workbook.createSheet(test.getName());
-		Row row = null;
-		Cell col = null;
+		Row row;
 		this.initCellStyles(workbook);
 		this.createHeader(sheet, test);
 		row = sheet.createRow(sheet.getLastRowNum()+1);
