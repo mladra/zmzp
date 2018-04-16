@@ -49,7 +49,7 @@ export class TestsService {
         return this.http.get(this.rootUrl, {params: {role: 'Candidate'}});
     }
 
-    getModeratorTests() {
-        return this.http.get(this.rootUrl, {params: {role: 'Moderator'}});
+    getEditorTests() {
+        return this.http.get(this.rootUrl, {params: {role: 'Editor'}});
     }
 }
