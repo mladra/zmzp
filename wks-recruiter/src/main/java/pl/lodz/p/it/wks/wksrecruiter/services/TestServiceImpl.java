@@ -80,11 +80,13 @@ public class TestServiceImpl implements TestService {
                 throw WKSRecruiterException.createAcessDeniedException();
             }
             return testsRepository.findAllByIsActiveIsTrue();
-        } else if (role.equals(RolesEnum.MOD.toString())) {
-            if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.MOD.toString()))) {
+        } else if (role.equals(RolesEnum.EDITOR.toString())) {
+            if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.EDITOR.toString()))) {
                 throw WKSRecruiterException.createAcessDeniedException();
             }
             return testsRepository.findAll();
+        } else if (role.equals(RolesEnum.MOD.toString())) {
+            throw WKSRecruiterException.createAcessDeniedException();
         } else {
             throw WKSRecruiterException.createException("ROLE_NOT_FOUND", "Such role does not exist.");
         }

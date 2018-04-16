@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class TestsListComponent implements OnInit {
 
-  public tests: any;
+  public tests: Array<Test>;
   private allPositions: Array<Position>;
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
@@ -98,9 +98,9 @@ export class TestsListComponent implements OnInit {
 
   getAllTests() {
     // this.testsService.getAll().subscribe(
-    this.testsService.getModeratorTests().subscribe(
+    this.testsService.getEditorTests().subscribe(
       data => {
-        this.tests = data;
+        this.tests = data as Array<Test>;
         // const testsString = JSON.stringify(data.body);
         // this.tests = JSON.parse(testsString);
       },

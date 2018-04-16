@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.config.security.JWTAuthenticationFilter;
 import pl.lodz.p.it.wks.wksrecruiter.config.security.JWTAuthorizationFilter;
 import pl.lodz.p.it.wks.wksrecruiter.config.security.WKSLogoutHandler;
@@ -22,12 +21,9 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.InvalidTokensRepository;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.Arrays;
 
-import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.LOGIN_URL;
-import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.LOGOUT_URL;
-import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.REGISTER_URL;
+import static pl.lodz.p.it.wks.wksrecruiter.config.security.SecurityConstants.*;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -61,11 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), accountsRepository))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), invalidTokensRepository))
                 .logout()
-                    .addLogoutHandler(new WKSLogoutHandler(invalidTokensRepository))
-                    .logoutUrl(LOGOUT_URL)
-                    .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) ->
-                            httpServletResponse.setStatus(HttpServletResponse.SC_OK))
-                    .permitAll()
+                .addLogoutHandler(new WKSLogoutHandler(invalidTokensRepository))
+                .logoutUrl(LOGOUT_URL)
+                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) ->
+                        httpServletResponse.setStatus(HttpServletResponse.SC_OK))
+                .permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
