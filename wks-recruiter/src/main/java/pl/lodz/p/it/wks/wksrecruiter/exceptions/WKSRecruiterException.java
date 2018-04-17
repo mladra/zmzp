@@ -144,6 +144,10 @@ public class WKSRecruiterException extends Exception implements Serializable {
         return createException("TEST_NOT_FOUND", "Test with such name does not exist.");
     }
 
+    public static WKSRecruiterException createAcessDeniedException() {
+        return createException("FORBIDDEN", "Access denied");
+    }
+
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();

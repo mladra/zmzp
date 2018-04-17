@@ -14,7 +14,8 @@ import { CurrentUserService } from '../services/current-user.service';
 export class LoginComponent implements OnInit {
     email: string;
     password: string;
-    errorMessage: string;
+    alertType: string;
+    alertMessage: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -24,6 +25,12 @@ export class LoginComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.route.queryParams.subscribe(params => {
+            if (params.signup) {
+                this.alertType = 'ok';
+                this.alertMessage = 'Account registered successfully. You can now log in.';
+            }
+          });
         this.authenticationService.logout();
     }
 
@@ -38,13 +45,19 @@ export class LoginComponent implements OnInit {
                 error => {
                     switch (error.status) {
                         case 403:
-                            this.errorMessage = 'Invalid email or password.';
+                            this.alertType = 'error';
+                            this.alertMessage = 'Invalid email or password.';
+                            // this.errorMessage = 'Invalid email or password.';
                             break;
                         case 500:
-                            this.errorMessage = 'Server error.';
+                            this.alertType = 'error';
+                            this.alertMessage = 'Server error.';
+                            // this.errorMessage = 'Server error.';
                             break;
                         default:
-                            this.errorMessage = 'Unexpected error occurred.';
+                            this.alertType = 'error';
+                            this.alertMessage = 'Unexpected error occurred.';
+                            // this.errorMessage = 'Unexpected error occurred.';
                     }
                 }
             );

@@ -3,25 +3,86 @@
         <div class="col-md-4">
             <img class="user-avatar" src="assets/images/logo.png" width="150px" />
             <h1>WKS Recruiter Registration</h1>
-            <form role="form">
+            <form name="registerForm" (ngSubmit)="registerForm.form.valid && submit()" #registerForm="ngForm" novalidate>
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" class="form-control input-underline input-lg" id="" placeholder="Full Name">
-                    </div>
+                        <input type="email" class="form-control input-underline input-lg" id="email" name="email" placeholder="Email" [(ngModel)]="account.login"
+                            #email="ngModel" email required [ngClass]="{ 'register-form-border-alert': registerForm.submitted && !email.valid,
+                            'register-form-border-success': registerForm.submitted && email.valid }">
 
-                    <div class="form-group">
-                        <input type="text" class="form-control input-underline input-lg" id="" placeholder="Email">
+                        <div *ngIf="registerForm.submitted && email.invalid" class="register-form-alert">
+                            <div *ngIf="email.errors.required">
+                                Email address is required
+                            </div>
+                            <div *ngIf="email.errors.email && !email.errors.required">
+                                Email address must be well-formed.
+                            </div>
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control input-underline input-lg" id="name" name="name" placeholder="Name" [(ngModel)]="account.name"
+                            #name="ngModel" required minlength="2" pattern="^[A-Z].*" [ngClass]="{ 'register-form-border-alert': registerForm.submitted && !name.valid, 'register-form-border-success': registerForm.submitted && name.valid }">
 
-                    <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                        <div *ngIf="registerForm.submitted && name.invalid" class="register-form-alert">
+                            <div *ngIf="name.errors.required">
+                                Name is required.
+                            </div>
+                            <div *ngIf="name.errors.minlength">
+                                Name must be at least 2 characters long.
+                            </div>
+                            <div *ngIf="name.errors.pattern && !name.errors.minlength">
+                                Name should start with capital letter.
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Repeat Password">
+                        <input type="text" class="form-control input-underline input-lg" id="surname" name="surname" placeholder="Surname" [(ngModel)]="account.surname"
+                            #surname="ngModel" required minlength="2" pattern="^[A-Z].*" [ngClass]="{ 'register-form-border-alert': registerForm.submitted && !surname.valid, 'register-form-border-success': registerForm.submitted && surname.valid }">
+                        <div *ngIf="registerForm.submitted && surname.invalid" class="register-form-alert">
+                            <div *ngIf="surname.errors.required">
+                                Surname is required.
+                            </div>
+                            <div *ngIf="surname.errors.minlength">
+                                Surname must be at least 2 characters long.
+                            </div>
+                            <div *ngIf="surname.errors.pattern && !surname.errors.minlength">
+                                Surname should start with capital letter.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-underline input-lg" id="password" name="password" placeholder="Password"
+                            [(ngModel)]="account.password" #password="ngModel" minlength="8" pattern="[^\s]+" maxlength="16"
+                            required [ngClass]="{ 'register-form-border-alert': registerForm.submitted && !password.valid, 'register-form-border-success': registerForm.submitted && password.valid }">
+                        <div *ngIf="registerForm.submitted && password.invalid" class="register-form-alert">
+                            <div *ngIf="password.errors.required">
+                                Password can not be empty.
+                            </div>
+                            <div *ngIf="password.errors.minlength || password.errors.maxlength">
+                                Password must have between 8 and 16 characters.
+                            </div>
+                            <div *ngIf="password.errors.pattern && !password.errors.minlength && !password.errors.maxlength">
+                                Password cannot contain whitespaces.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control input-underline input-lg" id="repeatPassword" name="repeatPassword" placeholder="Repeat Password" required
+                            [(ngModel)]="repeatPassword" #repeatPasswd="ngModel" [ngClass]="{ 'register-form-border-alert': (registerForm.submitted && (repeatPassword == null || repeatPassword != '')) ||
+                                                                                              (registerForm.submitted && account.password != repeatPassword && password.valid), 
+                                                                                              'register-form-border-success': registerForm.submitted &&
+                                                                                               repeatPassword == account.password && repeatPassword != null }">
+                        <div *ngIf="(registerForm.submitted && repeatPassword == null) ||
+                                    (registerForm.submitted && account.password != repeatPassword && password.valid)" class="register-form-alert">
+                            Passwords do not match.
+                        </div>
+                    </div>
+                    <ngb-alert class="custom-alert" *ngIf="errorMessage" [type]="error" (close)="errorMessage = null">{{ errorMessage }}</ngb-alert>
+                    <div class="form-group">
+                        <button class="btn rounded-btn" type="submit"> Register </button>&nbsp;
+                        <button class="btn rounded-btn" [routerLink]="['/login']"> Log in </button>
                     </div>
                 </div>
-                <a class="btn rounded-btn" [routerLink]="['/dashboard']"> Register </a>&nbsp;
-                <a class="btn rounded-btn" [routerLink]="['/login']"> Log in </a>
             </form>
         </div>
     </div>

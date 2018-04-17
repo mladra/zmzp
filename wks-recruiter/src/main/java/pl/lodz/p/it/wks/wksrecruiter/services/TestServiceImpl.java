@@ -2,9 +2,10 @@ package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
-import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
+import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.*;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
@@ -14,7 +15,6 @@ import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -74,16 +74,30 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public Iterable<Test> getTests() {
-        return testsRepository.findAll();
+    public Iterable<Test> getTests(String role, Authentication authentication) throws WKSRecruiterException {
+        if (role.equals(RolesEnum.CAN.toString())) {
+            if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.CAN.toString()))) {
+                throw WKSRecruiterException.createAcessDeniedException();
+            }
+            return testsRepository.findAllByIsActiveIsTrue();
+        } else if (role.equals(RolesEnum.EDITOR.toString())) {
+            if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.EDITOR.toString()))) {
+                throw WKSRecruiterException.createAcessDeniedException();
+            }
+            return testsRepository.findAll();
+        } else if (role.equals(RolesEnum.MOD.toString())) {
+            throw WKSRecruiterException.createAcessDeniedException();
+        } else {
+            throw WKSRecruiterException.createException("ROLE_NOT_FOUND", "Such role does not exist.");
+        }
     }
 
-	@Override
-	public Test getTestById(String testId) throws WKSRecruiterException {
+    @Override
+    public Test getTestById(String testId) throws WKSRecruiterException {
         Optional<Test> test = this.testsRepository.findById(testId);
         if (test.isPresent() && test.get().isActive()) return test.get();
         else throw WKSRecruiterException.createTestNotFoundException();
-	}
+    }
 
     @Override
     public Test setTestQuestions(String testId, List<QuestionInfo> questions) throws WKSRecruiterException {

@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
 import pl.lodz.p.it.wks.wksrecruiter.utils.XlsGeneratorUtil;
+
 import java.io.IOException;
 import java.util.Collection;
 
@@ -65,23 +67,31 @@ public class TestController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getTests() {
-        return ResponseEntity.ok(testService.getTests());
-    }
-
     @RequestMapping(value = "/{testId}/pdf", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity generatePdf(@PathVariable String testId) {
+    public @ResponseBody
+    ResponseEntity generatePdf(@PathVariable String testId) {
         try {
             Test test = this.testService.getTestById(testId);
             byte[] out = this.pdfGeneratorUtil.generate(test);
             //return file
             HttpHeaders hHeaders = new HttpHeaders();
-            hHeaders.add("content-disposition", "attachment; filename=" + test.getName()+".pdf");
-            hHeaders.add("Content-Type","application/pdf");
-            return new ResponseEntity(out,hHeaders,HttpStatus.OK);
+            hHeaders.add("content-disposition", "attachment; filename=" + test.getName() + ".pdf");
+            hHeaders.add("Content-Type", "application/pdf");
+            return new ResponseEntity(out, hHeaders, HttpStatus.OK);
         } catch (IOException | DocumentException | WKSRecruiterException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getTests(@RequestParam String role, Authentication authentication) {
+        try {
+            return ResponseEntity.ok(testService.getTests(role, authentication));
+        } catch (WKSRecruiterException e) {
+            if (e.getErrors().get(0).getCode().equals("FORBIDDEN")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.toString());
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.toString());
         }
     }
 
@@ -96,16 +106,17 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/{testId}/xls",method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity generateXLS(@PathVariable String testId) {
+    @RequestMapping(value = "/{testId}/xls", method = RequestMethod.GET)
+    public @ResponseBody
+    ResponseEntity generateXLS(@PathVariable String testId) {
         try {
             Test test = this.testService.getTestById(testId);
             byte[] out = this.xlsGeneratorUtil.generate(test);
             //return file
             HttpHeaders hHeaders = new HttpHeaders();
-            hHeaders.add("content-disposition", "attachment; filename=" + test.getName()+".xls");
-            hHeaders.add("Content-Type","application/vnd.ms-excel");
-            return new ResponseEntity(out,hHeaders,HttpStatus.OK);
+            hHeaders.add("content-disposition", "attachment; filename=" + test.getName() + ".xls");
+            hHeaders.add("Content-Type", "application/vnd.ms-excel");
+            return new ResponseEntity(out, hHeaders, HttpStatus.OK);
         } catch (IOException | WKSRecruiterException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
         }
