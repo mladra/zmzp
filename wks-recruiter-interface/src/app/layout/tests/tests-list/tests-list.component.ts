@@ -8,6 +8,8 @@ import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
 import { Router } from '@angular/router';
+import { CurrentUserService } from '../../../services/current-user.service';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -18,7 +20,7 @@ import { Router } from '@angular/router';
 })
 export class TestsListComponent implements OnInit {
 
-  public tests: Array<Test>;
+  public tests: Array<Test> = new Array<Test>();
   private allPositions: Array<Position>;
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
@@ -28,11 +30,11 @@ export class TestsListComponent implements OnInit {
     private testsService: TestsService,
     private positionsService: PositionsService,
     private modalService: NgbModal,
-    private router: Router
+    private router: Router,
+    private currentUserService: CurrentUserService
   ) { }
 
   ngOnInit() {
-    this.getAllTests();
     this.positionsService.getAll().subscribe(
       data => {
         const positionString = JSON.stringify(data.body);
@@ -45,6 +47,7 @@ export class TestsListComponent implements OnInit {
         console.log(error);
         this.alertsService.addAlert('danger', 'Error occured while loading positions');
       });
+    this.getAllTests();
   }
 
   addPositions(test: Test) {
@@ -97,18 +100,23 @@ export class TestsListComponent implements OnInit {
   }
 
   getAllTests() {
-    // this.testsService.getAll().subscribe(
-    this.testsService.getEditorTests().subscribe(
-      data => {
-        this.tests = data as Array<Test>;
-        // const testsString = JSON.stringify(data.body);
-        // this.tests = JSON.parse(testsString);
-      },
-      error => {
-        console.log(error);
-        this.alertsService.addAlert('danger', 'Error occurred while loading tests.');
-      }
-    );
+    if (this.isCurrentUserEditor()) {
+      this.testsService.getEditorTests().subscribe(
+        data => {
+          this.tests = data as Array<Test>;
+        },
+        error => {
+          this.alertsService.addAlert('danger', 'Error occurred while loading tests.');
+        });
+    } else if (this.isCurrentUserCandidate()) {
+      this.testsService.getCandidateTests().subscribe(
+        data => {
+          this.tests = data as Array<Test>;
+        },
+        error => {
+          this.alertsService.addAlert('danger', 'Error occurred while loading tests.');
+        });
+    }
   }
 
   goToQuestions(id) {
@@ -117,4 +125,12 @@ export class TestsListComponent implements OnInit {
 
   pdf(test: Test) { this.testsService.getPDF(test.id, test.name); }
   xls(test: Test) { this.testsService.getXLS(test.id, test.name); }
+
+  isCurrentUserEditor() {
+    return this.currentUserService.isCurrentUserInRole('Editor');
+  }
+
+  isCurrentUserCandidate() {
+    return this.currentUserService.isCurrentUserInRole('Candidate');
+  }
 }

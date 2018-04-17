@@ -25,47 +25,53 @@
               <tr>
                 <th>ID</th>
                 <th>Test</th>
-                <th>Active</th>
+                <th *ngIf="isCurrentUserEditor()">Active</th>
                 <th>Positions</th>
-                <th>Questions</th>
-                <th>Export</th>
-                <th>Actions</th>
-                <th></th>
-                <th></th>
+                <th *ngIf="isCurrentUserEditor()">Questions</th>
+                <th *ngIf="isCurrentUserEditor()">Export</th>
+                <th *ngIf="isCurrentUserEditor()">Actions</th>
+                <th *ngIf="isCurrentUserEditor()"></th>
+                <th *ngIf="isCurrentUserEditor()"></th>
+                <th *ngIf="isCurrentUserCandidate()"></th>
               </tr>
             </thead>
             <tbody>
+              <div class="no-tests-message" *ngIf="tests.length === 0">There are no tests available</div>
               <tr *ngFor="let test of tests; let i = index;">
-                <td>{{i}}</td>
+                <td>{{i + 1 }}</td>
                 <td>{{test.name}}</td>
-                <td>{{test.active ? 'Yes' : 'No'}}</td>
+                <td *ngIf="isCurrentUserEditor()">{{test.active ? 'Yes' : 'No'}}</td>
                 <td>
                   <span *ngFor="let position of test.positions; let j=index">{{(j>0 ? ", "+position.name : " "+position.name) | lowercase}}</span>
                 </td>
-                <td>
+                <td *ngIf="isCurrentUserEditor()">
                   <button (click)="goToQuestions(test.id)" class="btn btn-sm btn-warning" [disabled]="!test.active">Edit</button>
                 </td>
-                <td>
+                <td *ngIf="isCurrentUserEditor()">
                   <div class="btn-group">
                     <button (click)="pdf(test)" class="btn btn-sm btn-info" [disabled]="!test.active">
-                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</button>
+                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</button>
                     <button (click)="xls(test)" class="btn btn-sm btn-warning" [disabled]="!test.active">
                       Excel
                       <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                     </button>
                   </div>
                 </td>
-                <td>
+                <td *ngIf="isCurrentUserEditor()">
                   <button (click)="addPositions(test)" class="btn btn-sm btn-success" [disabled]="!test.active">
                     <i class="fa fa-plus"></i> Add positions</button>
                 </td>
-                <td>
+                <td *ngIf="isCurrentUserEditor()">
                   <button (click)="removePositions(test)" class="btn btn-sm btn-danger" [disabled]="!test.active">
                     <i class="fa fa-trash"></i> Remove positions</button>
                 </td>
-                <td>
+                <td *ngIf="isCurrentUserEditor()">
                   <button (click)="deleteTest(test)" class="btn btn-sm btn-danger" [disabled]="!test.active">
                     <i class="fa fa-trash"></i> Remove test</button>
+                </td>
+                <td *ngIf="isCurrentUserCandidate()">
+                  <button class="btn btn-sm btn-info" [disabled]="!test.active">
+                    <i class="fa fa-pencil-square-o"></i> Resolve test</button>
                 </td>
               </tr>
             </tbody>

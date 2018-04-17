@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Account } from "../../../entities/account";
-import { CurrentUserService } from "../../../services/current-user.service";
+import { Account } from '../../../entities/account';
+import { CurrentUserService } from '../../../services/current-user.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -10,36 +10,36 @@ import { CurrentUserService } from "../../../services/current-user.service";
     styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-    isActive: boolean = false;
-    showMenu: string = '';
-    pushRightClass: string = 'push-right';
+    isActive = false;
+    showMenu = '';
+    pushRightClass = 'push-right';
     public currentUser: Account;
 
-    //Lista elementów menu z możliwymi dla nich rolami
+    // Lista elementów menu z możliwymi dla nich rolami
     private allMenuItems: MenuItem[] = [
         {
-            link: "/home",
-            icon: "home",
-            name: "Home",
-            rolesAllowed: ["moderator", "editor", "candidate"]
+            link: '/home',
+            icon: 'home',
+            name: 'Home',
+            rolesAllowed: ['moderator', 'editor', 'candidate']
         },
         {
-            link: "/accounts",
-            icon: "users",
-            name: "Accounts",
-            rolesAllowed: ["moderator"]
+            link: '/accounts',
+            icon: 'users',
+            name: 'Accounts',
+            rolesAllowed: ['moderator']
         },
         {
-            link: "/positions",
-            icon: "id-card",
-            name: "Positions",
-            rolesAllowed: ["moderator"]
+            link: '/positions',
+            icon: 'id-card',
+            name: 'Positions',
+            rolesAllowed: ['moderator']
         },
         {
-            link: "/tests",
-            icon: "file",
-            name: "Tests",
-            rolesAllowed: ["moderator"]
+            link: '/tests',
+            icon: 'file',
+            name: 'Tests',
+            rolesAllowed: ['editor', 'candidate']
         }
     ];
     public userMenuItems: MenuItem[];
@@ -72,9 +72,9 @@ export class SidebarComponent implements OnInit {
     }
 
     getMenuItemsForRoles(roles: String[]) {
-        for (let item of this.allMenuItems) {
-            for (let role of roles) {
-                if (item.rolesAllowed.indexOf(role.toLowerCase()) != -1) {
+        for (const item of this.allMenuItems) {
+            for (const role of roles) {
+                if (item.rolesAllowed.indexOf(role.toLowerCase()) !== -1) {
                     this.userMenuItems.push(item);
                     break;
                 }
