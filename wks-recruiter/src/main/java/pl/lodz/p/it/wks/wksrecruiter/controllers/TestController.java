@@ -7,12 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
-import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
 import pl.lodz.p.it.wks.wksrecruiter.utils.XlsGeneratorUtil;
-import java.io.*;
 import java.io.IOException;
 import java.util.Collection;
 
