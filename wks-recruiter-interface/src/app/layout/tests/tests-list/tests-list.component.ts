@@ -25,7 +25,6 @@ export class TestsListComponent implements OnInit {
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
   private positionsToAdd: Array<String>;
-  // private currentUserRoles: Array<String>;
 
   constructor(private alertsService: AlertsService,
     private testsService: TestsService,
