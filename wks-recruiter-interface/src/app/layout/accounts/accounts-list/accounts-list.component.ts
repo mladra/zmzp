@@ -82,8 +82,7 @@ export class AccountsListComponent implements OnInit {
   getAllUsers() {
     this.accountsService.getAll().subscribe(
       data => {
-        const userString = JSON.stringify(data.body);
-        this.users = JSON.parse(userString);
+        this.users = data.body as Account[];
       },
       error => {
         console.log(error);
