@@ -25,7 +25,7 @@ export class TestsListComponent implements OnInit {
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
   private positionsToAdd: Array<String>;
-  private currentUserRoles: Array<String>;
+  // private currentUserRoles: Array<String>;
 
   constructor(private alertsService: AlertsService,
     private testsService: TestsService,
@@ -48,7 +48,6 @@ export class TestsListComponent implements OnInit {
         console.log(error);
         this.alertsService.addAlert('danger', 'Error occured while loading positions');
       });
-    this.currentUserService.getCurrentUser().subscribe(x => this.currentUserRoles = x.roles);
     this.getAllTests();
   }
 
@@ -129,18 +128,10 @@ export class TestsListComponent implements OnInit {
   xls(test: Test) { this.testsService.getXLS(test.id, test.name); }
 
   isCurrentUserEditor() {
-    if (this.currentUserRoles.includes('Editor')) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.currentUserService.isCurrentUserInRole('Editor');
   }
 
   isCurrentUserCandidate() {
-    if (this.currentUserRoles.includes('Candidate')) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.currentUserService.isCurrentUserInRole('Candidate');
   }
 }
