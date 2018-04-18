@@ -6,6 +6,7 @@ import { TestsListComponent } from './tests-list/tests-list.component';
 import { TestsModificationComponent } from './tests-modification/tests-modification.component';
 import { FormsModule } from '@angular/forms';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
+import { TestsSolveComponent } from './tests-solve/tests-solve.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { TestQuestionsComponent } from './test-questions/test-questions.componen
     CommonModule,
     FormsModule
   ],
-  declarations: [TestsComponent, TestsListComponent, TestsModificationComponent, TestQuestionsComponent],
+  declarations: [TestsComponent, TestsListComponent, TestsModificationComponent, TestQuestionsComponent, TestsSolveComponent],
   entryComponents: [TestsModificationComponent]
 })
 export class TestsModule { }

@@ -123,6 +123,10 @@ export class TestsListComponent implements OnInit {
     this.router.navigate(['tests/details', id]);
   }
 
+  goToTestSolving(id) {
+    this.router.navigate(['tests/solve', id]);
+  }
+
   pdf(test: Test) { this.testsService.getPDF(test.id, test.name); }
   xls(test: Test) { this.testsService.getXLS(test.id, test.name); }
 
