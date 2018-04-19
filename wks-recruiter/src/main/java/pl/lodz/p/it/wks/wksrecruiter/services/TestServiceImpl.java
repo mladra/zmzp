@@ -117,6 +117,19 @@ public class TestServiceImpl implements TestService {
         }
     }
 
+    @Override
+    public Test setTestDescription(String testId, String testDescription) throws WKSRecruiterException {
+        Optional<Test> test = testsRepository.findById(testId);
+        if(test.isPresent()){
+            test.get().setDescription(testDescription);
+            testsRepository.save(test.get());
+            return test.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
+    }
+
+
     private void validateQuestion(List questionTypes, QuestionInfo question) throws WKSRecruiterException {
         WKSRecruiterException exception = new WKSRecruiterException();
 

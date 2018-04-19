@@ -15,6 +15,7 @@ public class Test {
     private Account author;
     private String name;
     private String language;
+    private String description;
     private boolean isActive;
     private Collection<QuestionInfo> questions;
     private Collection<Position> positions;
@@ -25,27 +26,30 @@ public class Test {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", language='" + language + '\'' +
+                ", description=" + description +
                 ", questions=" + questions +
                 ", positions=" + positions +
                 '}';
     }
     public Test(){}
 
-    public Test(String id, Account author, String name, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
+    public Test(String id, Account author, String name, String language, String description, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
         this.id = id;
         this.author = author;
         this.name = name;
         this.language = language;
+        this.description = description;
         this.isActive = isActive;
         this.questions = questions;
         this.positions = positions;
     }
 
-    public Test(Account author, String name, String language, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
+    public Test(Account author, String name, String language, String description, boolean isActive, Collection<QuestionInfo> questions, Collection<Position> positions) {
 
         this.author = author;
         this.name = name;
         this.language = language;
+        this.description = description;
         this.isActive = isActive;
         this.questions = questions;
         this.positions = positions;
@@ -57,6 +61,8 @@ public class Test {
     public void setName(String name) { this.name = name; }
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public Collection<QuestionInfo> getQuestions() { return questions; }
     public void setQuestions(Collection<QuestionInfo> questions) { this.questions = questions; }
     public Collection<Position> getPositions() { return positions; }

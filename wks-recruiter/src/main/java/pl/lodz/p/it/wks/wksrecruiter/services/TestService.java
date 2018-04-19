@@ -20,4 +20,6 @@ public interface TestService {
     Test getTestById(String testId) throws WKSRecruiterException;
 
     Test setTestQuestions(String testId, List<QuestionInfo> questions) throws WKSRecruiterException;
+
+    Test setTestDescription(String testId, String testDescription) throws  WKSRecruiterException;
 }
