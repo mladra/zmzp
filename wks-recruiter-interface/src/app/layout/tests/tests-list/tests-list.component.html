@@ -25,6 +25,8 @@
               <tr>
                 <th>ID</th>
                 <th>Test</th>
+                <th>Language</th>
+                <th>Description</th>
                 <th *ngIf="isCurrentUserEditor()">Active</th>
                 <th>Positions</th>
                 <th *ngIf="isCurrentUserEditor()">Questions</th>
@@ -40,6 +42,8 @@
               <tr *ngFor="let test of tests; let i = index;">
                 <td>{{i + 1 }}</td>
                 <td>{{test.name}}</td>
+                <td>{{test.language}}</td>
+                <td>{{test.description}}</td>
                 <td *ngIf="isCurrentUserEditor()">{{test.active ? 'Yes' : 'No'}}</td>
                 <td>
                   <span *ngFor="let position of test.positions; let j=index">{{(j>0 ? ", "+position.name : " "+position.name) | lowercase}}</span>
