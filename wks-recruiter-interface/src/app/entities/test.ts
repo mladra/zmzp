@@ -8,6 +8,7 @@ export class Test {
     name: string;
     maxPoints: number;
     language: string;
+    description: string;
     active: boolean;
     positions: Position[];
     questions: QuestionInfo[];
