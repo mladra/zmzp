@@ -4,6 +4,8 @@ import { TestsService } from "../../../shared/services/tests.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Test } from "../../../entities/test";
 import { AlertsService } from "../../../services/alerts.service";
+import { TestAttempt } from "../../../entities/test.attempt";
+import { AttemptAnswer } from "../../../entities/attempt.answer";
 
 @Component({
     selector: 'app-tests-solve',
@@ -15,13 +17,17 @@ export class TestsSolveComponent implements OnInit {
 
     private test: Test;
 
+    private testAttempt: TestAttempt;
+
     constructor(
         private testsService: TestsService,
         private route: ActivatedRoute,
         private router: Router,
         private alertsService: AlertsService
-    ) { 
+    ) {
         this.test = new Test();
+        this.testAttempt = new TestAttempt();
+        this.testAttempt.answers = new Array<AttemptAnswer>();
     }
 
     ngOnInit(): void {
@@ -29,8 +35,7 @@ export class TestsSolveComponent implements OnInit {
             this.testsService.getById(params['id']).subscribe(
                 data => {
                     this.test = data.body as Test;
-                    console.log(this.test);
-                }, 
+                },
                 error => {
                     this.alertsService.addAlert('danger', "Couldn't retrieve test from server.");
                 }
