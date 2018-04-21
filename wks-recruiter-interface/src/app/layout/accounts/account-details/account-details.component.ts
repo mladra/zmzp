@@ -1,9 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Account } from '../../../entities/account';
 import { AccountsService } from '../../../shared/services';
 import { AlertsService } from '../../../services/alerts.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-account-details-component',
@@ -23,8 +22,7 @@ export class AccountDetilsComponent implements OnInit {
     constructor(
         public activeModal: NgbActiveModal,
         private accountService: AccountsService,
-        private alertsService: AlertsService,
-        private router: Router) { }
+        private alertsService: AlertsService) { }
 
     ngOnInit(): void {
         this.roles = ['Moderator', 'Editor', 'Candidate'];
@@ -35,8 +33,12 @@ export class AccountDetilsComponent implements OnInit {
     }
 
     submit() {
-        this.activeModal.close();
+        if (this.checkIfPasswordsDiffers()) {
+            return;
+        }
+
         if (this.createAccount) {
+
             this.accountService.createAccount(this.account).subscribe(
                 response => {
                     this.alertsService.addAlert('success', 'Successfully created account with email ' + this.account.login);
@@ -46,6 +48,7 @@ export class AccountDetilsComponent implements OnInit {
                     this.alertsService.addAlert('danger', error.error);
                 }
             );
+            this.activeModal.close();
         } else {
             this.accountService.editAccount(this.account).subscribe(
                 response => {
@@ -56,11 +59,16 @@ export class AccountDetilsComponent implements OnInit {
                     this.alertsService.addAlert('danger', error.error);
                 }
             );
+            this.activeModal.close();
         }
     }
 
-    checkIfPasswordsMatch() {
-        return this.account.password !== this.confirm;
+    checkIfPasswordsDiffers() {
+        if (this.createAccount) {
+            return this.account.password !== this.confirm;
+        }
+
+        return this.account.password ? this.account.password !== this.confirm : false;
     }
 
     setAccount(account, createAccount) {
