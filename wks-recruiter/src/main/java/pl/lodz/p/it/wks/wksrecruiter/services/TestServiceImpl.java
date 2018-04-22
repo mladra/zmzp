@@ -2,6 +2,7 @@ package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
@@ -12,6 +13,7 @@ import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,33 @@ public class TestServiceImpl implements TestService {
     public TestServiceImpl(TestsRepository testsRepository, PositionsRepository positionsRepository) {
         this.testsRepository = testsRepository;
         this.positionsRepository = positionsRepository;
+    }
+
+    @Override
+    public Test createTest(Test test) throws WKSRecruiterException {
+        try {
+            test.setActive(Boolean.TRUE);
+            test.setQuestions(new ArrayList<>());
+            testsRepository.save(test);
+            return test;
+        } catch (DuplicateKeyException exc) {
+            throw WKSRecruiterException.createException("NAME_NOT_UNIQUE",
+                    "Test with this name already exists. Try another one.");
+        }
+    }
+
+    @Override
+    public Test editTest(String testId, Test test) throws WKSRecruiterException {
+        Optional<Test> testToEdit = testsRepository.findById(testId);
+        if(testToEdit.isPresent()){
+            testToEdit.get().setName(test.getName());
+            testToEdit.get().setDescription(test.getDescription());
+            testToEdit.get().setLanguage(test.getLanguage());
+            testsRepository.save(testToEdit.get());
+            return testToEdit.get();
+        } else {
+            throw WKSRecruiterException.createTestNotFoundException();
+        }
     }
 
     @Override

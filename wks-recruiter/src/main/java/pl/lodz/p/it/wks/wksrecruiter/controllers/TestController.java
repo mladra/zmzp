@@ -34,6 +34,28 @@ public class TestController {
         this.testService = testService;
     }
 
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity createTest(@RequestBody Test test){
+        try {
+            return ResponseEntity.ok(testService.createTest(test));
+        } catch (WKSRecruiterException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        } catch (Throwable e ) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e).toString());
+        }
+    }
+
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT)
+    public ResponseEntity editTest(@RequestBody Test test){
+        try {
+            return ResponseEntity.ok(testService.editTest(test.getId(), test));
+        } catch (WKSRecruiterException ex) {
+            return  ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
+        } catch (Throwable e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e).toString());
+        }
+    }
+
     @RequestMapping(value = "/addPosition/{testId}", method = RequestMethod.PUT)
     public ResponseEntity addPosition(@PathVariable String testId, @RequestBody Collection<String> positionNames) {
         try {
