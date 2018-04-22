@@ -2,6 +2,7 @@ package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import org.springframework.security.core.Authentication;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 
@@ -20,4 +21,6 @@ public interface TestService {
     Test getTestById(String testId) throws WKSRecruiterException;
 
     Test setTestQuestions(String testId, List<QuestionInfo> questions) throws WKSRecruiterException;
+
+    TestAttempt solve(TestAttempt testAttempt, Authentication authentication) throws WKSRecruiterException;
 }

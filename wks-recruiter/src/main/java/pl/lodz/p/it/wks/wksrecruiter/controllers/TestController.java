@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
@@ -119,6 +120,18 @@ public class TestController {
             return new ResponseEntity(out, hHeaders, HttpStatus.OK);
         } catch (IOException | WKSRecruiterException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
+        }
+    }
+
+    @RequestMapping(value = "/solve", method = RequestMethod.POST)
+    public ResponseEntity solveTest(@RequestBody TestAttempt testAttempt, Authentication authentication) {
+        try {
+            return ResponseEntity.ok(testService.solve(testAttempt, authentication));
+        } catch (WKSRecruiterException e) {
+            if (e.getErrors().get(0).getCode().equals("FORBIDDEN")) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.toString());
+            }
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.toString());
         }
     }
 }

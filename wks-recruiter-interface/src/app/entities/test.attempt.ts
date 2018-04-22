@@ -1,7 +1,8 @@
 import { AttemptAnswer } from "./attempt.answer";
+import { Test } from "./test";
 
 export class TestAttempt {
-    testId: string;
+    test: Test;
     points: number;
     answers: AttemptAnswer[];
 }

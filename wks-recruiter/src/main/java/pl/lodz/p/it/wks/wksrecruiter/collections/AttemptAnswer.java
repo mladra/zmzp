@@ -1,16 +1,18 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
+import java.util.Collection;
+
 public class AttemptAnswer {
     private int questionNumber;
     private String question;
-    private String answer;
+    private Collection<String> answers;
 
     public AttemptAnswer(){}
 
-    public AttemptAnswer(int questionNumber, String question, String answer) {
+    public AttemptAnswer(int questionNumber, String question, Collection<String> answers) {
         this.questionNumber = questionNumber;
         this.question = question;
-        this.answer = answer;
+        this.answers = answers;
     }
     public int getQuestionNumber() { return questionNumber; }
     public void setQuestionNumber(int questionNumber) { this.questionNumber = questionNumber; }
@@ -20,6 +22,10 @@ public class AttemptAnswer {
     public void setQuestion(String question) {
         this.question = question;
     }
-    public String getAnswer() { return answer; }
-    public void setAnswer(String answer) { this.answer = answer; }
+    public Collection<String> getAnswers() {
+        return answers;
+    }
+    public void setAnswers(Collection<String> answers) {
+        this.answers = answers;
+    }
 }

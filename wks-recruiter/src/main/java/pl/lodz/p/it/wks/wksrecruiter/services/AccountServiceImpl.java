@@ -6,6 +6,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
 import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
+import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 
@@ -138,5 +140,21 @@ public class AccountServiceImpl implements AccountService {
     public Account register(Account account) throws WKSRecruiterException {
         account.setRoles(Collections.singletonList(RolesEnum.CAN.toString()));
         return createAccount(account);
+    }
+
+    @Override
+    public Account addSolveTest(String login, TestAttempt testAttempt) throws WKSRecruiterException {
+        Optional<Account> account = accountsRepository.findByLogin(login);
+        if (account.isPresent()) {
+            if (account.get().getSolvedTests() != null) {
+                if (account.get().getSolvedTests().stream().filter(test -> test.getTest() != null).anyMatch(test -> test.getTest().getId().equals(testAttempt.getTest().getId()))) {
+                    throw WKSRecruiterException.createTestAlreadySolvedException();
+                }
+            }
+            account.get().getSolvedTests().add(testAttempt);
+            return accountsRepository.save(account.get());
+        } else {
+            throw WKSRecruiterException.createAccountNotFoundException();
+        }
     }
 }

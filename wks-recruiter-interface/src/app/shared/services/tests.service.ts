@@ -54,7 +54,7 @@ export class TestsService {
         return this.http.get(this.rootUrl, {params: {role: 'Editor'}});
     }
 
-    solveTest(testId, testAttempt: TestAttempt) {
-        return this.http.post(this.rootUrl + '/' + testId, testAttempt, {observe: 'response'});
+    solveTest(testAttempt: TestAttempt) {
+        return this.http.post(this.rootUrl + '/solve', testAttempt, {observe: 'response'});
     }
 }

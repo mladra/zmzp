@@ -43,8 +43,8 @@
                                             <label class="float-right pt-1" for="{{j}}StringAnswer">Your answer:</label>
                                         </div>
                                         <div class="col-5">
-                                            <input type="text" name="{{j}}StringAnswer" class="form-control input-underline input-md" placeholder="Your answer" name="{{j}}QuestionAnswer" [(ngModel)]="attemptAnswer.answer"
-                                                #answer="ngModel" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                            <input type="text" name="{{j}}StringAnswer" class="form-control input-underline input-md" placeholder="Your answer" name="{{j}}QuestionAnswer"
+                                                [(ngModel)]="attemptAnswer.answer" #answer="ngModel" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
                                             />
                                         </div>
                                         <div class="col-5" *ngIf="answer.submitted && answer.invalid">
@@ -60,7 +60,7 @@
                                             <label class="float-right pt-1" for="{{j}}SingleChoiceAnswer">Your answer:</label>
                                         </div>
                                         <div class="col-5">
-                                            <select class="form-control" name="{{j}}SingleChoiceAnswer" [(ngModel)]="attemptAnswer.answer">
+                                            <select class="form-control" name="{{j}}SingleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}">
                                                 <option *ngFor="let option of question.params.options; trackBy: trackByFun; let i = index;">
                                                     {{option}}
                                                 </option>
@@ -74,7 +74,7 @@
                                             <label class="float-right pt-1" for="{{j}}MultipleChoiceAnswer">Your answer:</label>
                                         </div>
                                         <div class="col-5">
-                                            <select multiple class="form-control" name="{{j}}MultipleChoiceAnswer" [(ngModel)]="attemptAnswer.answer">
+                                            <select multiple class="form-control" name="{{j}}MultipleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}">
                                                 <option *ngFor="let option of question.params.options; trackBy: trackByFun; let i = index;">
                                                     {{option}}
                                                 </option>
@@ -88,9 +88,10 @@
                                             <label class="float-right pt-1" for="{{j}}NumberAnswer">Your answer:</label>
                                         </div>
                                         <div class="col-5">
-                                            <input class="w-75 form-control input-underline input-md" name="{{j}}NumberAnswer" type="number" placeholder="Your answer" name="{{j}}NumberAnswer"
-                                                [(ngModel)]="attemptAnswer.answer" required min="{{ question.params.minValue }}"
-                                                max="{{ question.params.maxValue }}" />
+                                            <input class="w-75 form-control input-underline input-md" name="{{j}}NumberAnswer" type="number" placeholder="Your answer"
+                                                name="{{j}}NumberAnswer" [(ngModel)]="attemptAnswer.answer" [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                                required min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}"
+                                                value="{{ question.params.minValue }}" />
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +102,12 @@
                                         <label class="float-right pt-1" for="{{j}}SliderAnswer">Your answer:</label>
                                     </div>
                                     <div class="col-5">
-                                        <input class="slider" type="range" min="question.params.minValue" max="question.params.maxValue" name="{{j}}SliderAnswer" id="{{j}}SliderId"/>
+                                        <input class="slider" [(ngModel)]="attemptAnswer.answer" type="range" min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}"
+                                            step="{{ question.params.step }}" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                            name="{{j}}SliderAnswer" id="{{j}}SliderId" />
+                                        <p>Value:
+                                            <span>{{ attemptAnswer.answer }}</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>

@@ -23,7 +23,7 @@ export class TestsSolveComponent implements OnInit {
         private testsService: TestsService,
         private route: ActivatedRoute,
         private router: Router,
-        private alertsService: AlertsService
+        private alertsService: AlertsService,
     ) {
         this.test = new Test();
         this.testAttempt = new TestAttempt();
@@ -41,5 +41,41 @@ export class TestsSolveComponent implements OnInit {
                 }
             )
         })
+    }
+
+    trackByFun(index, question) {
+        return index;
+    }
+
+    submit() {
+        this.testAttempt.test = this.test;
+        for (let i in this.test.questions) {
+            if (this.test.questions[i].type === 'NUMBER' || this.test.questions[i].type === 'SCALE') {
+                if (this.test.questions[i].answer < this.test.questions[i].params.minValue
+                    || this.test.questions[i].answer > this.test.questions[i].params.maxValue) {
+                    return;
+                }
+            }
+            var attemptAnswer = new AttemptAnswer();
+            attemptAnswer.question = this.test.questions[i].questionPhrase;
+            attemptAnswer.questionNumber = this.test.questions[i].questionNumber;
+            if (this.test.questions[i].type === 'MULTIPLE_CHOICE') {
+                attemptAnswer.answers = this.test.questions[i].answer;
+            } else {
+                var answers = new Array<String>();
+                answers.push(this.test.questions[i].answer);
+                attemptAnswer.answers = answers;
+            }
+            this.testAttempt.answers.push(attemptAnswer);
+        }
+        this.testsService.solveTest(this.testAttempt).subscribe(
+            data => {
+                this.alertsService.addAlert('success', 'Thank you for solving this test!');
+                this.router.navigate(['/tests/list']);
+            },
+            error => {
+                this.alertsService.addAlert('danger', 'Error occured during sending your test');
+            }
+        )
     }
 }

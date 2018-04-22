@@ -1,5 +1,5 @@
 export class AttemptAnswer {
-    questionNumber: number;
-    question: string;
-    answer: string;
+    questionNumber: Number;
+    question: String;
+    answers: any;
 }

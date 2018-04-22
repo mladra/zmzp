@@ -148,6 +148,10 @@ public class WKSRecruiterException extends Exception implements Serializable {
         return createException("FORBIDDEN", "Access denied");
     }
 
+    public static WKSRecruiterException createTestAlreadySolvedException() {
+        return createException("TEST_SOLVED", "Test already solved.");
+    }
+
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();
