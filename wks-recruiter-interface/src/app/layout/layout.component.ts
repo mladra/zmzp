@@ -254,6 +254,62 @@ export class LayoutComponent implements OnInit {
                         });
                         break;
 
+                    case "synonym-pl":
+                        var output = "";
+                        var key =  'v6ZjxEqZm084SJrefClE';
+                        myWindow.$.ajax({
+                            url: "http://thesaurus.altervista.org/thesaurus/v1",
+                            data: {
+                                word: selectedText,
+                                output: 'json',
+                                language: 'pl_PL',
+                                key: 'v6ZjxEqZm084SJrefClE'
+                            },
+                            dataType: 'json',
+                            success: function(x) {
+                                if (x.length != 0) {
+
+                                    for (key in x.response) {
+                                        output += x.response[key].list.synonyms + " ";
+                                    }
+                                    alert(output);
+                                } else {
+                                    alert("No synonyms found")
+                                }
+                            },
+                            error: function() {
+                                alert(output);
+                            }
+                        });
+                        break;
+
+                    case "synonym-en":
+                        myWindow.$.ajax({
+                            url: "http://thesaurus.altervista.org/thesaurus/v1",
+                            data: {
+                                word: selectedText,
+                                output: 'json',
+                                language: 'en_US',
+                                key: 'v6ZjxEqZm084SJrefClE'
+                            },
+                            dataType: 'json',
+                            success: function(x) {
+                                if (x.length != 0) {
+
+                                    for (key in x.response) {
+                                        output += x.response[key].list.synonyms + " ";
+                                    }
+                                    alert(output);
+                                } else {
+                                    alert("No synonyms found")
+                                }
+                            },
+                            error: function() {
+                                alert(output);
+                            }
+                        });
+                        break;
+
                     default:
                         break;
                 }
