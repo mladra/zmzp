@@ -1,13 +1,11 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
 import { Account } from '../../../entities/account';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { AlertsService } from '../../../services/alerts.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AccountDetilsComponent } from '../account-details/account-details.component';
 import { AccountsService } from '../../../shared/services';
-import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { Local } from 'protractor/built/driverProviders';
 
 @Component({
   selector: 'app-accounts-list',
@@ -19,6 +17,7 @@ export class AccountsListComponent implements OnInit {
 
   public users: Account[];
   private current: Account;
+  private ngbModalOptions: NgbModalOptions;
 
   constructor(
     private alertsService: AlertsService,
@@ -30,30 +29,42 @@ export class AccountsListComponent implements OnInit {
     this.currentUserService.getCurrentUser()
             .subscribe(x => this.current = x);
     this.getAllUsers();
+
+    this.ngbModalOptions = {
+      backdrop : 'static',
+      keyboard : false
+    };
   }
 
   createAccount() {
-    const modalRef = this.modalService.open(AccountDetilsComponent);
+    const modalRef = this.modalService.open(AccountDetilsComponent, this.ngbModalOptions);
     modalRef.componentInstance.name = 'Create account';
 
     const newAccount = new Account();
-    newAccount.roles = new Array<string>();
+    newAccount.roles = [];
     newAccount.roles.push('Editor');
 
     modalRef.componentInstance.setAccount(newAccount, true);
     modalRef.componentInstance.emiter.subscribe(
       account => {
-        const userToAdd = account;
-        userToAdd.password = null;
+        account.password = null;
         this.users.push(account);
       }
     );
   }
 
-  modifyAccount(account) {
-    const modalRef = this.modalService.open(AccountDetilsComponent);
+  modifyAccount(account: Account) {
+    const modalRef = this.modalService.open(AccountDetilsComponent, this.ngbModalOptions);
     modalRef.componentInstance.name = 'Modify account';
-    modalRef.componentInstance.setAccount(account, false);
+
+    const accountCopy = new Account();
+    accountCopy.id = account.id;
+    accountCopy.login = account.login;
+    accountCopy.name = account.name;
+    accountCopy.surname = account.surname;
+    accountCopy.roles = account.roles.copyWithin(account.roles.length, 0, account.roles.length);
+    modalRef.componentInstance.setAccount(accountCopy, false);
+
     modalRef.componentInstance.emiter.subscribe(
       modifiedAccount => {
         const index = this.users.findIndex((a: Account) => a.login === modifiedAccount.login);

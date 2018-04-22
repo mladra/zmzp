@@ -69,10 +69,10 @@
             <div class="form-group">
                 <label for="confirmPassword">Confirm password</label>
                 <input type="password" class="form-control input-underline input-lg" placeholder="Repeat password" id="confirmPassword" name="confirmPassword"
-                    [(ngModel)]="confirm" #confirmPassword="ngModel" 
-                    [ngClass]="{ 'border border-danger': userDetailsForm.submitted && checkIfPasswordsMatch() && password.valid}">
+                    [(ngModel)]="confirm" #confirmPassword="ngModel"
+                    [ngClass]="{ 'border border-danger': userDetailsForm.submitted && checkIfPasswordsDiffers() && password.valid}">
 
-                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsMatch() && password.valid"
+                <div *ngIf="userDetailsForm.submitted && checkIfPasswordsDiffers() && password.valid"
                     class="p-2 text-danger">
                     Passwords do not match.
                 </div>
