@@ -34,7 +34,7 @@ public class TestController {
         this.testService = testService;
     }
 
-    @RequestMapping(value = "/createTest", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity createTest(@RequestBody Test test){
         try {
             return ResponseEntity.ok(testService.createTest(test));
@@ -45,7 +45,7 @@ public class TestController {
         }
     }
 
-    @RequestMapping(value = "/editTest", method = RequestMethod.PUT)
+    @RequestMapping(value = "/edit", method = RequestMethod.PUT)
     public ResponseEntity editTest(@RequestBody Test test){
         try {
             return ResponseEntity.ok(testService.editTest(test.getId(), test));
