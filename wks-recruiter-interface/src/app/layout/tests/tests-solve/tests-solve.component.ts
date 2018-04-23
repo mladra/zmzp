@@ -53,6 +53,8 @@ export class TestsSolveComponent implements OnInit {
             if (this.test.questions[i].type === 'NUMBER' || this.test.questions[i].type === 'SCALE') {
                 if (this.test.questions[i].answer < this.test.questions[i].params.minValue
                     || this.test.questions[i].answer > this.test.questions[i].params.maxValue) {
+                    this.alertsService.addAlert('danger', 'Enter proper values!');
+                    this.testAttempt.answers = new Array<AttemptAnswer>();
                     return;
                 }
             }
@@ -71,9 +73,11 @@ export class TestsSolveComponent implements OnInit {
         this.testsService.solveTest(this.testAttempt).subscribe(
             data => {
                 this.alertsService.addAlert('success', 'Thank you for solving this test!');
+                this.testAttempt.answers = new Array<AttemptAnswer>();
                 this.router.navigate(['/tests/list']);
             },
             error => {
+                this.testAttempt.answers = new Array<AttemptAnswer>();
                 this.alertsService.addAlert('danger', 'Error occured during sending your test');
             }
         )

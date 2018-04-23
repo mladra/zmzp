@@ -18,6 +18,7 @@ public class Test {
     private String description;
     private boolean isActive;
     private Collection<QuestionInfo> questions;
+    @DBRef
     private Collection<Position> positions;
 
     @Override
