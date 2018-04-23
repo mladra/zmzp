@@ -19,7 +19,8 @@ export class TestsModificationComponent implements OnInit {
   public potentialPositions: Array<String>;
   public selectedPositions: Array<String>;
   public addingPositions: boolean;
-  private title: string
+  private title: string;
+  private selected: Array<Boolean>;
 
   constructor(public activeModal: NgbActiveModal,
               private testsService: TestsService,
@@ -35,9 +36,14 @@ export class TestsModificationComponent implements OnInit {
   }
 
   submit(){
+    for(let i=0; i<this.potentialPositions.length; i++){
+      if(this.selected[i]){
+        this.selectedPositions.push(this.potentialPositions[i]);
+      }
+    }
+    console.log(this.selectedPositions);
     this.activeModal.close();
     if(this.addingPositions){
-      console.log(this.selectedPositions);
       this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
         response => {
           this.alertsService.addAlert('success', 'Successfully added positions to test: '+ this.test.name);
@@ -61,14 +67,20 @@ export class TestsModificationComponent implements OnInit {
   }
 
   setTestAndPositions(test: Test, avaliablePositions: String[], isAddingPositions: boolean){
+    this.selected = new Array();
+    this.selectedPositions = new Array();
     this.test = test;
     this.potentialPositions = avaliablePositions;
     this.addingPositions = isAddingPositions;
+
+    for(let x in this.potentialPositions){
+      this.selected.push(false);
+    }
+
     if(this.addingPositions){
       this.title = "Add positions to test.";
     } else {
       this. title = "Remove positions from test";
     }
   }
-
 }
