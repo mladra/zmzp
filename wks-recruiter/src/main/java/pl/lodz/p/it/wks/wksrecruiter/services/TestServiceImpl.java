@@ -38,6 +38,7 @@ public class TestServiceImpl implements TestService {
         try {
             test.setActive(Boolean.TRUE);
             test.setQuestions(new ArrayList<>());
+            test.setPositions(new ArrayList<>());
             testsRepository.save(test);
             return test;
         } catch (DuplicateKeyException exc) {

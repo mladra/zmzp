@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/toPromise';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {saveAs} from 'file-saver/FileSaver';
+import { Test } from '../../entities/test';
 
 @Injectable()
 export class TestsService {
@@ -11,6 +12,14 @@ export class TestsService {
 
     constructor(private http: HttpClient) {
         this.rootUrl = 'http://localhost:8080/tests';
+    }
+
+    createTest(test: Test) {
+        return this.http.post(this.rootUrl+'/create', test, {observe: 'response'});
+    }
+    
+    editTest(test: Test) {
+        return this.http.put(this.rootUrl+'/edit', test, {observe: 'response'});
     }
 
     addPositions(testId: String, positions: String[]) {

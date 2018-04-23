@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{title}}</h4>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="testnCreationForm" (ngSubmit)="testCreationForm.form.valid && submit()" #testCreationForm="ngForm" novalidate>
+    <div class="form-group">
+      <label for="testName">Test name</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="test.name"
+        #name="ngModel">
+    </div>
+    <div class="form-group">
+      <label for="testLanguage">Language</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="test.language"
+        #name="ngModel">
+    </div>
+    <div class="form-group">
+      <label for="testDescription">Description</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Description" id="description" name="description" [(ngModel)]="test.description"
+        #name="ngModel">
+    </div>
+    <div class="form-group float-right">
+      <button type="submit" class="btn btn-sm btn-success">Submit</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+    </div>
+  </form>
+</div>
