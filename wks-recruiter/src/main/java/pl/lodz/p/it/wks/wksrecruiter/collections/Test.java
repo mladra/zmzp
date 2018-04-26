@@ -1,10 +1,13 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
 @Document(collection = "tests")
@@ -13,8 +16,15 @@ public class Test {
     private String id;
     @DBRef
     private Account author;
+    @Indexed(unique = true)
+    @Length(min = 3, message = "Test name must contain at least 3 characters")
+    @Pattern(regexp = "^[A-Z].*", message = "Test name should start with capital letter")
     private String name;
+    @Length(min = 3, message = "Language must contain at least 3 characters")
+    @Pattern(regexp = "^[a-z]+", message = "Language must contain only lower case letters")
     private String language;
+    @Length(min = 3, message = "Description must contain at least 3 characters")
+    @Pattern(regexp = "^[A-Z].*", message = "Description should start with capital letter")
     private String description;
     private boolean isActive;
     private Collection<QuestionInfo> questions;

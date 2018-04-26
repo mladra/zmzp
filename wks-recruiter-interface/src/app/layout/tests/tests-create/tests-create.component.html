@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{title}}</h4>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="testCreationForm" (ngSubmit)="testCreationForm.form.valid && submit()" #testCreationForm="ngForm" novalidate>
+    <div class="form-group">
+      <label for="testName">Test name</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="test.name"
+        #name="ngModel" required minlength="3" pattern="^[A-Z].*">
+      <div *ngIf="testCreationForm.submitted && name.invalid" class="alert alert-danger">
+        <div *ngIf="name.errors.required">
+          Test name can not be empty.
+        </div>
+        <div *ngIf="name.errors.minlength">
+          Test name must have at least 3 characters.
+        </div>
+        <div *ngIf="name.errors.pattern">
+          Test name should start with capital letter.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="testLanguage">Language</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="test.language"
+        #language="ngModel" required minlength="3" pattern="^[a-z]+">
+      <div *ngIf="testCreationForm.submitted && language.invalid" class="alert alert-danger">
+        <div *ngIf="language.errors.required">
+          Language can not be empty.
+        </div>
+        <div *ngIf="language.errors.minlength">
+          Language must have at least 3 characters.
+        </div>
+        <div *ngIf="language.errors.pattern">
+          Language should contain only lower case letters.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="testDescription">Description</label>
+      <textarea class="form-control input-underline input-lg" placeholder="Description" id="description" name="description" [(ngModel)]="test.description"
+        #description="ngModel" required minlength="3" pattern="^[A-Z].*"></textarea>
+      <div *ngIf="testCreationForm.submitted && description.invalid" class="alert alert-danger">
+        <div *ngIf="description.errors.required">
+          Description can not be empty.
+        </div>
+        <div *ngIf="description.errors.minlength">
+          Description must have at least 3 characters.
+        </div>
+        <div *ngIf="description.errors.pattern">
+          Description should start with capital letter.
+        </div>
+      </div>
+    </div>
+    <div class="form-group float-right">
+      <button type="submit" class="btn btn-sm btn-success">Submit</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+    </div>
+  </form>
+</div>

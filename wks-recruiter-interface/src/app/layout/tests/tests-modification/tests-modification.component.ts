@@ -19,56 +19,71 @@ export class TestsModificationComponent implements OnInit {
   public potentialPositions: Array<String>;
   public selectedPositions: Array<String>;
   public addingPositions: boolean;
-  private title: string
+  private title: string;
+  private selected: Array<Boolean>;
 
   constructor(public activeModal: NgbActiveModal,
-              private testsService: TestsService,
-              private alertsService: AlertsService,
-              private router: Router) { }
+    private testsService: TestsService,
+    private alertsService: AlertsService,
+    private router: Router) { }
 
   ngOnInit() {
 
   }
 
-  close(){
+  close() {
     this.activeModal.close();
   }
 
-  submit(){
+  submit() {
+    for (let i = 0; i < this.potentialPositions.length; i++) {
+      if (this.selected[i]) {
+        this.selectedPositions.push(this.potentialPositions[i]);
+      }
+    }
     this.activeModal.close();
-    if(this.addingPositions){
-      console.log(this.selectedPositions);
-      this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
-        response => {
-          this.alertsService.addAlert('success', 'Successfully added positions to test: '+ this.test.name);
-          this.emitter.emit(true);
-        },
-        error => {
-          this.alertsService.addAlert('danger', error.error);
-        }
-      );
+    if (this.selectedPositions.length !== 0) {
+      if (this.addingPositions) {
+        this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
+          response => {
+            this.alertsService.addAlert('success', 'Successfully added positions to test: ' + this.test.name);
+            this.emitter.emit(true);
+          },
+          error => {
+            this.alertsService.addAlert('danger', error.error);
+          }
+        );
+      } else {
+        this.testsService.removePositions(this.test.id, this.selectedPositions).subscribe(
+          response => {
+            this.alertsService.addAlert('success', 'Successfully removed positions from test: ' + this.test.name);
+            this.emitter.emit(true);
+          },
+          error => {
+            this.alertsService.addAlert('danger', error.error);
+          }
+        );
+      }
     } else {
-      this.testsService.removePositions(this.test.id, this.selectedPositions).subscribe(
-        response => {
-          this.alertsService.addAlert('success', 'Successfully removed positions from test: '+this.test.name);
-          this.emitter.emit(true);
-        },
-        error => {
-          this.alertsService.addAlert('danger', error.error);
-        }
-      );
+      this.alertsService.addAlert('danger', "There were no positions selected.");
     }
   }
 
-  setTestAndPositions(test: Test, avaliablePositions: String[], isAddingPositions: boolean){
+  setTestAndPositions(test: Test, avaliablePositions: String[], isAddingPositions: boolean) {
+    this.selected = new Array();
+    this.selectedPositions = new Array();
     this.test = test;
     this.potentialPositions = avaliablePositions;
     this.addingPositions = isAddingPositions;
-    if(this.addingPositions){
-      this.title = "Add positions to test.";
+
+    for (const x of this.potentialPositions) {
+      this.selected.push(false);
+    }
+
+    if (this.addingPositions) {
+      this.title = 'Add positions to test.';
     } else {
-      this. title = "Remove positions from test";
+      this.title = 'Remove positions from test';
     }
   }
-
 }

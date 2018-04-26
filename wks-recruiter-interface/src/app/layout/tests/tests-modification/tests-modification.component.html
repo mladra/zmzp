@@ -8,10 +8,11 @@
   <form name="testsModificationForm" (ngSubmit)="submit()" #testsModificationForm="ngForm" novalidate>
     <div class="form-group">
       <label>Positions:</label>
-      <select multiple class="form-control select-picker" id="positions1" name="positions1" [(ngModel)]="selectedPositions">
-          <option *ngFor="let position of potentialPositions">{{ position }}</option>
-      </select>
-  </div>
+      <div *ngFor="let position of potentialPositions; let i=index;">
+        <input type="checkbox" [(ngModel)]="selected[i]" name="selected" /> {{potentialPositions[i]}}
+      </div>
+      <div *ngIf="potentialPositions.length === 0">There are no positions avaliable.</div>
+    </div>
     <div class="form-group float-right">
       <button type="submit" class="btn btn-sm btn-success">Submit</button>
       <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>

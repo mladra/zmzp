@@ -10,6 +10,7 @@ import { Position } from '../../../entities/position';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { Observable } from 'rxjs/Observable';
+import { TestsCreateComponent } from '../tests-create/tests-create.component';
 import { Account } from '../../../entities/account';
 
 
@@ -60,12 +61,44 @@ export class TestsListComponent implements OnInit {
     this.getAllTests();
   }
 
+  addTest() {
+    const modalRef = this.modalService.open(TestsCreateComponent);
+    modalRef.componentInstance.name = 'Create test';
+    modalRef.componentInstance.setTest(null, false);
+    modalRef.componentInstance.emitter.subscribe(
+      emittedBoolean => {
+        this.getAllTests();
+      }
+    );
+  }
+
+  editTest(test: Test) {
+    const modalRef = this.modalService.open(TestsCreateComponent);
+    modalRef.componentInstance.name = 'Edit test';
+    const testCopy = new Test();
+    testCopy.id = test.id;
+    testCopy.name = test.name;
+    testCopy.language = test.language;
+    testCopy.description = test.description;
+    modalRef.componentInstance.setTest(testCopy, true);
+    modalRef.componentInstance.emitter.subscribe(
+      emittedBoolean => {
+        this.getAllTests();
+      }
+    );
+  }
+
   addPositions(test: Test) {
     if (test.active === true) {
       const that = this;
       that.testPositionNames = [];
-      test.positions.forEach(x => { that.testPositionNames.push(x.name); });
-      this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
+      if (test.positions != null) {
+        test.positions.forEach(x => { that.testPositionNames.push(x.name); });
+        this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
+      } else {
+        this.positionsToAdd = this.allPositionNames;
+        test.positions = new Array<Position>();
+      }
       console.log(this.positionsToAdd);
       const modalRef = this.modalService.open(TestsModificationComponent);
       modalRef.componentInstance.name = 'Add positions to test';
