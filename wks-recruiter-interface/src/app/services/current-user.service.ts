@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Account } from '../entities/account';
-import { Test } from '../entities/test';
 
 @Injectable()
 export class CurrentUserService {
