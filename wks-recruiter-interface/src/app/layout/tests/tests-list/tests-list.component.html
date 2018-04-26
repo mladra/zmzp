@@ -74,7 +74,7 @@
                     <i class="fa fa-trash"></i> Remove test</button>
                 </td>
                 <td *ngIf="isCurrentUserCandidate()">
-                  <button (click)="goToTestSolving(test.id)" class="btn btn-sm btn-info" [disabled]="!test.active || isTestSolved(test)">
+                  <button (click)="goToTestSolving(test.id)" class="btn btn-sm btn-info" [disabled]="isTestSolved(test) || !test.active">
                     <i class="fa fa-pencil-square-o"></i> Resolve test</button>
                 </td>
               </tr>

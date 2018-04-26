@@ -10,6 +10,7 @@ import { Position } from '../../../entities/position';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { Observable } from 'rxjs/Observable';
+import { Account } from '../../../entities/account';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class TestsListComponent implements OnInit {
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
   private positionsToAdd: Array<String>;
+  private currentAccount: Account;
 
   constructor(private alertsService: AlertsService,
     private testsService: TestsService,
@@ -35,6 +37,14 @@ export class TestsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.currentUserService.getCurrentUser().subscribe(
+      data => {
+        this.currentAccount = data;
+      },
+      error => {
+        this.alertsService.addAlert('danger', 'Error occurred while loading account.');
+      }
+    )
     this.positionsService.getAll().subscribe(
       data => {
         const positionString = JSON.stringify(data.body);
@@ -139,20 +149,11 @@ export class TestsListComponent implements OnInit {
   }
 
   isTestSolved(test: Test) {
-    var account = this.currentUserService.getCurrentUser().subscribe(
-      data => {
-        var isSolved = false;
-        for (let testIteration of data.solvedTests) {
-          console.log(testIteration);
-          if (testIteration.test.id === test.id) {
-            isSolved = true;
-            break;
-          }
-        }
-        return isSolved;
-      }, error => {
-        this.alertsService.addAlert('danger', 'Error occurred while loading account.');
+    for (let testIteration of this.currentAccount.solvedTests) {
+      if (testIteration.test.id === test.id) {
+        return true;
       }
-    )
+    }
+    return false;
   }
 }
