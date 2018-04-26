@@ -42,7 +42,7 @@ export class TestsModificationComponent implements OnInit {
       }
     }
     this.activeModal.close();
-    if (this.selectedPositions.length != 0) {
+    if (this.selectedPositions.length !== 0) {
       if (this.addingPositions) {
         this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
           response => {

@@ -51,11 +51,16 @@ public class TestServiceImpl implements TestService {
     public Test editTest(String testId, Test test) throws WKSRecruiterException {
         Optional<Test> testToEdit = testsRepository.findById(testId);
         if(testToEdit.isPresent()){
-            testToEdit.get().setName(test.getName());
-            testToEdit.get().setDescription(test.getDescription());
-            testToEdit.get().setLanguage(test.getLanguage());
-            testsRepository.save(testToEdit.get());
-            return testToEdit.get();
+            try {
+                testToEdit.get().setName(test.getName());
+                testToEdit.get().setDescription(test.getDescription());
+                testToEdit.get().setLanguage(test.getLanguage());
+                testsRepository.save(testToEdit.get());
+                return testToEdit.get();
+            } catch (DuplicateKeyException exc) {
+                throw WKSRecruiterException.createException("NAME_NOT_UNIQUE",
+                        "Test with this name already exists. Try another one.");
+            }
         } else {
             throw WKSRecruiterException.createTestNotFoundException();
         }

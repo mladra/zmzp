@@ -25,13 +25,16 @@
     <div class="form-group">
       <label for="testLanguage">Language</label>
       <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="test.language"
-        #language="ngModel" required minlength="3">
+        #language="ngModel" required minlength="3" pattern="^[a-z]+">
       <div *ngIf="testCreationForm.submitted && language.invalid" class="alert alert-danger">
         <div *ngIf="language.errors.required">
           Language can not be empty.
         </div>
         <div *ngIf="language.errors.minlength">
           Language must have at least 3 characters.
+        </div>
+        <div *ngIf="language.errors.pattern">
+          Language should contain only lower case letters.
         </div>
       </div>
     </div>

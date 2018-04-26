@@ -21,6 +21,7 @@ public class Test {
     @Pattern(regexp = "^[A-Z].*", message = "Test name should start with capital letter")
     private String name;
     @Length(min = 3, message = "Language must contain at least 3 characters")
+    @Pattern(regexp = "^[a-z]+", message = "Language must contain only lower case letters")
     private String language;
     @Length(min = 3, message = "Description must contain at least 3 characters")
     @Pattern(regexp = "^[A-Z].*", message = "Description should start with capital letter")
