@@ -1,0 +1,124 @@
+<div [@routerTransition]>
+    <div class="row">
+        <div class="col">
+            <h2 class="page-header">
+                {{ test.name }}
+            </h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <i class="fa fa-home"></i>
+                    <a [routerLink]="['/home']">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <i class="fa fa-file"></i>
+                    <a [routerLink]="['/tests']">Tests</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <i class="fa fa-file"></i> {{ test.name }}
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header font-weight-bold">Questions - {{ test.name }}</div>
+                <form name="testForm" id="testForm" (ngSubmit)="testForm.form.valid && submit()" #testForm="ngForm" novalidate>
+                    <div class="card-body p-3">
+                        <div *ngFor="let question of test.questions; let j = index; let attemptAnswer of testAttempt.answers; trackBy: trackByFun">
+                            <div *ngIf="question.type !== null && question.type !== undefined && question.type !== 'NONE'">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <span class="float-right">Question: </span>
+                                        </div>
+                                        <div class="col-5">
+                                            <span>{{ question.questionPhrase }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="question.type === 'STRING'">
+                                    <div class="row form-group">
+                                        <div class="col-2">
+                                            <label class="float-right pt-1" for="{{j}}StringAnswer">Your answer:</label>
+                                        </div>
+                                        <div class="col-5">
+                                            <input type="text" name="{{j}}StringAnswer" class="form-control input-underline input-md" placeholder="Your answer" name="{{j}}QuestionAnswer"
+                                                [(ngModel)]="attemptAnswer.answer" #answer="ngModel" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                            />
+                                        </div>
+                                        <div class="col-5" *ngIf="answer.submitted && answer.invalid">
+                                            <div *ngIf="answer.errors.required" class="pt-1 text-danger">
+                                                Answer is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="question.type === 'SINGLE_CHOICE'">
+                                    <div class="row form-group">
+                                        <div class="col-2">
+                                            <label class="float-right pt-1" for="{{j}}SingleChoiceAnswer">Your answer:</label>
+                                        </div>
+                                        <div class="col-5">
+                                            <select class="form-control" name="{{j}}SingleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}">
+                                                <option *ngFor="let option of question.params.options; trackBy: trackByFun; let i = index;">
+                                                    {{option}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="question.type === 'MULTIPLE_CHOICE'">
+                                    <div class="row form-group">
+                                        <div class="col-2">
+                                            <label class="float-right pt-1" for="{{j}}MultipleChoiceAnswer">Your answer:</label>
+                                        </div>
+                                        <div class="col-5">
+                                            <select multiple class="form-control" name="{{j}}MultipleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}">
+                                                <option *ngFor="let option of question.params.options; trackBy: trackByFun; let i = index;">
+                                                    {{option}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="question.type === 'NUMBER'">
+                                    <div class="row form-group">
+                                        <div class="col-2">
+                                            <label class="float-right pt-1" for="{{j}}NumberAnswer">Your answer:</label>
+                                        </div>
+                                        <div class="col-5">
+                                            <input class="w-75 form-control input-underline input-md" name="{{j}}NumberAnswer" type="number" placeholder="Your answer"
+                                                name="{{j}}NumberAnswer" [(ngModel)]="attemptAnswer.answer" [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                                required min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}"
+                                                value="{{ question.params.minValue }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="question.type === 'SCALE'">
+                                <div class="row form-group">
+                                    <div class="col-2">
+                                        <label class="float-right pt-1" for="{{j}}SliderAnswer">Your answer:</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input class="slider" [(ngModel)]="attemptAnswer.answer" type="range" min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}"
+                                            step="{{ question.params.step }}" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                            name="{{j}}SliderAnswer" id="{{j}}SliderId" />
+                                        <p>Value:
+                                            <span>{{ attemptAnswer.answer }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-row-reverse bd-highlight p-3 form-group">
+                        <input type="submit" class="btn btn-md btn-success m-2" value="Send">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

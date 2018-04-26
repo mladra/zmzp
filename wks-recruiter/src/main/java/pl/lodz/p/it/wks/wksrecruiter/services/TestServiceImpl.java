@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Position;
 import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
+import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.*;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
@@ -21,16 +22,17 @@ import java.util.Optional;
 @Service
 public class TestServiceImpl implements TestService {
 
-    @Autowired
     private final TestsRepository testsRepository;
 
-    @Autowired
     private final PositionsRepository positionsRepository;
 
+    private final AccountService accountService;
+
     @Autowired
-    public TestServiceImpl(TestsRepository testsRepository, PositionsRepository positionsRepository) {
+    public TestServiceImpl(TestsRepository testsRepository, PositionsRepository positionsRepository, AccountService accountService) {
         this.testsRepository = testsRepository;
         this.positionsRepository = positionsRepository;
+        this.accountService = accountService;
     }
 
     @Override
@@ -144,6 +146,16 @@ public class TestServiceImpl implements TestService {
         } else {
             throw WKSRecruiterException.createTestNotFoundException();
         }
+    }
+
+    @Override
+    public TestAttempt solve(TestAttempt testAttempt, Authentication authentication) throws WKSRecruiterException {
+        if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.CAN.toString()))) {
+            throw WKSRecruiterException.createAcessDeniedException();
+        }
+
+        accountService.addSolveTest(authentication.getPrincipal().toString(), testAttempt);
+        return testAttempt;
     }
 
     private void validateQuestion(List questionTypes, QuestionInfo question) throws WKSRecruiterException {
