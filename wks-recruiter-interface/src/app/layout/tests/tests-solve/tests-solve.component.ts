@@ -6,6 +6,8 @@ import { Test } from "../../../entities/test";
 import { AlertsService } from "../../../services/alerts.service";
 import { TestAttempt } from "../../../entities/test.attempt";
 import { AttemptAnswer } from "../../../entities/attempt.answer";
+import { CurrentUserService } from "../../../services/current-user.service";
+import { Account } from '../../../entities/account';
 
 @Component({
     selector: 'app-tests-solve',
@@ -19,11 +21,14 @@ export class TestsSolveComponent implements OnInit {
 
     private testAttempt: TestAttempt;
 
+    private currentAccount: Account;
+
     constructor(
         private testsService: TestsService,
         private route: ActivatedRoute,
         private router: Router,
         private alertsService: AlertsService,
+        private currentUserService: CurrentUserService
     ) {
         this.test = new Test();
         this.testAttempt = new TestAttempt();
@@ -31,6 +36,14 @@ export class TestsSolveComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.currentUserService.getCurrentUser().subscribe(
+            data => {
+                this.currentAccount = data;
+            },
+            error => {
+                this.alertsService.addAlert('danger', 'Error occurred while loading account.');
+            }
+        )
         this.route.params.subscribe(params => {
             this.testsService.getById(params['id']).subscribe(
                 data => {
@@ -73,13 +86,14 @@ export class TestsSolveComponent implements OnInit {
         this.testsService.solveTest(this.testAttempt).subscribe(
             data => {
                 this.alertsService.addAlert('success', 'Thank you for solving this test!');
+                this.currentAccount.solvedTests.push(this.testAttempt);
+                this.currentUserService.setCurrentUser(this.currentAccount);
                 this.testAttempt.answers = new Array<AttemptAnswer>();
                 this.router.navigate(['/tests/list']);
             },
             error => {
                 this.testAttempt.answers = new Array<AttemptAnswer>();
                 if (error.error === 'Test already solved.\n') {
-                    console.log(error);
                     this.alertsService.addAlert('danger', error.error);
                 } else {
                     this.alertsService.addAlert('danger', 'Error occured during sending your test');
