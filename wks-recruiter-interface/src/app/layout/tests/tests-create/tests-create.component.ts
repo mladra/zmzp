@@ -24,8 +24,7 @@ export class TestsCreateComponent implements OnInit {
               private testsService: TestsService) { }
 
   ngOnInit() {
-    //this.test = new Test();
-    //this.title = "Create new test.";
+
   }
 
   close(){
@@ -63,7 +62,6 @@ export class TestsCreateComponent implements OnInit {
       this.test = testToEdit;
       this.modifying = modifying;
       this.title = "Modify test information.";
-      console.log("asdfasdfasdfasdfasdfa"); 
     } else {
       this.title = "Create new test.";
       this.modifying = modifying;

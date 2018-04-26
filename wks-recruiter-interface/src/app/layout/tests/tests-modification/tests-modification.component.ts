@@ -41,7 +41,6 @@ export class TestsModificationComponent implements OnInit {
         this.selectedPositions.push(this.potentialPositions[i]);
       }
     }
-    console.log(this.selectedPositions);
     this.activeModal.close();
     if(this.addingPositions){
       this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
