@@ -1,6 +1,7 @@
 package pl.lodz.p.it.wks.wksrecruiter.services;
 
 import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
+import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 
 import java.util.Collection;
@@ -18,4 +19,6 @@ public interface AccountService {
     List<Account> getAll();
 
     Account register(Account account) throws WKSRecruiterException;
+
+    Account addSolveTest(String login, TestAttempt testAttempt) throws WKSRecruiterException;
 }

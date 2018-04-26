@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TestsComponent } from './tests.component';
 import { TestsListComponent } from './tests-list/tests-list.component';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
+import { TestsSolveComponent } from './tests-solve/tests-solve.component';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'list'},
       { path: 'list', component: TestsListComponent },
-      { path: 'details/:id', component: TestQuestionsComponent }
+      { path: 'details/:id', component: TestQuestionsComponent },
+      { path: 'solve/:id', component: TestsSolveComponent }
     ]
   }
 ];

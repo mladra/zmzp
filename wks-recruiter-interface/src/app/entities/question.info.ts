@@ -4,6 +4,7 @@ export class QuestionInfo {
     maxPoints: Number;
     type: string;
     params: any;
+    answer: any;
 
     constructor() {
         this.type = 'NONE';

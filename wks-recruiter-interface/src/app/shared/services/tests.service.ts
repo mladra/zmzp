@@ -3,6 +3,7 @@ import 'rxjs/add/operator/toPromise';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { saveAs } from 'file-saver/FileSaver';
 import { Test } from '../../entities/test';
+import { TestAttempt } from '../../entities/test.attempt';
 
 @Injectable()
 export class TestsService {
@@ -60,5 +61,9 @@ export class TestsService {
 
     getEditorTests() {
         return this.http.get(this.rootUrl, { params: { role: 'Editor' } });
+    }
+
+    solveTest(testAttempt: TestAttempt) {
+        return this.http.post(this.rootUrl + '/solve', testAttempt, {observe: 'response'});
     }
 }

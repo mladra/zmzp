@@ -1,3 +1,5 @@
+import { TestAttempt } from "./test.attempt";
+
 export class Account {
     id: string;
     login: string;
@@ -5,5 +7,5 @@ export class Account {
     surname: string;
     password: string;
     roles: string[];
-    // solvedTests: Test[];
+    solvedTests: TestAttempt[];
 }

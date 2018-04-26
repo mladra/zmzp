@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { Observable } from 'rxjs/Observable';
 import { TestsCreateComponent } from '../tests-create/tests-create.component';
+import { Account } from '../../../entities/account';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class TestsListComponent implements OnInit {
   private allPositionNames: Array<String>;
   private testPositionNames: Array<String>;
   private positionsToAdd: Array<String>;
+  private currentAccount: Account;
 
   constructor(private alertsService: AlertsService,
     private testsService: TestsService,
@@ -36,6 +38,14 @@ export class TestsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.currentUserService.getCurrentUser().subscribe(
+      data => {
+        this.currentAccount = data;
+      },
+      error => {
+        this.alertsService.addAlert('danger', 'Error occurred while loading account.');
+      }
+    )
     this.positionsService.getAll().subscribe(
       data => {
         const positionString = JSON.stringify(data.body);
@@ -156,6 +166,10 @@ export class TestsListComponent implements OnInit {
     this.router.navigate(['tests/details', id]);
   }
 
+  goToTestSolving(id) {
+    this.router.navigate(['tests/solve', id]);
+  }
+
   pdf(test: Test) { this.testsService.getPDF(test.id, test.name); }
   xls(test: Test) { this.testsService.getXLS(test.id, test.name); }
 
@@ -165,5 +179,14 @@ export class TestsListComponent implements OnInit {
 
   isCurrentUserCandidate() {
     return this.currentUserService.isCurrentUserInRole('Candidate');
+  }
+
+  isTestSolved(test: Test) {
+    for (let testIteration of this.currentAccount.solvedTests) {
+      if (testIteration.test.id === test.id) {
+        return true;
+      }
+    }
+    return false;
   }
 }
