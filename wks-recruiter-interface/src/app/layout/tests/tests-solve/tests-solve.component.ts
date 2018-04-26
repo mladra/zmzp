@@ -78,7 +78,12 @@ export class TestsSolveComponent implements OnInit {
             },
             error => {
                 this.testAttempt.answers = new Array<AttemptAnswer>();
-                this.alertsService.addAlert('danger', 'Error occured during sending your test');
+                if (error.error === 'Test already solved.\n') {
+                    console.log(error);
+                    this.alertsService.addAlert('danger', error.error);
+                } else {
+                    this.alertsService.addAlert('danger', 'Error occured during sending your test');
+                }
             }
         )
     }

@@ -137,4 +137,22 @@ export class TestsListComponent implements OnInit {
   isCurrentUserCandidate() {
     return this.currentUserService.isCurrentUserInRole('Candidate');
   }
+
+  isTestSolved(test: Test) {
+    var account = this.currentUserService.getCurrentUser().subscribe(
+      data => {
+        var isSolved = false;
+        for (let testIteration of data.solvedTests) {
+          console.log(testIteration);
+          if (testIteration.test.id === test.id) {
+            isSolved = true;
+            break;
+          }
+        }
+        return isSolved;
+      }, error => {
+        this.alertsService.addAlert('danger', 'Error occurred while loading account.');
+      }
+    )
+  }
 }

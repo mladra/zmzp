@@ -5,5 +5,5 @@ export class Account {
     surname: string;
     password: string;
     roles: string[];
-    // solvedTests: Test[];
+    solvedTests: any;
 }
