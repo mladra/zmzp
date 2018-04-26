@@ -59,7 +59,7 @@ export class TestsListComponent implements OnInit {
       emittedBoolean => {
         this.getAllTests();
       }
-    )
+    );
   }
 
   editTest(test: Test){
@@ -70,12 +70,12 @@ export class TestsListComponent implements OnInit {
     testCopy.name = test.name;
     testCopy.language = test.language;
     testCopy.description = test.description;
-    modalRef.componentInstance.setTest(testCopy, true)
+    modalRef.componentInstance.setTest(testCopy, true);
     modalRef.componentInstance.emitter.subscribe(
       emittedBoolean => {
         this.getAllTests();
       }
-    )
+    );
   }
 
   addPositions(test: Test) {

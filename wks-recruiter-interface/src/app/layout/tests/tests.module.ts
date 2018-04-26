@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { TestsComponent } from "./tests.component";
+import { TestsComponent } from './tests.component';
 import { TestsRoutingModule } from './tests-routing.module';
 import { TestsListComponent } from './tests-list/tests-list.component';
 import { TestsModificationComponent } from './tests-modification/tests-modification.component';

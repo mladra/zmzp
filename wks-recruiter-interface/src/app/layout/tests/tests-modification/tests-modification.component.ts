@@ -23,29 +23,29 @@ export class TestsModificationComponent implements OnInit {
   private selected: Array<Boolean>;
 
   constructor(public activeModal: NgbActiveModal,
-              private testsService: TestsService,
-              private alertsService: AlertsService,
-              private router: Router) { }
+    private testsService: TestsService,
+    private alertsService: AlertsService,
+    private router: Router) { }
 
   ngOnInit() {
 
   }
 
-  close(){
+  close() {
     this.activeModal.close();
   }
 
-  submit(){
-    for(let i=0; i<this.potentialPositions.length; i++){
-      if(this.selected[i]){
+  submit() {
+    for (let i = 0; i < this.potentialPositions.length; i++) {
+      if (this.selected[i]) {
         this.selectedPositions.push(this.potentialPositions[i]);
       }
     }
     this.activeModal.close();
-    if(this.addingPositions){
+    if (this.addingPositions) {
       this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
         response => {
-          this.alertsService.addAlert('success', 'Successfully added positions to test: '+ this.test.name);
+          this.alertsService.addAlert('success', 'Successfully added positions to test: ' + this.test.name);
           this.emitter.emit(true);
         },
         error => {
@@ -55,7 +55,7 @@ export class TestsModificationComponent implements OnInit {
     } else {
       this.testsService.removePositions(this.test.id, this.selectedPositions).subscribe(
         response => {
-          this.alertsService.addAlert('success', 'Successfully removed positions from test: '+this.test.name);
+          this.alertsService.addAlert('success', 'Successfully removed positions from test: ' + this.test.name);
           this.emitter.emit(true);
         },
         error => {
@@ -65,21 +65,21 @@ export class TestsModificationComponent implements OnInit {
     }
   }
 
-  setTestAndPositions(test: Test, avaliablePositions: String[], isAddingPositions: boolean){
+  setTestAndPositions(test: Test, avaliablePositions: String[], isAddingPositions: boolean) {
     this.selected = new Array();
     this.selectedPositions = new Array();
     this.test = test;
     this.potentialPositions = avaliablePositions;
     this.addingPositions = isAddingPositions;
 
-    for(let x in this.potentialPositions){
+    for (const x of this.potentialPositions) {
       this.selected.push(false);
     }
 
-    if(this.addingPositions){
-      this.title = "Add positions to test.";
+    if (this.addingPositions) {
+      this.title = 'Add positions to test.';
     } else {
-      this. title = "Remove positions from test";
+      this.title = 'Remove positions from test';
     }
   }
 }

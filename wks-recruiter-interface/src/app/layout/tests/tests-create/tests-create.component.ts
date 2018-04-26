@@ -19,51 +19,51 @@ export class TestsCreateComponent implements OnInit {
   private modifying: Boolean;
 
   constructor(public activeModal: NgbActiveModal,
-              private alertsService: AlertsService,
-              private router: Router,
-              private testsService: TestsService) { }
+    private alertsService: AlertsService,
+    private router: Router,
+    private testsService: TestsService) { }
 
   ngOnInit() {
 
   }
 
-  close(){
+  close() {
     this.activeModal.close();
   }
 
-  submit(){
+  submit() {
     this.activeModal.close();
-    if(!this.modifying){
+    if (!this.modifying) {
       this.testsService.createTest(this.test).subscribe(
         response => {
-          this.alertsService.addAlert('success', 'New test: '+this.test.name+' added successfully.');
+          this.alertsService.addAlert('success', 'New test: ' + this.test.name + ' added successfully.');
           this.emitter.emit(true);
         },
         error => {
           this.alertsService.addAlert('danger', error.error);
         }
-      )
+      );
     } else {
       this.testsService.editTest(this.test).subscribe(
         response => {
-          this.alertsService.addAlert('success', 'Test: '+this.test.name+' successfully modified.');
+          this.alertsService.addAlert('success', 'Test: ' + this.test.name + ' successfully modified.');
           this.emitter.emit(true);
         },
         error => {
           this.alertsService.addAlert('danger', error.error);
         }
-      )
+      );
     }
     this.modifying = true;
   }
 
-  setTest(testToEdit: Test, modifying: Boolean){
-    if(modifying) {
+  setTest(testToEdit: Test, modifying: Boolean) {
+    if (modifying) {
       this.test = testToEdit;
       this.modifying = modifying;
-      this.title = "Modify test information.";
+      this.title = 'Modify test information.';
     } else {
-      this.title = "Create new test.";
+      this.title = 'Create new test.';
       this.modifying = modifying;
       this.test = new Test();
     }
