@@ -9,7 +9,7 @@
     <div class="form-group">
       <label>Positions:</label>
       <div *ngFor="let position of potentialPositions; let i=index;">
-        <input type="checkbox" [(ngModel)]="selected[i]" name="selectedPos" />  {{potentialPositions[i]}}
+        <input type="checkbox" [(ngModel)]="selected[i]" name="selected" /> {{potentialPositions[i]}}
       </div>
     </div>
     <div class="form-group float-right">

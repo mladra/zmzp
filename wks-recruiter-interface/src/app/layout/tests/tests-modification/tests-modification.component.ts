@@ -42,26 +42,30 @@ export class TestsModificationComponent implements OnInit {
       }
     }
     this.activeModal.close();
-    if (this.addingPositions) {
-      this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
-        response => {
-          this.alertsService.addAlert('success', 'Successfully added positions to test: ' + this.test.name);
-          this.emitter.emit(true);
-        },
-        error => {
-          this.alertsService.addAlert('danger', error.error);
-        }
-      );
+    if (this.selectedPositions.length != 0) {
+      if (this.addingPositions) {
+        this.testsService.addPositions(this.test.id, this.selectedPositions).subscribe(
+          response => {
+            this.alertsService.addAlert('success', 'Successfully added positions to test: ' + this.test.name);
+            this.emitter.emit(true);
+          },
+          error => {
+            this.alertsService.addAlert('danger', error.error);
+          }
+        );
+      } else {
+        this.testsService.removePositions(this.test.id, this.selectedPositions).subscribe(
+          response => {
+            this.alertsService.addAlert('success', 'Successfully removed positions from test: ' + this.test.name);
+            this.emitter.emit(true);
+          },
+          error => {
+            this.alertsService.addAlert('danger', error.error);
+          }
+        );
+      }
     } else {
-      this.testsService.removePositions(this.test.id, this.selectedPositions).subscribe(
-        response => {
-          this.alertsService.addAlert('success', 'Successfully removed positions from test: ' + this.test.name);
-          this.emitter.emit(true);
-        },
-        error => {
-          this.alertsService.addAlert('danger', error.error);
-        }
-      );
+      this.alertsService.addAlert('danger', "There were no positions selected.");
     }
   }
 
