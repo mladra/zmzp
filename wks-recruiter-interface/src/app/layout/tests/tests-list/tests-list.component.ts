@@ -62,7 +62,7 @@ export class TestsListComponent implements OnInit {
     );
   }
 
-  editTest(test: Test){
+  editTest(test: Test) {
     const modalRef = this.modalService.open(TestsCreateComponent);
     modalRef.componentInstance.name = 'Edit test';
     const testCopy = new Test();
@@ -82,7 +82,7 @@ export class TestsListComponent implements OnInit {
     if (test.active === true) {
       const that = this;
       that.testPositionNames = [];
-      if(test.positions != null){
+      if (test.positions != null) {
         test.positions.forEach(x => { that.testPositionNames.push(x.name); });
         this.positionsToAdd = this.allPositionNames.filter(element => !this.testPositionNames.includes(element));
       } else {
