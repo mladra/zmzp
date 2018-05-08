@@ -36,9 +36,9 @@ public class TestController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity createTest(@RequestBody Test test){
+    public ResponseEntity createTest(@RequestBody Test test, Authentication authentication){
         try {
-            return ResponseEntity.ok(testService.createTest(test));
+            return ResponseEntity.ok(testService.createTest(test, authentication));
         } catch (WKSRecruiterException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.toString());
         } catch (Throwable e ) {

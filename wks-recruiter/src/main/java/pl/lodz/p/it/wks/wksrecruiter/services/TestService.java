@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface TestService {
-    Test createTest(Test test) throws WKSRecruiterException;
+    Test createTest(Test test, Authentication authentication) throws WKSRecruiterException;
 
     Test editTest(String testId, Test test) throws WKSRecruiterException;
 

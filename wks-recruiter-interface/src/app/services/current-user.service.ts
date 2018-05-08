@@ -9,7 +9,11 @@ export class CurrentUserService {
   private currentUserRoles: Array<String>;
 
   constructor() {
-    this.getCurrentUser().subscribe(x => this.currentUserRoles = x.roles);
+    this.getCurrentUser().subscribe(x => {
+      if (x != null) {
+        this.currentUserRoles = x.roles
+      }
+    });
   }
 
   getCurrentUser(): Observable<Account> {
