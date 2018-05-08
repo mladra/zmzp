@@ -11,6 +11,7 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.*;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
+import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.PositionsRepository;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
@@ -28,19 +29,23 @@ public class TestServiceImpl implements TestService {
 
     private final AccountService accountService;
 
+    private final AccountsRepository accountsRepository;
+
     @Autowired
-    public TestServiceImpl(TestsRepository testsRepository, PositionsRepository positionsRepository, AccountService accountService) {
+    public TestServiceImpl(TestsRepository testsRepository, PositionsRepository positionsRepository, AccountService accountService, AccountsRepository accountsRepository) {
         this.testsRepository = testsRepository;
         this.positionsRepository = positionsRepository;
         this.accountService = accountService;
+        this.accountsRepository = accountsRepository;
     }
 
     @Override
-    public Test createTest(Test test) throws WKSRecruiterException {
+    public Test createTest(Test test, Authentication authentication) throws WKSRecruiterException {
         try {
             test.setActive(Boolean.TRUE);
             test.setQuestions(new ArrayList<>());
             test.setPositions(new ArrayList<>());
+            accountsRepository.findByLogin(authentication.getName()).ifPresent(test::setAuthor);
             testsRepository.save(test);
             return test;
         } catch (DuplicateKeyException exc) {

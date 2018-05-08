@@ -20,7 +20,7 @@
       <div class="card">
         <div class="card-header">Tests list</div>
         <div class="card-body table-responsive">
-          <button type="button" class="btn btn-sm btn-success" (click)="addTest()" style="margin-bottom: 10px">+ Add</button>
+          <button type="button" *ngIf="isCurrentUserEditor()" class="btn btn-sm btn-success" (click)="addTest()" style="margin-bottom: 10px">+ Add</button>
           <table class="table table-hover table-striped">
             <thead>
               <tr>
@@ -77,9 +77,8 @@
                     </button>
                   </span>
                   <span *ngIf="isCurrentUserCandidate()">
-                    <button class="btn btn-sm btn-info" [disabled]="!test.active" ngbTooltip="Resolve test">
-                      <i class="fa fa-pencil-square-o"></i>
-                    </button>
+                    <button (click)="goToTestSolving(test.id)" class="btn btn-sm btn-info" [disabled]="isTestSolved(test) || !test.active">
+                      <i class="fa fa-pencil-square-o"></i> Resolve test</button>
                   </span>
                 </td>
               </tr>

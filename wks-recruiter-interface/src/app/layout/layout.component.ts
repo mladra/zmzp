@@ -256,7 +256,7 @@ export class LayoutComponent implements OnInit {
 
                     case "synonym-pl":
                         var output = "";
-                        var key =  'v6ZjxEqZm084SJrefClE';
+                        var key =  'ctbh3BuNErIIPskk081X';
                         myWindow.$.ajax({
                             url: "http://thesaurus.altervista.org/thesaurus/v1",
                             data: {
@@ -290,7 +290,7 @@ export class LayoutComponent implements OnInit {
                                 word: selectedText,
                                 output: 'json',
                                 language: 'en_US',
-                                key: 'v6ZjxEqZm084SJrefClE'
+                                key: 'ctbh3BuNErIIPskk081X'
                             },
                             dataType: 'json',
                             success: function(x) {
