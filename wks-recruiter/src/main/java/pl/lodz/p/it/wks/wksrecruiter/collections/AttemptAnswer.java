@@ -8,7 +8,6 @@ public class AttemptAnswer {
     private int questionNumber;
     private String question;
     private Collection<String> answers;
-    @JsonProperty("points")
     private int maxPoints;
     private int score;
 

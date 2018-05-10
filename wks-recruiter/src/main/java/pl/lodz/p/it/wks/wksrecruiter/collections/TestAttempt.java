@@ -12,7 +12,6 @@ public class TestAttempt {
 
     @DBRef
     private Test test;
-    @JsonProperty("points")
     private int maxPoints;
     private int score;
 
