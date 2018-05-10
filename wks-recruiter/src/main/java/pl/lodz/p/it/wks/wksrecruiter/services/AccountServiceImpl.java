@@ -155,16 +155,19 @@ public class AccountServiceImpl implements AccountService {
             }
             Optional<Test> solvedTest = testsRepository.findById(testAttempt.getTest().getId());
             if (solvedTest.isPresent()) {
-                QuestionInfo[] originalQuestions = (QuestionInfo[]) solvedTest.get().getQuestions().toArray();
-                AttemptAnswer[] attemptAnswers = (AttemptAnswer[]) testAttempt.getAnswers().toArray();
+                QuestionInfo[] originalQuestions = solvedTest.get().getQuestions().toArray(new QuestionInfo[solvedTest.get().getQuestions().size()]);
+                AttemptAnswer[] attemptAnswers = testAttempt.getAnswers().toArray(new AttemptAnswer[testAttempt.getAnswers().size()]);
                 if (originalQuestions.length != attemptAnswers.length)
                     throw WKSRecruiterException.createTestNotFoundException();
+                int pointsSum = 0;
                 for (int i = 0; i < originalQuestions.length; i++) {
                     if (!attemptAnswers[i].getQuestion().equals(originalQuestions[i].getQuestionPhrase()))
                         throw WKSRecruiterException.createTestNotFoundException();
                     attemptAnswers[i].setMaxPoints(originalQuestions[i].getMaxPoints());
+                    pointsSum += originalQuestions[i].getMaxPoints();
                     attemptAnswers[i].setScore(-1);
                 }
+                testAttempt.setMaxPoints(pointsSum);
                 testAttempt.setAnswers(Arrays.asList(attemptAnswers));
             } else throw WKSRecruiterException.createTestNotFoundException();
             testAttempt.setScore(TestAttempt.SOLVED_UNCHECKED); //temporary status
