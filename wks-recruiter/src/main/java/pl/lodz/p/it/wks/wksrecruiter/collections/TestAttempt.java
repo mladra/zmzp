@@ -1,6 +1,7 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -9,6 +10,8 @@ public class TestAttempt {
 
     public static final int SOLVED_UNCHECKED = -1;
 
+    @DBRef
+    private Test test;
     @JsonProperty("points")
     private int maxPoints;
     private int score;
@@ -61,5 +64,13 @@ public class TestAttempt {
     public int hashCode() {
 
         return Objects.hash(maxPoints, answers);
+    }
+
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
     }
 }
