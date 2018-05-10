@@ -147,10 +147,11 @@ public class AccountServiceImpl implements AccountService {
         Optional<Account> account = accountsRepository.findByLogin(login);
         if (account.isPresent()) {
             if (account.get().getSolvedTests() != null) {
-                if (account.get().getSolvedTests().stream().filter(test -> test.getTest() != null).anyMatch(test -> test.getTest().getId().equals(testAttempt.getTest().getId()))) {
+                if (account.get().getSolvedTests().contains(testAttempt)) {
                     throw WKSRecruiterException.createTestAlreadySolvedException();
                 }
             }
+            testAttempt.setScore(TestAttempt.SOLVED_UNCHECKED); //temporary status
             account.get().getSolvedTests().add(testAttempt);
             return accountsRepository.save(account.get());
         } else {
