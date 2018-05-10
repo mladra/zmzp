@@ -287,14 +287,81 @@
                                             <td align="center" class="padding-copy textintenseStyle"
                                                 style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;">
                                                 <p style="text-align: left; line-height: 1em;">Test name:
-                                                    <span th:text="${test.getTest().name}">Test name</span></p>
+                                                    <span th:text="${test.getTest().getName()}">Test name</span></p>
                                                 <p style="text-align: left; line-height: normal;">Your score:
-                                                    {test.score}</p>
+                                                    <span th:text="${test.getScore()}">score</span></p>
                                                 <p style="text-align: left; line-height: normal;">Maximum points:
-                                                    <span th:text="${test.points}">Test maxPoints</span></p>
+                                                    <span th:text="${test.maxPoints}">maxPoints</span></p>
                                                 <p style="text-align: left; line-height: normal;">Author:
-                                                    <span th:text="${test.getTest().getAuthor().getName()}+' '+${test.getTest().getAuthor().getSurname()}">Author name</span></p>
+                                                    <span th:text="${test.getTest().getAuthor().getName()}+' '+${test.getTest().getAuthor().getSurname()}">Author name</span>
+                                                </p>
                                                 <p style="text-align: left; line-height: normal;"> </p>
+                                                <style type="text/css">
+                                                    .tg {
+                                                        border-collapse: collapse;
+                                                        border-spacing: 0;
+                                                        border-color: #aabcfe;
+                                                    }
+
+                                                    .tg td {
+                                                        font-family: Arial, sans-serif;
+                                                        font-size: 14px;
+                                                        padding: 10px 5px;
+                                                        overflow: hidden;
+                                                        word-break: normal;
+                                                        border: 1px solid #aabcfe;
+                                                        color: #669;
+                                                        background-color: #e8edff;
+                                                    }
+
+                                                    .tg th {
+                                                        font-family: Arial, sans-serif;
+                                                        font-size: 14px;
+                                                        font-weight: normal;
+                                                        padding: 10px 5px;
+                                                        overflow: hidden;
+                                                        word-break: normal;
+                                                        border: 1px solid #aabcfe;
+                                                        color: #039;
+                                                        background-color: #b9c9fe;
+                                                    }
+
+                                                    .tg .tg-n0e7 {
+                                                        background-color: #607d8b;
+                                                        color: #ffffff;
+                                                        border-color: #607d8b;
+                                                        text-align: center;
+                                                        vertical-align: top
+                                                    }
+
+                                                    .tg .tg-ensv {
+                                                        background-color: #607d8b;
+                                                        color: #ffffff;
+                                                        border-color: #607d8b;
+                                                        vertical-align: top;
+                                                        text-align: center;
+                                                    }
+
+                                                    .tg .tg-8tf7 {
+                                                        background-color: #ffffff;
+                                                        color: #212121;
+                                                        border-color: #607d8b;
+                                                        vertical-align: top;
+                                                        text-align: center;
+                                                    }
+                                                </style>
+                                                <table class="tg">
+                                                    <tr>
+                                                        <th class="tg-n0e7">Number</th>
+                                                        <th class="tg-n0e7">Question</th>
+                                                        <th class="tg-ensv">Score</th>
+                                                    </tr>
+                                                    <tr th:each="answer : ${test.getAnswers()}">
+                                                        <td class="tg-8tf7"><span th:text="${answer.questionNumber}">0</span></td>
+                                                        <td class="tg-8tf7"><span th:text="${answer.question}">Want sum fuk?</span></td>
+                                                        <td class="tg-8tf7"><span th:text="${answer.getScore()}+' / '+${answer.getMaxPoints()}">0 / 0</span></td>
+                                                    </tr>
+                                                </table>
                                                 <p style="text-align: left; line-height: normal;"> </p>
                                                 <h5 style="text-align: right; line-height: 1em;">
                                                     <code><em>"Write something, even if it’s just a suicide note."</em></code>
