@@ -1,7 +1,5 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Collection;
 
 public class AttemptAnswer {

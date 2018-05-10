@@ -1,6 +1,5 @@
 package pl.lodz.p.it.wks.wksrecruiter.collections;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.Collection;
