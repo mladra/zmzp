@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.lodz.p.it.wks.wksrecruiter.collections.Account;
-import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
-import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
-import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
+import pl.lodz.p.it.wks.wksrecruiter.collections.*;
+import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
+import pl.lodz.p.it.wks.wksrecruiter.repositories.TestsRepository;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,10 +21,13 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountsRepository accountsRepository;
 
+    private final TestsRepository testsRepository;
+
     @Autowired
-    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, AccountsRepository accountsRepository) {
+    public AccountServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, AccountsRepository accountsRepository, TestsRepository testsRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountsRepository = accountsRepository;
+        this.testsRepository = testsRepository;
     }
 
     private boolean checkIfRolesInEnum(Collection<String> roles) {
@@ -147,10 +149,30 @@ public class AccountServiceImpl implements AccountService {
         Optional<Account> account = accountsRepository.findByLogin(login);
         if (account.isPresent()) {
             if (account.get().getSolvedTests() != null) {
-                if (account.get().getSolvedTests().stream().filter(test -> test.getTest() != null).anyMatch(test -> test.getTest().getId().equals(testAttempt.getTest().getId()))) {
+                if (account.get().getSolvedTests().contains(testAttempt)) {
                     throw WKSRecruiterException.createTestAlreadySolvedException();
                 }
             }
+            Optional<Test> solvedTest = testsRepository.findById(testAttempt.getTest().getId());
+            if (solvedTest.isPresent()) {
+                QuestionInfo[] originalQuestions = solvedTest.get().getQuestions()
+                        .toArray(new QuestionInfo[solvedTest.get().getQuestions().size()]);
+                AttemptAnswer[] attemptAnswers = testAttempt.getAnswers()
+                        .toArray(new AttemptAnswer[testAttempt.getAnswers().size()]);
+                if (originalQuestions.length != attemptAnswers.length)
+                    throw WKSRecruiterException.createTestNotFoundException();
+                int pointsSum = 0;
+                for (int i = 0; i < originalQuestions.length; i++) {
+                    if (!attemptAnswers[i].getQuestion().equals(originalQuestions[i].getQuestionPhrase()))
+                        throw WKSRecruiterException.createTestNotFoundException();
+                    attemptAnswers[i].setMaxPoints(originalQuestions[i].getMaxPoints());
+                    pointsSum += originalQuestions[i].getMaxPoints();
+                    attemptAnswers[i].setScore(-1);
+                }
+                testAttempt.setMaxPoints(pointsSum);
+                testAttempt.setAnswers(Arrays.asList(attemptAnswers));
+            } else throw WKSRecruiterException.createTestNotFoundException();
+            testAttempt.setScore(TestAttempt.SOLVED_UNCHECKED); //temporary status
             account.get().getSolvedTests().add(testAttempt);
             return accountsRepository.save(account.get());
         } else {
