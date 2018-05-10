@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>MOSAICO Responsive Email Designer</title>
+    <title>WKS-Recruiter</title>
     <!--
 
 
@@ -239,7 +240,7 @@
                                                         <td>
                                                             <img width="500" border="0" alt="" class="img-max"
                                                                  style="display: block; padding: 0; color: #3F3D33; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 16px; width: 500px;"
-                                                                 src="https://mosaico.io/srv/f-op8pky9/img?src=https%3A%2F%2Fmosaico.io%2Ffiles%2Fop8pky9%2Fclass-diary-exam-8769%2520%25282%2529.jpg&amp;method=resize&amp;params=500%2Cnull">
+                                                                 th:src="@{/header.jpg}" src="../static/header.jpg">
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -286,11 +287,13 @@
                                             <td align="center" class="padding-copy textintenseStyle"
                                                 style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;">
                                                 <p style="text-align: left; line-height: 1em;">Test name:
-                                                    {test.name}</p>
+                                                    <span th:text="${test.getTest().name}">Test name</span></p>
                                                 <p style="text-align: left; line-height: normal;">Your score:
                                                     {test.score}</p>
                                                 <p style="text-align: left; line-height: normal;">Maximum points:
-                                                    {test.maxPoints}</p>
+                                                    <span th:text="${test.points}">Test maxPoints</span></p>
+                                                <p style="text-align: left; line-height: normal;">Author:
+                                                    <span th:text="${test.getTest().getAuthor().getName()}+' '+${test.getTest().getAuthor().getSurname()}">Author name</span></p>
                                                 <p style="text-align: left; line-height: normal;"> </p>
                                                 <p style="text-align: left; line-height: normal;"> </p>
                                                 <h5 style="text-align: right; line-height: 1em;">
