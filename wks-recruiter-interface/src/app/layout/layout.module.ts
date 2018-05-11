@@ -11,6 +11,7 @@ import { LayoutComponent } from './layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AlertsService } from '../services/alerts.service';
+import { TestAttemptsModule } from './test-attempts/test-attempts.module';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { AlertsService } from '../services/alerts.service';
         NgbAlertModule.forRoot(),
         NgbDropdownModule.forRoot(),
         NgbModule.forRoot(),
-        TestsModule
+        TestsModule,
+        TestAttemptsModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent],
     providers: [AlertsService]
