@@ -7,12 +7,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PositionsService } from '../../../shared/services/positions.service';
 import { TestsModificationComponent } from '../tests-modification/tests-modification.component';
 import { Position } from '../../../entities/position';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '../../../services/current-user.service';
 import { Observable } from 'rxjs/Observable';
 import { TestsCreateComponent } from '../tests-create/tests-create.component';
 import { Account } from '../../../entities/account';
-
+import { TestTranslationComponent } from '../test-translation/test-translation.component';
 
 @Component({
   selector: 'app-tests-list',
@@ -30,10 +30,11 @@ export class TestsListComponent implements OnInit {
   private currentAccount: Account;
 
   constructor(private alertsService: AlertsService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
     private testsService: TestsService,
     private positionsService: PositionsService,
-    private modalService: NgbModal,
-    private router: Router,
     private currentUserService: CurrentUserService
   ) { }
 
@@ -45,7 +46,7 @@ export class TestsListComponent implements OnInit {
       error => {
         this.alertsService.addAlert('danger', 'Error occurred while loading account.');
       }
-    )
+    );
     this.positionsService.getAll().subscribe(
       data => {
         const positionString = JSON.stringify(data.body);
@@ -182,11 +183,23 @@ export class TestsListComponent implements OnInit {
   }
 
   isTestSolved(test: Test) {
-    for (let testIteration of this.currentAccount.solvedTests) {
+    for (const testIteration of this.currentAccount.solvedTests) {
       if (testIteration.test.id === test.id) {
         return true;
       }
     }
     return false;
+  }
+
+  translateTest(id, name) {
+    const modalRef = this.modalService.open(TestTranslationComponent);
+    modalRef.componentInstance.setTests(this.tests, true);
+    modalRef.componentInstance.setTestName(name, true);
+    modalRef.componentInstance.emitter.subscribe(
+      emittedBoolean => {
+        const language = modalRef.componentInstance.close();
+        this.router.navigate(['tests/details', id], { queryParams: { translate: true, language: language } });
+      }
+    );
   }
 }

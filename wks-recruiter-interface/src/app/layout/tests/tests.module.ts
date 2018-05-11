@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
 import { TestsCreateComponent } from './tests-create/tests-create.component';
 import { TestsSolveComponent } from './tests-solve/tests-solve.component';
+import { TestTranslationComponent } from './test-translation/test-translation.component';
 
 @NgModule({
   imports: [
@@ -18,8 +19,8 @@ import { TestsSolveComponent } from './tests-solve/tests-solve.component';
     FormsModule,
     NgbModule.forRoot()
   ],
-  declarations: [TestsComponent, TestsListComponent, TestsModificationComponent, TestQuestionsComponent, TestsSolveComponent, TestsCreateComponent],
-  entryComponents: [TestsModificationComponent, TestsCreateComponent]
+  declarations: [TestsComponent, TestsListComponent, TestsModificationComponent, TestQuestionsComponent, TestsSolveComponent, TestsCreateComponent, TestTranslationComponent],
+  entryComponents: [TestsModificationComponent, TestsCreateComponent, TestTranslationComponent]
 
 })
 export class TestsModule { }
