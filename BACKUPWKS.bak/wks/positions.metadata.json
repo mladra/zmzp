@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"wks.positions"},{"v":2,"unique":true,"key":{"name":1},"name":"name","ns":"wks.positions"}],"uuid":"9fac214fc4dd4ddfbbd89ffc026a2753"}
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"wks.positions"},{"v":2,"unique":true,"key":{"name":1},"name":"name","ns":"wks.positions"}],"uuid":"80d0f9e6df6245ea9a37815d39428afb"}
