@@ -14,15 +14,20 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class MailService {
+
+	private final JavaMailSender mailSender;
+	private final Environment env;
+	private final TemplateEngine templateEngine;
+	private final MailService mailService;
+
 	@Autowired
-	private JavaMailSender mailSender;
-	
-	@Autowired
-	private Environment env;
-	
-	@Autowired
-	private TemplateEngine templateEngine;
-	
+	public MailService(JavaMailSender mailSender, Environment env, TemplateEngine templateEngine, MailService mailService) {
+		this.mailSender = mailSender;
+		this.env = env;
+		this.templateEngine = templateEngine;
+		this.mailService = mailService;
+	}
+
 	public void sendEmail(String emailAddress, TestAttempt testAttempt) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
