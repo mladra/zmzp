@@ -37,7 +37,7 @@ public class TestAttemptController {
     @RequestMapping(method = RequestMethod.POST, value = "/mail/{email}")
     public ResponseEntity sendMail(@PathVariable String email, @RequestBody TestAttempt testAttempt) {
         try {
-            this.mailService.sendEmail(email, testAttempt);
+            this.mailService.sendMail(email, testAttempt);
             return ResponseEntity.ok().build();
         } catch (MessagingException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
