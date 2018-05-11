@@ -22,4 +22,8 @@ export class TestAttemptsService {
     updateTestAttempt(testAttempt) {
         return this.http.put(this.rootUrl, testAttempt, { observe: 'response' });
     }
+
+    sendEmailNotification(email, testAttempt) {
+        return this.http.post(this.rootUrl + '/mail/' + email, testAttempt, { observe: 'response' });
+    }
 }

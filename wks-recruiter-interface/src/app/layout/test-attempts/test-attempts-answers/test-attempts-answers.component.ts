@@ -57,6 +57,13 @@ export class TestAttemptsAnswersComponent implements OnInit {
     }
 
     sendNotification() {
-        // TODO: mladra: To implement...
+        this.testAttemptsService.sendEmailNotification(this.testAttempt.user, this.testAttempt).subscribe(
+            response => {
+                this.alertsService.addAlert('success', 'Notification has been successfully sent to ' + this.testAttempt.user);
+            },
+            error => {
+                this.alertsService.addAlert('danger', 'Error occurred during notification sending process. Try again.');
+            }
+        );
     }
 }
