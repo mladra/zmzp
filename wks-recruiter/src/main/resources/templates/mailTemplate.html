@@ -5,17 +5,6 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>WKS-Recruiter</title>
-    <!--
-
-
-  COLORE INTENSE  #9C010F
-  COLORE LIGHT #EDE8DA
-
-  TESTO LIGHT #3F3D33
-  TESTO INTENSE #ffffff
-
-
-   -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <style type="text/css">
@@ -240,7 +229,7 @@
                                                         <td>
                                                             <img width="500" border="0" alt="" class="img-max"
                                                                  style="display: block; padding: 0; color: #3F3D33; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 16px; width: 500px;"
-                                                                 th:src="@{/header.jpg}" src="../static/header.jpg">
+                                                                 src="https://lh5.googleusercontent.com/CPPxeUmKElajEv_7N1ijARGaS0X4KW9YZI4F2WV0RUm6DBH39LEP9Aqv2gclnA6D0NSaUw6fUsp4-Pm4UaRX=w1920-h917-rw">
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -297,12 +286,6 @@
                                                 </p>
                                                 <p style="text-align: left; line-height: normal;"> </p>
                                                 <style type="text/css">
-                                                    .tg {
-                                                        border-collapse: collapse;
-                                                        border-spacing: 0;
-                                                        border-color: #aabcfe;
-                                                    }
-
                                                     .tg td {
                                                         font-family: Arial, sans-serif;
                                                         font-size: 14px;
@@ -325,41 +308,17 @@
                                                         color: #039;
                                                         background-color: #b9c9fe;
                                                     }
-
-                                                    .tg .tg-n0e7 {
-                                                        background-color: #607d8b;
-                                                        color: #ffffff;
-                                                        border-color: #607d8b;
-                                                        text-align: center;
-                                                        vertical-align: top
-                                                    }
-
-                                                    .tg .tg-ensv {
-                                                        background-color: #607d8b;
-                                                        color: #ffffff;
-                                                        border-color: #607d8b;
-                                                        vertical-align: top;
-                                                        text-align: center;
-                                                    }
-
-                                                    .tg .tg-8tf7 {
-                                                        background-color: #ffffff;
-                                                        color: #212121;
-                                                        border-color: #607d8b;
-                                                        vertical-align: top;
-                                                        text-align: center;
-                                                    }
                                                 </style>
-                                                <table class="tg">
+                                                <table style="border-collapse: collapse; border-spacing: 0; border-color: #aabcfe;">
                                                     <tr>
-                                                        <th class="tg-n0e7">Number</th>
-                                                        <th class="tg-n0e7">Question</th>
-                                                        <th class="tg-ensv">Score</th>
+                                                        <th style="background-color: #607d8b; color: #ffffff; border-color: #607d8b; vertical-align: top; text-align: center;">Number</th>
+                                                        <th style="background-color: #607d8b; color: #ffffff; border-color: #607d8b; vertical-align: top; text-align: center;">Question</th>
+                                                        <th style="background-color: #607d8b; color: #ffffff; border-color: #607d8b; vertical-align: top; text-align: center;">Score</th>
                                                     </tr>
                                                     <tr th:each="answer : ${test.getAnswers()}">
-                                                        <td class="tg-8tf7"><span th:text="${answer.questionNumber}">0</span></td>
-                                                        <td class="tg-8tf7"><span th:text="${answer.question}">Want sum fuk?</span></td>
-                                                        <td class="tg-8tf7"><span th:text="${answer.getScore()}+' / '+${answer.getMaxPoints()}">0 / 0</span></td>
+                                                        <td style="background-color: #ffffff; color: #212121; border-color: #607d8b; vertical-align: top; text-align: center;"><span th:text="${answer.questionNumber}">0</span></td>
+                                                        <td style="background-color: #ffffff; color: #212121; border-color: #607d8b; vertical-align: top; text-align: center;"><span th:text="${answer.question}">Want sum fuk?</span></td>
+                                                        <td style="background-color: #ffffff; color: #212121; border-color: #607d8b; vertical-align: top; text-align: right;"><span th:text="${answer.getScore()}+' / '+${answer.getMaxPoints()}">0 / 0</span></td>
                                                     </tr>
                                                 </table>
                                                 <p style="text-align: left; line-height: normal;"> </p>
@@ -377,32 +336,7 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <!-- BULLETPROOF BUTTON -->
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0"
-                                           class="mobile-button-container">
-                                        <tbody>
-                                        <tr>
-                                            <td align="center" style="padding: 25px 0 0 0;" class="padding-copy">
-                                                <table border="0" cellspacing="0" cellpadding="0"
-                                                       class="responsive-table">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td align="center">
-                                                            <a target="_new" class="mobile-button"
-                                                               style="display: inline-block; font-size: 18px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #3F3D33; text-decoration: none; background-color: #EDE8DA; padding: 15px 25px;border-radius: 3px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-bottom: 3px solid #d9ceb1;"
-                                                               href="https://localhost:4200">Show More →</a>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </td>
