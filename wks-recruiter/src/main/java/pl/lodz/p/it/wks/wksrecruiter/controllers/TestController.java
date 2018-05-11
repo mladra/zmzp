@@ -11,6 +11,7 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.services.MailService;
+import pl.lodz.p.it.wks.wksrecruiter.services.MailServiceImpl;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
 import pl.lodz.p.it.wks.wksrecruiter.utils.XlsGeneratorUtil;
@@ -165,7 +166,7 @@ public class TestController {
     @RequestMapping(value = "/mail/{email}")
     public ResponseEntity sendMail(@PathVariable String email, @RequestBody TestAttempt testAttempt) {
         try {
-            this.mailService.sendEmail(email, testAttempt);
+            this.mailService.sendMail(email, testAttempt);
             return ResponseEntity.ok().build();
         } catch (MessagingException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
