@@ -29,6 +29,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile("io.jsonwebtoken:jjwt:0.7.0")
 	compile group: 'org.xhtmlrenderer', name: 'flying-saucer-core', version: '9.1.12'
 	compile group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf-itext5', version: '9.1.12'
