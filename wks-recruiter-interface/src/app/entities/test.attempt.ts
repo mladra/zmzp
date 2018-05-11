@@ -1,8 +1,11 @@
-import { AttemptAnswer } from "./attempt.answer";
-import { Test } from "./test";
+import { AttemptAnswer } from './attempt.answer';
+import { Test } from './test';
 
 export class TestAttempt {
+    id: string;
+    user: string;
     test: Test;
-    points: number;
+    maxPoints: number;
+    score: number;
     answers: AttemptAnswer[];
 }

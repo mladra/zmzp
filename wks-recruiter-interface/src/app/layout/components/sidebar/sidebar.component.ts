@@ -40,6 +40,12 @@ export class SidebarComponent implements OnInit {
             icon: 'file',
             name: 'Tests',
             rolesAllowed: ['editor', 'candidate']
+        },
+        {
+            link: '/test-attempts',
+            icon: 'check-square',
+            name: 'Tests\' attempts',
+            rolesAllowed: ['editor']
         }
     ];
     public userMenuItems: MenuItem[];

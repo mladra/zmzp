@@ -18,7 +18,14 @@ import { TestsSolveComponent } from './tests-solve/tests-solve.component';
     FormsModule,
     NgbModule.forRoot()
   ],
-  declarations: [TestsComponent, TestsListComponent, TestsModificationComponent, TestQuestionsComponent, TestsSolveComponent, TestsCreateComponent],
+  declarations: [
+    TestsComponent,
+    TestsListComponent,
+    TestsModificationComponent,
+    TestQuestionsComponent,
+    TestsSolveComponent,
+    TestsCreateComponent
+  ],
   entryComponents: [TestsModificationComponent, TestsCreateComponent]
 
 })

@@ -18,7 +18,8 @@ const routes: Routes = [
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'blank-page', loadChildren: './blank-page/blank-page.module#BlankPageModule' },
             { path: 'positions', loadChildren: './positions/positions.module#PositionsModule'},
-            { path: 'tests', loadChildren: './tests/tests.module#TestsModule'}
+            { path: 'tests', loadChildren: './tests/tests.module#TestsModule'},
+            { path: 'test-attempts', loadChildren: './test-attempts/test-attempts.module#TestAttemptsModule'}
         ]
     }
 ];

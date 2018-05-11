@@ -1,0 +1,56 @@
+<div [@routerTransition]>
+  <div class="row">
+    <div class="col">
+      <h2 class="page-header">
+        Test attempts
+      </h2>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <i class="fa fa-home"></i>
+          <a [routerLink]="['/home']">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <i class="fa fa-check-square"></i> Test attempts
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header font-weight-bold">Test attempts list</div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th>User</th>
+                <th>Score</th>
+                <th>Test</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let attempt of testAttempts; let i = index;">
+                <td>{{ i + 1 }}</td>
+                <td>{{ attempt.user }}</td>
+                <td *ngIf="attempt.score === -1">-----</td>
+                <td *ngIf="attempt.score > -1">{{ attempt.score }} / {{ attempt.maxPoints }}</td>
+                <td>{{ attempt.test.name }}</td>
+                <td>
+                  <button (click)="checkTestAttempt(attempt)" class="btn btn-sm btn-warning">
+                    Evaluate answers
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="testAttempts === null || testAttempts.length === 0" class="text-center">
+            <h4>No test attempts to show</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

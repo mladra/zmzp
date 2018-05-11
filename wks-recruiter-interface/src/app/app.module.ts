@@ -14,6 +14,8 @@ import { PositionsService } from './shared/services/positions.service';
 import { AuthenticationService, AccountsService, QuestionsService } from './shared/services';
 import { TokenInterceptor, HttpResponseCodesInterceptor } from './shared/interceptors';
 import { TestsService } from './shared/services/tests.service';
+import { TestAttemptsService } from './shared/services/tests.attempts.serice';
+import { StorageService } from './shared/services/storage.service';
 
 // AoT requires an exported function for factories
 export function createTranslateLoader(http: HttpClient) {
@@ -55,7 +57,9 @@ export function createTranslateLoader(http: HttpClient) {
         },
         AccountsService,
         TestsService,
-        QuestionsService
+        TestAttemptsService,
+        QuestionsService,
+        StorageService
     ],
     bootstrap: [AppComponent]
 })
