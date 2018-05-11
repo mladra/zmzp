@@ -34,7 +34,7 @@ public class TestAttemptController {
         }
     }
 
-    @RequestMapping(value = "/mail/{email}")
+    @RequestMapping(method = RequestMethod.POST, value = "/mail/{email}")
     public ResponseEntity sendMail(@PathVariable String email, @RequestBody TestAttempt testAttempt) {
         try {
             this.mailService.sendEmail(email, testAttempt);
