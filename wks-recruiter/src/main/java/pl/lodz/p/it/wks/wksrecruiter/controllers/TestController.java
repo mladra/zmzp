@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.it.wks.wksrecruiter.collections.Test;
 import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
-import pl.lodz.p.it.wks.wksrecruiter.services.MailService;
-import pl.lodz.p.it.wks.wksrecruiter.services.MailServiceImpl;
 import pl.lodz.p.it.wks.wksrecruiter.services.TestService;
 import pl.lodz.p.it.wks.wksrecruiter.utils.PdfGeneratorUtil;
 import pl.lodz.p.it.wks.wksrecruiter.utils.XlsGeneratorUtil;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -24,21 +21,15 @@ import java.util.Collection;
 @RequestMapping(value = "/tests")
 public class TestController {
 
-    @Autowired
     private final TestService testService;
+    private final XlsGeneratorUtil xlsGeneratorUtil;
+    private final PdfGeneratorUtil pdfGeneratorUtil;
 
     @Autowired
-    private XlsGeneratorUtil xlsGeneratorUtil;
-
-    @Autowired
-    private PdfGeneratorUtil pdfGeneratorUtil;
-    
-    @Autowired
-    private MailService mailService;
-
-    @Autowired
-    public TestController(TestService testService) {
+    public TestController(TestService testService, XlsGeneratorUtil xlsGeneratorUtil, PdfGeneratorUtil pdfGeneratorUtil) {
         this.testService = testService;
+        this.xlsGeneratorUtil = xlsGeneratorUtil;
+        this.pdfGeneratorUtil = pdfGeneratorUtil;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -160,16 +151,6 @@ public class TestController {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.toString());
             }
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.toString());
-        }
-    }
-    
-    @RequestMapping(value = "/mail/{email}")
-    public ResponseEntity sendMail(@PathVariable String email, @RequestBody TestAttempt testAttempt) {
-        try {
-            this.mailService.sendMail(email, testAttempt);
-            return ResponseEntity.ok().build();
-        } catch (MessagingException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
         }
     }
 }

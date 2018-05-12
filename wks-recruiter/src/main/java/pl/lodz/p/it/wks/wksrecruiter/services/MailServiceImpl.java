@@ -13,16 +13,19 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class MailServiceImpl implements MailService{
+public class MailServiceImpl implements MailService {
+
+	private final JavaMailSender mailSender;
+	private final Environment env;
+	private final TemplateEngine templateEngine;
+
 	@Autowired
-	private JavaMailSender mailSender;
-	
-	@Autowired
-	private Environment env;
-	
-	@Autowired
-	private TemplateEngine templateEngine;
-	
+	public MailServiceImpl(JavaMailSender mailSender, Environment env, TemplateEngine templateEngine) {
+		this.mailSender = mailSender;
+		this.env = env;
+		this.templateEngine = templateEngine;
+	}
+
 	@Override
 	public void sendMail(String email, TestAttempt testAttempt) throws MessagingException {
 		MimeMessage message = mailSender.createMimeMessage();
