@@ -80,7 +80,7 @@
                     </button>
                   </span>
                   <span *ngIf="isCurrentUserCandidate()">
-                    <button class="btn btn-sm btn-info" [disabled]="!test.active" ngbTooltip="Resolve test" (click)="goToTestSolving(test.id)">
+                    <button class="btn btn-sm btn-info" [disabled]="isTestSolved(test) || !test.active" ngbTooltip="Resolve test" (click)="goToTestSolving(test.id)">
                       <i class="fa fa-pencil-square-o"></i>
                     </button>
                   </span>
