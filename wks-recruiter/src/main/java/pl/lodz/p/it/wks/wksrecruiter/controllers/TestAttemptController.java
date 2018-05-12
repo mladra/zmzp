@@ -34,6 +34,25 @@ public class TestAttemptController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    public ResponseEntity getAllTestsAttempts(Authentication authentication) {
+        try {
+            return ResponseEntity.ok(this.testAttemptService.getAllTestsAttempts(authentication));
+        } catch (WKSRecruiterException exc) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exc.toString());
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity evaluateTestAttempt(@RequestBody TestAttempt testAttempt, Authentication authentication) {
+        try {
+            testAttemptService.evaluateTestAttempt(testAttempt, authentication);
+            return ResponseEntity.ok().build();
+        } catch (WKSRecruiterException exc) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exc.toString());
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/mail/{email}")
     public ResponseEntity sendMail(@PathVariable String email, @RequestBody TestAttempt testAttempt) {
         try {

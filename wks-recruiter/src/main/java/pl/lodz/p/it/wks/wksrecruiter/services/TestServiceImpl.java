@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -126,7 +127,9 @@ public class TestServiceImpl implements TestService {
             if (authentication.getAuthorities().stream().noneMatch(o -> o.getAuthority().equals(RolesEnum.EDITOR.toString()))) {
                 throw WKSRecruiterException.createAcessDeniedException();
             }
-            return testsRepository.findAll();
+            return testsRepository.findAll().stream()
+                    .filter(test -> test.getAuthor().getName().equals(authentication.getName()))
+                    .collect(Collectors.toList());
         } else if (role.equals(RolesEnum.MOD.toString())) {
             throw WKSRecruiterException.createAcessDeniedException();
         } else {
