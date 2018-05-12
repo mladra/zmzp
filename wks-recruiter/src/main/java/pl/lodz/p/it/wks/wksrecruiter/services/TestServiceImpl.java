@@ -128,7 +128,7 @@ public class TestServiceImpl implements TestService {
                 throw WKSRecruiterException.createAcessDeniedException();
             }
             return testsRepository.findAll().stream()
-                    .filter(test -> test.getAuthor().getName().equals(authentication.getName()))
+                    .filter(test -> test.getAuthor().getLogin().equals(authentication.getName()))
                     .collect(Collectors.toList());
         } else if (role.equals(RolesEnum.MOD.toString())) {
             throw WKSRecruiterException.createAcessDeniedException();
