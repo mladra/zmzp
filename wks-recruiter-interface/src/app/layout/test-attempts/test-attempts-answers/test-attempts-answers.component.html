@@ -1,0 +1,89 @@
+<div [@routerTransition]>
+    <div class="row">
+        <div class="col">
+            <h2 class="page-header">
+                {{ testAttempt.test.name }}
+            </h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <i class="fa fa-home"></i>
+                    <a [routerLink]="['/home']">Home</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <i class="fa fa-check-square"></i>
+                    <a [routerLink]="['/test-attempts']">Test attempts</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <i class="fa fa-clipboard-list"></i> {{ testAttempt.test.name }} - {{ testAttempt.user }}
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header font-weight-bold">Answers: {{ testAttempt.test.name }} - {{ testAttempt.user }}</div>
+                <form name="testAnswersForm" id="testAnswersForm" (ngSubmit)="testAnswersForm.valid && submit()" #testAnswersForm="ngForm"
+                    novalidate #testAnswersForm="ngForm">
+                    <div class="card-body p-3">
+                        <div *ngFor="let answer of testAttempt.answers; let i = index; trackBy: trackByFun">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label class="float-right pt-1 font-weight-bold">Question:</label>
+                                </div>
+                                <div class="col-10">
+                                    <label class="pt-1">{{ answer.question }}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label class="float-right pt-1 font-weight-bold">Answer:</label>
+                                </div>
+                                <div class="col-10">
+                                    <label class="pt-1">{{ answer.answers.join(', ') }}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="float-right pt-1">
+                                        <div *ngIf="testAnswersForm.submitted">
+                                            <div *ngIf="evaluation.invalid && evaluation.errors.required" class="text-danger pt-1">
+                                                This value is required.
+                                            </div>
+                                            <div *ngIf="answer.score < 0 || answer.score > answer.maxPoints" class="text-danger pt-1">
+                                                Given value has to be within range
+                                                <0, {{ answer.maxPoints }}>.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="float-right pr-3">
+                                        <input class="form-control input-underline input-md" id="{{i}}answerEvaluation" name="{{i}}answerEvaluation" [(ngModel)]="answer.score"
+                                            #evaluation="ngModel" required type="number" min="0" max="{{ answer.maxPoints }}"
+                                            placeholder="Pts" [ngClass]="{'border border-danger': testAnswersForm.submitted && (evaluation.invalid || (answer.score < 0 || answer.score > answer.maxPoints))}">
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <label class="pt-1">/ {{ answer.maxPoints }}</label>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex bd-highlight p-3 form-group">
+                        <div class="col-10">
+                            <div class="float-right mt-3">
+                                <input id="notification" type="checkbox" class="form-check-input pt-1" [(ngModel)]="sendNotification" #notification="ngModel" name="notification">
+                                <label class="form-check-label" for="notification">Send notofication to the candidate?</label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-md btn-success m-2 float-right"><i *ngIf="evaluating" class="fa fa-spinner fa-spin"></i> Evaluate</button> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

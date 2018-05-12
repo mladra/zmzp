@@ -144,12 +144,24 @@ public class WKSRecruiterException extends Exception implements Serializable {
         return createException("TEST_NOT_FOUND", "Test with such name does not exist.");
     }
 
+    public static WKSRecruiterException createTestAttemptNotFoundException() {
+        return createException("TEST_ATTEMPT_NOT_FOUND", "Test attempt with such id does not exist.");
+    }
+
     public static WKSRecruiterException createAcessDeniedException() {
         return createException("FORBIDDEN", "Access denied");
     }
 
     public static WKSRecruiterException createTestAlreadySolvedException() {
         return createException("TEST_SOLVED", "Test already solved.");
+    }
+
+    public static WKSRecruiterException createTestNotEvaluatedException() {
+        return createException("TEST_NOT_EVALUATED", "Given test is not properly evaluated.");
+    }
+
+    public static WKSRecruiterException createNotificationErrorException() {
+        return createException("MESSAGING_EXCEPTION", "Error occurred during notification sending process. Try again...");
     }
 
     @Override

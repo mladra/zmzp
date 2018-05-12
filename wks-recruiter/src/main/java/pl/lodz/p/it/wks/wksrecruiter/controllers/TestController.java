@@ -21,18 +21,15 @@ import java.util.Collection;
 @RequestMapping(value = "/tests")
 public class TestController {
 
-    @Autowired
     private final TestService testService;
+    private final XlsGeneratorUtil xlsGeneratorUtil;
+    private final PdfGeneratorUtil pdfGeneratorUtil;
 
     @Autowired
-    private XlsGeneratorUtil xlsGeneratorUtil;
-
-    @Autowired
-    private PdfGeneratorUtil pdfGeneratorUtil;
-
-    @Autowired
-    public TestController(TestService testService) {
+    public TestController(TestService testService, XlsGeneratorUtil xlsGeneratorUtil, PdfGeneratorUtil pdfGeneratorUtil) {
         this.testService = testService;
+        this.xlsGeneratorUtil = xlsGeneratorUtil;
+        this.pdfGeneratorUtil = pdfGeneratorUtil;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)

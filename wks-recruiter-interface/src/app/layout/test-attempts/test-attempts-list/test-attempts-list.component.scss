@@ -1,0 +1,11 @@
+.no-test-attempt-message {
+    font-weight: 800;
+    margin-top: 30px;
+}
+
+.custom-elipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 20vw;
+}
