@@ -71,9 +71,16 @@
                             <hr/>
                         </div>
                     </div>
-                    <div class="card-footer d-flex flex-row-reverse bd-highlight p-3 form-group">
-                        <input type="submit" class="btn btn-md btn-success m-2" value="Evaluate">
-                        <button type="button" class="btn btn-md btn-primary mt-2 mb-2" (click)="sendNotification()">Send notification</button>
+                    <div class="card-footer d-flex bd-highlight p-3 form-group">
+                        <div class="col-10">
+                            <div class="float-right mt-3">
+                                <input id="notification" type="checkbox" class="form-check-input pt-1" [(ngModel)]="sendNotification" #notification="ngModel" name="notification">
+                                <label class="form-check-label" for="notification">Send notofication to the candidate?</label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-md btn-success m-2 float-right"><i *ngIf="evaluating" class="fa fa-spinner fa-spin"></i> Evaluate</button> 
+                        </div>
                     </div>
                 </form>
             </div>

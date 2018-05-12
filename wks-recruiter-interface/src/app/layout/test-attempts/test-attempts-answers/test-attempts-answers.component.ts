@@ -14,6 +14,8 @@ import { AlertsService } from '../../../services/alerts.service';
 })
 export class TestAttemptsAnswersComponent implements OnInit {
 
+    private sendNotification: boolean;
+    private evaluating: boolean;
     private testAttempt: TestAttempt;
 
     constructor(
@@ -26,6 +28,8 @@ export class TestAttemptsAnswersComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.sendNotification = false;
+        this.evaluating = false;
         this.testAttempt = JSON.parse(this.storageService.getDataFromStorage());
         for (const answer of this.testAttempt.answers) {
             if (answer.score === -1) {
@@ -39,30 +43,39 @@ export class TestAttemptsAnswersComponent implements OnInit {
     }
 
     submit() {
+        this.evaluating = true;
         for (const answer of this.testAttempt.answers) {
             if (answer.score < 0 || answer.score > answer.maxPoints) {
+                this.evaluating = false;
                 return;
             }
         }
 
-        this.testAttemptsService.updateTestAttempt(this.testAttempt).subscribe(
+        this.testAttemptsService.updateTestAttempt(this.testAttempt.user, this.testAttempt).subscribe(
             response => {
-                this.storageService.clearStorage();
-                this.router.navigate(['/test-attempts/list']);
+                this.alertsService.addAlert('success', 'Test attempt successfully evaluated.');
+                if (this.sendNotification) {
+                    this.testAttemptsService.sendEmailNotification(this.testAttempt.user, response.body).subscribe(
+                        res => {
+                            this.evaluating = false;
+                            this.alertsService.addAlert('success', 'Notification has been successfully sent to ' + this.testAttempt.user);
+                            this.storageService.clearStorage();
+                            this.router.navigate(['/test-attempts/list']);
+                        },
+                        err => {
+                            this.evaluating = false;
+                            this.alertsService.addAlert('danger', 'Error occurred during notification sending process. Please try again.');
+                        }
+                    );
+                } else {
+                    this.evaluating = false;
+                    this.storageService.clearStorage();
+                    this.router.navigate(['/test-attempts/list']);
+                }
             },
             error => {
+                this.evaluating = false;
                 this.alertsService.addAlert('danger', 'Error occurred during evaluating test attempt. Please try again.');
-            }
-        );
-    }
-
-    sendNotification() {
-        this.testAttemptsService.sendEmailNotification(this.testAttempt.user, this.testAttempt).subscribe(
-            response => {
-                this.alertsService.addAlert('success', 'Notification has been successfully sent to ' + this.testAttempt.user);
-            },
-            error => {
-                this.alertsService.addAlert('danger', 'Error occurred during notification sending process. Try again.');
             }
         );
     }

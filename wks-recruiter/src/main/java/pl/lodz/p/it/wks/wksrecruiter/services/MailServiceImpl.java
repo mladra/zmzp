@@ -7,7 +7,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import pl.lodz.p.it.wks.wksrecruiter.collections.AttemptAnswer;
 import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
+import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
+import pl.lodz.p.it.wks.wksrecruiter.utils.ValidatorUtil;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -27,16 +30,23 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public void sendMail(String email, TestAttempt testAttempt) throws MessagingException {
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setFrom(env.getProperty("spring.mail.username"));
-		helper.setTo(email);
-		helper.setSubject("WKS-Recruiter: Results");
-		Context ctx = new Context();
-		ctx.setVariable("test", testAttempt);
-		String content = templateEngine.process("mailTemplate",ctx);
-		helper.setText(content, true);
-		mailSender.send(message);
+	public void sendMail(String email, TestAttempt testAttempt) throws WKSRecruiterException {
+	    ValidatorUtil.validateTestAttemptEvaluation(testAttempt);
+	    ValidatorUtil.validateTestAttemptAnswersEvaluation(testAttempt);
+
+	    try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(env.getProperty("spring.mail.username"));
+            helper.setTo(email);
+            helper.setSubject("WKS-Recruiter: Results");
+            Context ctx = new Context();
+            ctx.setVariable("test", testAttempt);
+            String content = templateEngine.process("mailTemplate",ctx);
+            helper.setText(content, true);
+            mailSender.send(message);
+        } catch (MessagingException exc) {
+	        throw WKSRecruiterException.createNotificationErrorException();
+        }
 	}
 }
