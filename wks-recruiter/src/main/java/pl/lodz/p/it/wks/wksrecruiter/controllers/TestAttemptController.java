@@ -43,11 +43,10 @@ public class TestAttemptController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity evaluateTestAttempt(@RequestBody TestAttempt testAttempt, Authentication authentication) {
+    @RequestMapping(method = RequestMethod.PUT, value = "/{login}")
+    public ResponseEntity evaluateTestAttempt(@PathVariable String login, @RequestBody TestAttempt testAttempt, Authentication authentication) {
         try {
-            testAttemptService.evaluateTestAttempt(testAttempt, authentication);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(testAttemptService.evaluateTestAttempt(login, testAttempt, authentication));
         } catch (WKSRecruiterException exc) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(exc.toString());
         }
@@ -58,8 +57,8 @@ public class TestAttemptController {
         try {
             this.mailService.sendMail(email, testAttempt);
             return ResponseEntity.ok().build();
-        } catch (MessagingException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(WKSRecruiterException.of(e));
+        } catch (WKSRecruiterException exc) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exc);
         }
     }
 }

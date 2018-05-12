@@ -156,6 +156,14 @@ public class WKSRecruiterException extends Exception implements Serializable {
         return createException("TEST_SOLVED", "Test already solved.");
     }
 
+    public static WKSRecruiterException createTestNotEvaluatedException() {
+        return createException("TEST_NOT_EVALUATED", "Given test is not properly evaluated.");
+    }
+
+    public static WKSRecruiterException createNotificationErrorException() {
+        return createException("MESSAGING_EXCEPTION", "Error occurred during notification sending process. Try again...");
+    }
+
     @Override
     public String toString() {
         StringBuilder message = new StringBuilder();

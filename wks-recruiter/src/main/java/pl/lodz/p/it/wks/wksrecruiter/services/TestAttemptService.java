@@ -12,5 +12,5 @@ public interface TestAttemptService {
 
     Map<String, Collection<TestAttempt>> getAllTestsAttempts(Authentication authentication) throws WKSRecruiterException;
 
-    void evaluateTestAttempt(TestAttempt testAttempt, Authentication authentication) throws WKSRecruiterException;
+    TestAttempt evaluateTestAttempt(String login, TestAttempt testAttempt, Authentication authentication) throws WKSRecruiterException;
 }

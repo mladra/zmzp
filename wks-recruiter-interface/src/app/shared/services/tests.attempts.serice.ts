@@ -19,8 +19,8 @@ export class TestAttemptsService {
         return this.http.get(this.rootUrl + '/all', { observe: 'response' });
     }
 
-    updateTestAttempt(testAttempt) {
-        return this.http.put(this.rootUrl, testAttempt, { observe: 'response' });
+    updateTestAttempt(login, testAttempt) {
+        return this.http.put(this.rootUrl + '/' + login, testAttempt, { observe: 'response' });
     }
 
     sendEmailNotification(email, testAttempt) {

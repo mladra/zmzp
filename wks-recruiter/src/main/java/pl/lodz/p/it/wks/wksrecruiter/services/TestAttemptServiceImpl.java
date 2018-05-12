@@ -9,6 +9,7 @@ import pl.lodz.p.it.wks.wksrecruiter.collections.RolesEnum;
 import pl.lodz.p.it.wks.wksrecruiter.collections.TestAttempt;
 import pl.lodz.p.it.wks.wksrecruiter.exceptions.WKSRecruiterException;
 import pl.lodz.p.it.wks.wksrecruiter.repositories.AccountsRepository;
+import pl.lodz.p.it.wks.wksrecruiter.utils.ValidatorUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,7 +60,9 @@ public class TestAttemptServiceImpl implements TestAttemptService {
     }
 
     @Override
-    public void evaluateTestAttempt(TestAttempt testAttempt, Authentication authentication) throws WKSRecruiterException {
+    public TestAttempt evaluateTestAttempt(String login, TestAttempt testAttempt, Authentication authentication) throws WKSRecruiterException {
+        ValidatorUtil.validateTestAttemptAnswersEvaluation(testAttempt);
+
         Optional<Account> editor = accountsRepository.findByLogin(authentication.getName());
         if (editor.isPresent()) {
             if (!editor.get().getRoles().contains(RolesEnum.EDITOR.toString())) {
@@ -72,7 +75,8 @@ public class TestAttemptServiceImpl implements TestAttemptService {
         Optional<Account> accountOptional = accountsRepository.findAll().stream()
                 .filter(acc -> acc.getSolvedTests()
                         .stream()
-                        .anyMatch(t -> t.getTest().getId().equals(testAttempt.getTest().getId())))
+                        .anyMatch(t -> t.getTest().getId().equals(testAttempt.getTest().getId()))
+                        && acc.getLogin().equals(login))
                 .findFirst();
 
         if (accountOptional.isPresent()) {
@@ -93,6 +97,7 @@ public class TestAttemptServiceImpl implements TestAttemptService {
                 });
             }
             accountsRepository.save(accountOptional.get());
+            return attempt;
         } else {
             throw WKSRecruiterException.createTestAttemptNotFoundException();
         }
