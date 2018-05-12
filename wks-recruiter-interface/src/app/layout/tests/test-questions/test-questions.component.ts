@@ -48,7 +48,7 @@ export class TestQuestionsComponent implements OnInit {
           this.route.queryParams.subscribe(queryParams => {
             if (queryParams.translate) {
               this.language = queryParams.language;
-              this.originalQuestions = JSON.parse(JSON.stringify(data.body.questions));
+              this.originalQuestions = JSON.parse(JSON.stringify(this.test.questions));
               this.test.questions.forEach(question => {
                 question.questionPhrase = null;
                 if (question.type === 'SINGLE_CHOICE' || question.type === 'MULTIPLE_CHOICE') {
