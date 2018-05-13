@@ -66,7 +66,6 @@ export class TestsSolveComponent implements OnInit {
             if (this.test.questions[i].type === 'NUMBER' || this.test.questions[i].type === 'SCALE') {
                 if (this.test.questions[i].answer < this.test.questions[i].params.minValue
                     || this.test.questions[i].answer > this.test.questions[i].params.maxValue) {
-                    this.alertsService.addAlert('danger', 'Enter proper values!');
                     this.testAttempt.answers = new Array<AttemptAnswer>();
                     return;
                 }
@@ -76,7 +75,6 @@ export class TestsSolveComponent implements OnInit {
             attemptAnswer.questionNumber = this.test.questions[i].questionNumber;
             if (this.test.questions[i].type === 'MULTIPLE_CHOICE') {
                 attemptAnswer.answers = this.test.questions[i].answer;
-                console.log(this.test.questions[i]);
             } else {
                 var answers = new Array<String>();
                 answers.push(this.test.questions[i].answer);
