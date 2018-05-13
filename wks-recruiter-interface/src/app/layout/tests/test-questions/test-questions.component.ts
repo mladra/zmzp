@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { routerTransition } from '../../../router.animations';
 import { Test } from '../../../entities/test';
 import { TestsService } from '../../../shared/services/tests.service';
@@ -22,7 +22,10 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from
 })
 export class TestQuestionsComponent implements OnInit {
 
+
   private test: Test;
+  private language: string;
+  private originalQuestions: Array<QuestionInfo>;
   private questionTypes: [string, any][];
   private numberForm: FormGroup;
 
@@ -42,6 +45,18 @@ export class TestQuestionsComponent implements OnInit {
       this.testService.getById(params['id']).subscribe(
         data => {
           this.test = data.body as Test;
+          this.route.queryParams.subscribe(queryParams => {
+            if (queryParams.translate) {
+              this.language = queryParams.language;
+              this.originalQuestions = JSON.parse(JSON.stringify(this.test.questions));
+              this.test.questions.forEach(question => {
+                question.questionPhrase = null;
+                if (question.type === 'SINGLE_CHOICE' || question.type === 'MULTIPLE_CHOICE') {
+                  question.params.options = new Array(question.params.options.length);
+                }
+              });
+            }
+          });
         },
         error => {
           this.alertsService.addAlert('danger', "Couldn't retrieve test questions from server.");
@@ -109,35 +124,49 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   submit() {
+    if (this.originalQuestions !== undefined) {
+      this.test.id = null;
+      this.test.language = this.language;
+      this.testService.createTest(this.test).subscribe(
+        response => {
+          this.alertsService.addAlert('success', 'Test "' + this.test.name + '"successfully translated.');
+          this.router.navigate(['tests/list']);
+        },
+        error => {
+          this.alertsService.addAlert('danger', error.error);
+        }
+      );
+    } else {
 
-    for (const question of this.test.questions) {
-      if (question.type === 'NONE' || question.maxPoints <= 0) {
-        return;
-      }
-
-      if (question.type === 'NUMBER' || question.type === 'SCALE') {
-        if (question.params.maxValue < question.params.minValue) {
+      for (const question of this.test.questions) {
+        if (question.type === 'NONE' || question.maxPoints <= 0) {
           return;
+        }
+
+        if (question.type === 'NUMBER' || question.type === 'SCALE') {
+          if (question.params.maxValue < question.params.minValue) {
+            return;
+          }
+        }
+
+        if (question.type === 'SCALE') {
+          if (question.params.step <= 0 || (question.params.step > question.params.maxValue - question.params.minValue &&
+            question.params.maxValue > question.params.minValue)) {
+            return;
+          }
         }
       }
 
-      if (question.type === 'SCALE') {
-        if (question.params.step <= 0 || (question.params.step > question.params.maxValue - question.params.minValue &&
-          question.params.maxValue > question.params.minValue)) {
-          return;
+      this.questionsService.setQuestions(this.test.id, this.test.questions).subscribe(
+        data => {
+          this.alertsService.addAlert('success', 'Questions successfully updated.');
+          this.router.navigate(['/tests/list']);
+        },
+        error => {
+          console.log(error);
+          this.alertsService.addAlert('danger', 'Error occurred during questions update. Try again...');
         }
-      }
+      );
     }
-
-    this.questionsService.setQuestions(this.test.id, this.test.questions).subscribe(
-      data => {
-        this.alertsService.addAlert('success', 'Questions successfully updated.');
-        this.router.navigate(['/tests/list']);
-      },
-      error => {
-        console.log(error);
-        this.alertsService.addAlert('danger', 'Error occurred during questions update. Try again...');
-      }
-    );
   }
 }

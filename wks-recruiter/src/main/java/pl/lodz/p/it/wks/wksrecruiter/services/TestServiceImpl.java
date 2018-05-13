@@ -43,15 +43,20 @@ public class TestServiceImpl implements TestService {
     @Override
     public Test createTest(Test test, Authentication authentication) throws WKSRecruiterException {
         try {
+            test.setId(null);
             test.setActive(Boolean.TRUE);
-            test.setQuestions(new ArrayList<>());
-            test.setPositions(new ArrayList<>());
+            if (test.getQuestions() == null) {
+                test.setQuestions(new ArrayList<>());
+            }
+            if (test.getPositions() == null) {
+                test.setPositions(new ArrayList<>());
+            }
             accountsRepository.findByLogin(authentication.getName()).ifPresent(test::setAuthor);
             testsRepository.save(test);
             return test;
         } catch (DuplicateKeyException exc) {
             throw WKSRecruiterException.createException("NAME_NOT_UNIQUE",
-                    "Test with this name already exists. Try another one.");
+                    "Test with this name and language already exists.");
         }
     }
 
@@ -67,7 +72,7 @@ public class TestServiceImpl implements TestService {
                 return testToEdit.get();
             } catch (DuplicateKeyException exc) {
                 throw WKSRecruiterException.createException("NAME_NOT_UNIQUE",
-                        "Test with this name already exists. Try another one.");
+                        "Test with this name and language already exists.");
             }
         } else {
             throw WKSRecruiterException.createTestNotFoundException();

@@ -2,7 +2,8 @@ package pl.lodz.p.it.wks.wksrecruiter.collections;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo;
@@ -11,12 +12,12 @@ import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
 @Document(collection = "tests")
+@CompoundIndexes({@CompoundIndex(def = "{'name' :  1, 'language' : 1}", unique = true)})
 public class Test {
     @Id
     private String id;
     @DBRef
     private Account author;
-    @Indexed(unique = true)
     @Length(min = 3, message = "Test name must contain at least 3 characters")
     @Pattern(regexp = "^[A-Z].*", message = "Test name should start with capital letter")
     private String name;

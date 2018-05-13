@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <h4 class="modal-title">Translating test</h4>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form name="testCreationForm" (ngSubmit)="testCreationForm.form.valid && submit()" #testCreationForm="ngForm" novalidate>
+    <div class="form-group">
+      <label for="testLanguage">Choose language</label>
+      <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="language"
+        #lang="ngModel" required minlength="3" pattern="^[a-z]+">
+      <div *ngIf="testCreationForm.submitted && lang.invalid" class="alert alert-danger">
+        <div *ngIf="lang.errors.required">
+          Language can not be empty.
+        </div>
+        <div *ngIf="lang.errors.minlength">
+          Language must have at least 3 characters.
+        </div>
+        <div *ngIf="lang.errors.pattern">
+          Language should contain only lower case letters.
+        </div>
+      </div>
+    </div>
+    <div class="form-group float-right">
+      <button type="submit" class="btn btn-sm btn-success">Submit</button>
+      <button type="button" class="btn btn-sm btn-danger" (click)="close()">Cancel</button>
+    </div>
+  </form>
+</div>
