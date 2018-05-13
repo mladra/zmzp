@@ -44,11 +44,11 @@
                                         </div>
                                         <div class="col-5">
                                             <input type="text" name="{{j}}StringAnswer" class="form-control input-underline input-md" placeholder="Your answer" name="{{j}}QuestionAnswer"
-                                                [(ngModel)]="attemptAnswer.answer" #answer="ngModel" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                                [(ngModel)]="attemptAnswer.answer" #answer="ngModel" required [ngClass]="{'border border-danger': testForm.submitted && answer.invalid}"
                                             />
                                         </div>
-                                        <div class="col-5" *ngIf="answer.submitted && answer.invalid">
-                                            <div *ngIf="answer.errors.required" class="pt-1 text-danger">
+                                        <div class="col-5" *ngIf="testForm.submitted && testForm.invalid">
+                                            <div *ngIf="answer.errors !== null && answer.errors.required" class="pt-1 text-danger">
                                                 Answer is required.
                                             </div>
                                         </div>
@@ -60,11 +60,17 @@
                                             <label class="float-right pt-1" for="{{j}}SingleChoiceAnswer">Your answer:</label>
                                         </div>
                                         <div class="col-5">
-                                            <select class="form-control" name="{{j}}SingleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}">
+                                            <select class="form-control" name="{{j}}SingleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" #answer="ngModel" required
+                                                [ngClass]="{'border border-danger': testForm.submitted && (answer === undefined || answer.invalid)}">
                                                 <option *ngFor="let option of question.params.options; trackBy: trackByFun; let i = index;">
                                                     {{option}}
                                                 </option>
                                             </select>
+                                        </div>
+                                        <div class="col-5" *ngIf="testForm.submitted && testForm.invalid">
+                                            <div *ngIf="answer.errors !== null && answer.errors.required" class="pt-1 text-danger">
+                                                Answer is required.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -74,11 +80,17 @@
                                             <label class="float-right pt-1" for="{{j}}MultipleChoiceAnswer">Your answer:</label>
                                         </div>
                                         <div class="col-5">
-                                            <select multiple class="form-control" name="{{j}}MultipleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}">
+                                            <select multiple class="form-control" name="{{j}}MultipleChoiceAnswer" [(ngModel)]="attemptAnswer.answer" #answer="ngModel"
+                                                required [ngClass]="{'border border-danger': testForm.submitted && (answer === undefined || answer.invalid)}">
                                                 <option *ngFor="let option of question.params.options; trackBy: trackByFun; let i = index;">
                                                     {{option}}
                                                 </option>
                                             </select>
+                                        </div>
+                                        <div class="col-5" *ngIf="testForm.submitted && testForm.invalid">
+                                            <div *ngIf="answer.errors !== null && answer.errors.required" class="pt-1 text-danger">
+                                                Answer is required.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -89,9 +101,21 @@
                                         </div>
                                         <div class="col-5">
                                             <input class="w-75 form-control input-underline input-md" name="{{j}}NumberAnswer" type="number" placeholder="Your answer"
-                                                name="{{j}}NumberAnswer" [(ngModel)]="attemptAnswer.answer" [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                                name="{{j}}NumberAnswer" [(ngModel)]="attemptAnswer.answer" #answer="ngModel"
+                                                [ngClass]="{'border border-danger': testForm.submitted && (answer === undefined || answer.invalid || attemptAnswer.answer < question.params.minValue || attemptAnswer.answer > question.params.maxValue)}"
                                                 required min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}"
                                                 value="{{ question.params.minValue }}" />
+                                        </div>
+                                        <div class="col-5">
+                                            <div *ngIf="attemptAnswer.answer !== null && (attemptAnswer.answer < question.params.minValue)" class="pt-1 text-danger">
+                                                Answer is lower than minimum value ({{question.params.minValue}}).
+                                            </div>
+                                            <div *ngIf="attemptAnswer.answer !== null && (attemptAnswer.answer > question.params.maxValue)" class="pt-1 text-danger">
+                                                Answer is greater than maximum value ({{question.params.maxValue}}).
+                                            </div>
+                                            <div *ngIf="testForm.submitted && testForm.invalid && (answer.errors !== null && answer.errors.required)" class="pt-1 text-danger">
+                                                Answer is required.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -102,12 +126,23 @@
                                         <label class="float-right pt-1" for="{{j}}SliderAnswer">Your answer:</label>
                                     </div>
                                     <div class="col-5">
-                                        <input class="slider" [(ngModel)]="attemptAnswer.answer" type="range" min="{{ question.params.minValue }}" max="{{ question.params.maxValue }}"
-                                            step="{{ question.params.step }}" required [ngClass]="{'border border-danger': testForm.submitted && testForm.invalid}"
+                                        <input class="slider" [(ngModel)]="attemptAnswer.answer" #answer="ngModel" type="range" min="{{ question.params.minValue }}"
+                                            max="{{ question.params.maxValue }}" step="{{ question.params.step }}" required [ngClass]="{'border border-danger': testForm.submitted && (answer === undefined || answer.invalid|| attemptAnswer.answer < question.params.minValue || attemptAnswer.answer > question.params.maxValue)}"
                                             name="{{j}}SliderAnswer" id="{{j}}SliderId" />
                                         <p>Value:
                                             <span>{{ attemptAnswer.answer }}</span>
                                         </p>
+                                    </div>
+                                    <div class="col-5">
+                                        <div *ngIf="attemptAnswer.answer !== null && (attemptAnswer.answer < question.params.minValue)" class="pt-1 text-danger">
+                                            Answer is lower than minimum value ({{question.params.minValue}}).
+                                        </div>
+                                        <div *ngIf="attemptAnswer.answer !== null && (attemptAnswer.answer > question.params.maxValue)" class="pt-1 text-danger">
+                                            Answer is greater than maximum value ({{question.params.maxValue}}).
+                                        </div>
+                                        <div *ngIf="testForm.submitted && testForm.invalid && (answer.errors !== null && answer.errors.required)" class="pt-1 text-danger">
+                                            Answer is required.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
