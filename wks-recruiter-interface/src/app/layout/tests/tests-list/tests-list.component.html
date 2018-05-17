@@ -92,7 +92,7 @@
       </div>
     </div>
   </div>
-  <div class="row results-card" *ngIf="isCurrentUserCandidate()">
+  <div class="row mt-3" *ngIf="isCurrentUserCandidate()">
     <div class="col">
       <div class="card">
         <div class="card-header">Tests attempts</div>
@@ -106,16 +106,16 @@
               </tr>
             </thead>
             <tbody>
-              <div class="no-tests-message" *ngIf="testAttempts.length === 0">There are no test attempts available</div>
               <tr *ngFor="let testAttempt of testAttempts; let i = index;">
                 <td>{{i + 1 }}</td>
-                <td class="col-9">{{testAttempt.test.name}}</td>
-                <td class="col-2">
+                <td>{{testAttempt.test.name}}</td>
+                <td>
                   <button (click)="showResults(testAttempt)" class="btn btn-sm btn-warning">Show results</button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <h3 *ngIf="testAttempts.length === 0">There are no test attempts available</h3>
         </div>
       </div>
     </div>
