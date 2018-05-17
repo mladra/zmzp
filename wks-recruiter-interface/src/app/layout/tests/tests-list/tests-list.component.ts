@@ -13,6 +13,9 @@ import { Observable } from 'rxjs/Observable';
 import { TestsCreateComponent } from '../tests-create/tests-create.component';
 import { Account } from '../../../entities/account';
 import { TestTranslationComponent } from '../test-translation/test-translation.component';
+import { TestAttempt } from '../../../entities/test.attempt';
+import { TestAttemptsService } from "../../../shared/services/tests.attempts.serice";
+import { TestsResultsComponent } from '../tests-results/tests-results.component';
 
 @Component({
   selector: 'app-tests-list',
@@ -28,12 +31,14 @@ export class TestsListComponent implements OnInit {
   private testPositionNames: Array<String>;
   private positionsToAdd: Array<String>;
   private currentAccount: Account;
+  private testAttempts: Array<TestAttempt> = new Array<TestAttempt>();
 
   constructor(private alertsService: AlertsService,
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private testsService: TestsService,
+    private testsAttemptService: TestAttemptsService,
     private positionsService: PositionsService,
     private currentUserService: CurrentUserService
   ) { }
@@ -60,6 +65,7 @@ export class TestsListComponent implements OnInit {
         this.alertsService.addAlert('danger', 'Error occured while loading positions');
       });
     this.getAllTests();
+    this.getAllTestAttempts();
   }
 
   addTest() {
@@ -163,6 +169,19 @@ export class TestsListComponent implements OnInit {
     }
   }
 
+  getAllTestAttempts(){
+    if(this.isCurrentUserCandidate()) {
+      this.testsAttemptService.getTestsAttemptsForUser().subscribe(
+        data => {
+          this.testAttempts = data.body as Array<TestAttempt>;
+        },
+        error => {
+          this.alertsService.addAlert('danger', 'Error occured while getting test attempts');
+        }
+      )
+    }
+  }
+
   goToQuestions(id) {
     this.router.navigate(['tests/details', id]);
   }
@@ -201,5 +220,11 @@ export class TestsListComponent implements OnInit {
         this.router.navigate(['tests/details', id], { queryParams: { translate: true, language: language } });
       }
     );
+  }
+
+  showResults(testAttempt: TestAttempt) {
+    const modalRef = this.modalService.open(TestsResultsComponent);
+    modalRef.componentInstance.name = 'Test results';
+    modalRef.componentInstance.setTestAttempt(testAttempt);
   }
 }

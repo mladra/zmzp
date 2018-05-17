@@ -10,6 +10,7 @@ import {TestQuestionsComponent} from './test-questions/test-questions.component'
 import {TestsCreateComponent} from './tests-create/tests-create.component';
 import {TestsSolveComponent} from './tests-solve/tests-solve.component';
 import {TestTranslationComponent} from './test-translation/test-translation.component';
+import { TestsResultsComponent } from './tests-results/tests-results.component';
 
 @NgModule({
     imports: [
@@ -26,12 +27,14 @@ import {TestTranslationComponent} from './test-translation/test-translation.comp
         TestQuestionsComponent,
         TestsSolveComponent,
         TestsCreateComponent,
-        TestTranslationComponent
+        TestTranslationComponent,
+        TestsResultsComponent
     ],
     entryComponents: [
         TestsModificationComponent,
         TestsCreateComponent,
-        TestTranslationComponent
+        TestTranslationComponent,
+        TestsResultsComponent
     ]
 
 })

@@ -19,6 +19,10 @@ export class TestAttemptsService {
         return this.http.get(this.rootUrl + '/all', { observe: 'response' });
     }
 
+    getTestsAttemptsForUser(){
+        return this.http.get(this.rootUrl, { observe : 'response' });
+    }
+
     updateTestAttempt(login, testAttempt) {
         return this.http.put(this.rootUrl + '/' + login, testAttempt, { observe: 'response' });
     }
