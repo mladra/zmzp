@@ -223,7 +223,7 @@ export class TestsListComponent implements OnInit {
   }
 
   showResults(testAttempt: TestAttempt) {
-    const modalRef = this.modalService.open(TestsResultsComponent);
+    const modalRef = this.modalService.open(TestsResultsComponent, { size: 'lg'});
     modalRef.componentInstance.name = 'Test results';
     modalRef.componentInstance.setTestAttempt(testAttempt);
   }
