@@ -76,6 +76,63 @@ export class TestQuestionsComponent implements OnInit {
     }
   }
 
+  translateQuestion(question) {
+      var myWindow: any = window;
+      const index = this.test.questions.indexOf(question, 0);
+      var lang;
+      if (this.language == 'english') {
+          lang = 'pl-en'
+      } else if (this.language == 'polish') {
+          lang = 'en-pl'
+      }
+      myWindow.$.ajax({
+          url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+          data: {
+              key: 'trnsl.1.1.20180517T202518Z.2b1415d40fcc9baf.1d23d85fc47ccdbb8a4ba43da6e73174cb54bdc6\n',
+              text: question.questionPhrase,
+              lang: lang,
+              format: 'plain',
+              options: 1,
+          },
+          dataType: 'jsonp',
+          success: function (x) {
+              if (x.text.length > 0) {
+                  question.questionPhrase = x.text;
+              } else {
+                  alert("No translation found");
+              }
+          }
+      });
+  }
+
+    translateOption(option) {
+        var myWindow: any = window;
+        var lang;
+        if (this.language == 'english') {
+            lang = 'pl-en'
+        } else if (this.language == 'polish') {
+            lang = 'en-pl'
+        }
+        myWindow.$.ajax({
+            url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+            data: {
+                key: 'trnsl.1.1.20180517T202518Z.2b1415d40fcc9baf.1d23d85fc47ccdbb8a4ba43da6e73174cb54bdc6\n',
+                text: option,
+                lang: lang,
+                format: 'plain',
+                options: 1,
+            },
+            dataType: 'jsonp',
+            success: function (x) {
+                if (x.text.length > 0) {
+                    option = x.text;
+                } else {
+                    alert("No translation found");
+                }
+            }
+        });
+    }
+
   addQuestionOption(question) {
     question.params.options.push('');
   }
