@@ -22,9 +22,10 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from
 })
 export class TestQuestionsComponent implements OnInit {
 
-
   private test: Test;
-  private language: string;
+  private fromLanguage: string;
+  private toLanguage: string;
+  private lang;
   private originalQuestions: Array<QuestionInfo>;
   private questionTypes: [string, any][];
   private numberForm: FormGroup;
@@ -45,9 +46,10 @@ export class TestQuestionsComponent implements OnInit {
       this.testService.getById(params['id']).subscribe(
         data => {
           this.test = data.body as Test;
+          this.fromLanguage = this.test.language;
           this.route.queryParams.subscribe(queryParams => {
             if (queryParams.translate) {
-              this.language = queryParams.language;
+              this.toLanguage = queryParams.language;
               this.originalQuestions = JSON.parse(JSON.stringify(this.test.questions));
               this.test.questions.forEach(question => {
                 question.questionPhrase = null;
@@ -55,6 +57,7 @@ export class TestQuestionsComponent implements OnInit {
                   question.params.options = new Array(question.params.options.length);
                 }
               });
+              this.setLanguages(this.fromLanguage, this.toLanguage);
             }
           });
         },
@@ -63,6 +66,39 @@ export class TestQuestionsComponent implements OnInit {
         }
       );
     });
+  }
+
+  setLanguages(fromLanguage, toLanguage) {
+    var fromLang;
+    var toLang;
+    if (fromLanguage == 'polish') {
+      fromLang = 'pl';
+    } else if (fromLanguage == 'english') {
+      fromLang = 'en';
+    } else if (fromLanguage == 'russian') {
+      fromLang = 'ru';
+    } else if (fromLanguage == 'german') {
+      fromLang = 'de';
+    } else if (fromLanguage == 'italian') {
+      fromLang = 'it';
+    } else if (fromLanguage == 'spanish') {
+      fromLang = 'es';
+    }
+
+    if (toLanguage == 'polish') {
+      toLang = 'pl';
+    } else if (toLanguage == 'english') {
+      toLang = 'en';
+    } else if (toLanguage == 'russian') {
+       toLang = 'ru';
+    } else if (toLanguage == 'german') {
+      toLang = 'de';
+    } else if (toLanguage == 'italian') {
+      toLang = 'it';
+    } else if (toLanguage == 'spanish') {
+      toLang = 'es';
+    }
+    this.lang = fromLang + '-' + toLang;
   }
 
   addQuestion() {
@@ -75,6 +111,50 @@ export class TestQuestionsComponent implements OnInit {
       this.test.questions.splice(index, 1);
     }
   }
+
+  translateQuestion(question, targetQuestion) {
+    var myWindow: any = window;
+    myWindow.$.ajax({
+      url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+      data: {
+        key: 'trnsl.1.1.20180517T202518Z.2b1415d40fcc9baf.1d23d85fc47ccdbb8a4ba43da6e73174cb54bdc6\n',
+        text: question.questionPhrase,
+        lang: this.lang,
+        format: 'plain',
+        options: 1,
+      },
+      dataType: 'jsonp',
+      success: function (x) {
+        if (x.text.length > 0) {
+          targetQuestion.questionPhrase = x.text[0];
+          } else {
+            alert("No translation found");
+          }
+        }
+    });
+  }
+
+  translateOption(option, targetQuestions, jthQuestion, ithOption) {
+    var myWindow: any = window;
+    myWindow.$.ajax({
+      url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+      data: {
+        key: 'trnsl.1.1.20180517T202518Z.2b1415d40fcc9baf.1d23d85fc47ccdbb8a4ba43da6e73174cb54bdc6\n',
+        text: option,
+        lang: this.lang,
+        format: 'plain',
+        options: 1,
+        },
+        dataType: 'jsonp',
+        success: function (x) {
+          if (x.text.length > 0) {
+            targetQuestions[jthQuestion].params.options[ithOption] = x.text[0];
+          } else {
+            alert("No translation found");
+          }
+        }
+      });
+    }
 
   addQuestionOption(question) {
     question.params.options.push('');
@@ -126,7 +206,7 @@ export class TestQuestionsComponent implements OnInit {
   submit() {
     if (this.originalQuestions !== undefined) {
       this.test.id = null;
-      this.test.language = this.language;
+      this.test.language = this.toLanguage;
       this.testService.createTest(this.test).subscribe(
         response => {
           this.alertsService.addAlert('success', 'Test "' + this.test.name + '"successfully translated.');

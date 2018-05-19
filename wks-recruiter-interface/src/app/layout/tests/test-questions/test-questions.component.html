@@ -31,7 +31,7 @@
                   <div class="form-group">
                     <div class="row">
                       <div class="col-2">
-                        <label for="{{j}}QuestionType" class="font-weight-bold h-100 pt-1 float-right">Question type: </label>
+                        <label for="{{j}}QuestionType" class="font-weight-bold h-100 pt-1 w-50 float-right">Question type: </label>
                       </div>
                       <div class="col-5">
                         <select [disabled]="originalQuestions !== undefined" class="form-control input-select" [(ngModel)]="question.type" name="{{j}}QuestionType" id="{{j}}QuestionType" (change)="questionTypeChanged(question, $event.target.value); questionsForm.submitted = false;"
@@ -60,12 +60,15 @@
                   <div class="row">
                     <div class="col-2">
                       <label for="{{j}}QuestionInput" class="pt-1 float-right">Question phrase: </label>
-                    </div>  
-                    <div class="col-5">
-                      <input class="form-control input-underline input-md" [ngbTooltip]="(originalQuestions !== undefined) ? originalQuestions[j].questionPhrase : ''" placeholder="Question phrase" name="{{j}}QuestionInput" [(ngModel)]="question.questionPhrase"
-                        #questionPhrase="ngModel" required [ngClass]="{'border border-danger': questionsForm.submitted && questionPhrase.invalid}">
                     </div>
-                    <div class="col-5" *ngIf="questionsForm.submitted && questionPhrase.invalid">
+                    <div class="col-5">
+                      <input class="form-control input-underline input-lg w-75 d-inline" [ngbTooltip]="(originalQuestions !== undefined) ? originalQuestions[j].questionPhrase : ''" placeholder="Question phrase" name="{{j}}QuestionInput" [(ngModel)]="question.questionPhrase"
+                        #questionPhrase="ngModel" required [ngClass]="{'border border-danger': questionsForm.submitted && questionPhrase.invalid}" >
+                        <button [hidden]="originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline" (click)="translateQuestion(originalQuestions[j], question)">
+                          <i class="fa fa-language"></i>
+                        </button>
+                    </div>
+                    <div class="col-6" *ngIf="questionsForm.submitted && questionPhrase.invalid">
                       <div *ngIf="questionPhrase.errors.required" class="pt-1 text-danger">
                         Question phrase is required.
                       </div>
@@ -80,8 +83,8 @@
                       <label for="{{j}}QuestionMaxPoints" class="pt-1 float-right">Question max points: </label>
                     </div>
                     <div class="col-5">
-                      <input [disabled]="originalQuestions !== undefined" type="number" step="1" class="form-control input-underline input-md" placeholder="Question max points" name="{{j}}QuestionMaxPoints"
-                        [(ngModel)]="question.maxPoints" #questionMaxPoints="ngModel" required [ngClass]="{'border border-danger': questionsForm.submitted && 
+                      <input [disabled]="originalQuestions !== undefined" type="number" step="1" class="form-control input-underline w-75 input-md" placeholder="Question max points" name="{{j}}QuestionMaxPoints"
+                        [(ngModel)]="question.maxPoints" #questionMaxPoints="ngModel" required [ngClass]="{'border border-danger': questionsForm.submitted &&
                         (questionMaxPoints.invalid || question.maxPoints <= 0)}">
                     </div>
                     <div class="col-5" *ngIf="questionsForm.submitted">
@@ -112,6 +115,9 @@
                               <button *ngIf="i !== 0 && originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-danger d-inline" name="{{i}}SingleSelectOptionButton" (click)="removeOptionFromQuestion(question, i)">
                                 <i class="fa fa-remove"></i>
                               </button>
+                                <button [hidden]="originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline" (click)="translateOption(originalQuestions[j].params.options[i], test.questions, j, i)">
+                                  <i class="fa fa-language"></i>
+                                </button>
                             </div>
                             <div class="col-6">
                               <div *ngIf="questionsForm.submitted && questionOption.invalid">
@@ -150,7 +156,7 @@
                     </div>
                     <div class="col-5">
                       <input [disabled]="originalQuestions !== undefined" class="w-75 form-control input-underline input-md" type="number" placeholder="Maximum value" name="{{j}}NumberQuestionMaxValue"
-                        [(ngModel)]="question.params.maxValue" required #maxValue="ngModel" [ngClass]="{'border border-danger': questionsForm.submitted && 
+                        [(ngModel)]="question.params.maxValue" required #maxValue="ngModel" [ngClass]="{'border border-danger': questionsForm.submitted &&
                         (maxValue.invalid || question.params.maxValue < question.params.minValue)}">
                     </div>
                     <div class="col-5" *ngIf="questionsForm.submitted">
@@ -208,8 +214,8 @@
                     </div>
                     <div class="col-5">
                       <input [disabled]="originalQuestions !== undefined" type="number" class="w-75 form-control input-underline input-md" placeholder="Step" name="{{j}}ScaleQuestionStep"
-                        [(ngModel)]="question.params.step" required #step="ngModel" [ngClass]="{'border border-danger': questionsForm.submitted && 
-                        (step.invalid || question.params.step <= 0 || question.params.step > (question.params.maxValue - question.params.minValue) && 
+                        [(ngModel)]="question.params.step" required #step="ngModel" [ngClass]="{'border border-danger': questionsForm.submitted &&
+                        (step.invalid || question.params.step <= 0 || question.params.step > (question.params.maxValue - question.params.minValue) &&
                         question.params.maxValue >= question.params.minValue)}">
                     </div>
                     <div class="col-5">

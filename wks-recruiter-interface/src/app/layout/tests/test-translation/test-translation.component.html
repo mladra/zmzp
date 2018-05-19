@@ -7,9 +7,14 @@
 <div class="modal-body">
   <form name="testCreationForm" (ngSubmit)="testCreationForm.form.valid && submit()" #testCreationForm="ngForm" novalidate>
     <div class="form-group">
-      <label for="testLanguage">Choose language</label>
-      <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="language"
-        #lang="ngModel" required minlength="3" pattern="^[a-z]+">
+      <select class="form-control" name="language" [(ngModel)]="language" #lang="ngModel" required>
+        <option value="english">English</option>
+        <option value="polish">Polish</option>
+        <option value="russian">Russian</option>
+        <option value="german">German</option>
+        <option value="italian">Italian</option>
+        <option value="spanish">Spanish</option>
+      </select>
       <div *ngIf="testCreationForm.submitted && lang.invalid" class="alert alert-danger">
         <div *ngIf="lang.errors.required">
           Language can not be empty.
