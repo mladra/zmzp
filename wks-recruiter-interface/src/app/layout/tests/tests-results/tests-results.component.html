@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Test results</h4>
+  <h4 class="modal-title">Test results for {{ testAttempt.test.name }}</h4>
   <button type="button" class="close" (click)="close()">
     <span>&times;</span>
   </button>
@@ -18,16 +18,19 @@
                 <th>Score</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="resolved">
               <tr *ngFor="let answer of testAttempt.answers; let i = index;">
                 <td>{{i+1}}</td>
                 <td>{{ answer.question }}</td>
-                <td>{{ answer.answers }}</td>
+                <td>
+                  <span *ngFor="let singleAnswer of answer.answers; let j=index">{{(j>0 ? ", "+singleAnswer : " "+singleAnswer)}}</span>
+                </td>
                 <td>{{ answer.score }}/{{ answer.maxPoints }}</td>
               </tr>
             </tbody>
           </table>
-          <h3 *ngIf="testAttempt.answers.length === 0">There are no questions in this test</h3>
+          <h5 *ngIf="!resolved">This test has not been resolved yet.</h5>
+          <h5 *ngIf="testAttempt.answers.length === 0 && resolved">There are no questions in this test.</h5>
         </div>
       </div>
     </div>
