@@ -18,7 +18,7 @@
                 <th>Score</th>
               </tr>
             </thead>
-            <tbody *ngIf="resolved">
+            <tbody *ngIf="evaluated">
               <tr *ngFor="let answer of testAttempt.answers; let i = index;">
                 <td>{{i+1}}</td>
                 <td>{{ answer.question }}</td>
@@ -29,8 +29,8 @@
               </tr>
             </tbody>
           </table>
-          <h5 *ngIf="!resolved">This test has not been resolved yet.</h5>
-          <h5 *ngIf="testAttempt.answers.length === 0 && resolved">There are no questions in this test.</h5>
+          <h5 *ngIf="!evaluated">This test has not been evaluated yet.</h5>
+          <h5 *ngIf="testAttempt.answers.length === 0 && evaluated">There are no questions in this test.</h5>
         </div>
       </div>
     </div>

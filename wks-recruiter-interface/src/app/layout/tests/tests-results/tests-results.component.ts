@@ -13,7 +13,7 @@ export class TestsResultsComponent implements OnInit {
 
 
   public testAttempt: TestAttempt;
-  private resolved: Boolean;
+  private evaluated: Boolean;
 
   constructor(public activeModal: NgbActiveModal,
     private alertsService: AlertsService,
@@ -28,9 +28,9 @@ export class TestsResultsComponent implements OnInit {
 
   setTestAttempt(selectedAtempt: TestAttempt) {
     this.testAttempt = selectedAtempt;
-    this.resolved = true;
+    this.evaluated = true;
     if (this.testAttempt.score === -1) {
-      this.resolved = false;
+      this.evaluated = false;
     }
   }
 
