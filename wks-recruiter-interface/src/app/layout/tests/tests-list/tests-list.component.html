@@ -92,4 +92,32 @@
       </div>
     </div>
   </div>
+  <div class="row mt-3" *ngIf="isCurrentUserCandidate()">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">Tests attempts</div>
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Test attempt</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let testAttempt of testAttempts; let i = index;">
+                <td>{{i + 1 }}</td>
+                <td>{{testAttempt.test.name}}</td>
+                <td>
+                  <button (click)="showResults(testAttempt)" class="btn btn-sm btn-warning">Show results</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3 *ngIf="testAttempts.length === 0">There are no test attempts available</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title">Test results for {{ testAttempt.test.name }}</h4>
+  <button type="button" class="close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="evaluated">
+              <tr *ngFor="let answer of testAttempt.answers; let i = index;">
+                <td>{{i+1}}</td>
+                <td>{{ answer.question }}</td>
+                <td>
+                  <span *ngFor="let singleAnswer of answer.answers; let j=index">{{(j>0 ? ", "+singleAnswer : " "+singleAnswer)}}</span>
+                </td>
+                <td>{{ answer.score }}/{{ answer.maxPoints }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h5 *ngIf="!evaluated">This test has not been evaluated yet.</h5>
+          <h5 *ngIf="testAttempt.answers.length === 0 && evaluated">There are no questions in this test.</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
