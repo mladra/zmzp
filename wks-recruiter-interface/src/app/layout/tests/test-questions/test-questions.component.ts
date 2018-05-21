@@ -71,32 +71,40 @@ export class TestQuestionsComponent implements OnInit {
   setLanguages(fromLanguage, toLanguage) {
     var fromLang;
     var toLang;
-    if (fromLanguage == 'polish') {
+    if (fromLanguage === 'polish') {
       fromLang = 'pl';
-    } else if (fromLanguage == 'english') {
+    } else if (fromLanguage === 'english') {
       fromLang = 'en';
-    } else if (fromLanguage == 'russian') {
+    } else if (fromLanguage === 'russian') {
       fromLang = 'ru';
-    } else if (fromLanguage == 'german') {
+    } else if (fromLanguage === 'german') {
       fromLang = 'de';
-    } else if (fromLanguage == 'italian') {
+    } else if (fromLanguage === 'italian') {
       fromLang = 'it';
-    } else if (fromLanguage == 'spanish') {
+    } else if (fromLanguage === 'spanish') {
       fromLang = 'es';
+    } else if (fromLanguage === 'latin') {
+        fromLang = 'la';
+    } else if (this.fromLanguage === 'esperanto') {
+        fromLanguage = 'eo';
     }
 
-    if (toLanguage == 'polish') {
+    if (toLanguage === 'polish') {
       toLang = 'pl';
-    } else if (toLanguage == 'english') {
+    } else if (toLanguage === 'english') {
       toLang = 'en';
-    } else if (toLanguage == 'russian') {
+    } else if (toLanguage === 'russian') {
        toLang = 'ru';
-    } else if (toLanguage == 'german') {
+    } else if (toLanguage === 'german') {
       toLang = 'de';
-    } else if (toLanguage == 'italian') {
+    } else if (toLanguage === 'italian') {
       toLang = 'it';
-    } else if (toLanguage == 'spanish') {
+    } else if (toLanguage === 'spanish') {
       toLang = 'es';
+    } else if (this.toLanguage === 'latin') {
+        toLang = 'la';
+    } else if (this.toLanguage === 'esperanto') {
+        toLang = 'eo';
     }
     this.lang = fromLang + '-' + toLang;
   }

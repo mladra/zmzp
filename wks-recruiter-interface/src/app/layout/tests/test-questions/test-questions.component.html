@@ -64,9 +64,9 @@
                     <div class="col-5">
                       <input class="form-control input-underline input-lg w-75 d-inline" [ngbTooltip]="(originalQuestions !== undefined) ? originalQuestions[j].questionPhrase : ''" placeholder="Question phrase" name="{{j}}QuestionInput" [(ngModel)]="question.questionPhrase"
                         #questionPhrase="ngModel" required [ngClass]="{'border border-danger': questionsForm.submitted && questionPhrase.invalid}" >
-                        <button [hidden]="originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline" (click)="translateQuestion(originalQuestions[j], question)">
-                          <i class="fa fa-language"></i>
-                        </button>
+                      <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline"  type="button" (click)="translateQuestion(originalQuestions[j], question)">
+                        <i class="fa fa-language"></i>
+                      </button>
                     </div>
                     <div class="col-6" *ngIf="questionsForm.submitted && questionPhrase.invalid">
                       <div *ngIf="questionPhrase.errors.required" class="pt-1 text-danger">
@@ -115,9 +115,9 @@
                               <button *ngIf="i !== 0 && originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-danger d-inline" name="{{i}}SingleSelectOptionButton" (click)="removeOptionFromQuestion(question, i)">
                                 <i class="fa fa-remove"></i>
                               </button>
-                                <button [hidden]="originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline" (click)="translateOption(originalQuestions[j].params.options[i], test.questions, j, i)">
-                                  <i class="fa fa-language"></i>
-                                </button>
+                              <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline" type="button" (click)="translateOption(originalQuestions[j].params.options[i], test.questions, j, i)">
+                                <i class="fa fa-language"></i>
+                              </button>
                             </div>
                             <div class="col-6">
                               <div *ngIf="questionsForm.submitted && questionOption.invalid">
