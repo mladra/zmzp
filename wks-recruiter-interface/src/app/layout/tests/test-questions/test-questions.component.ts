@@ -13,7 +13,6 @@ import { QuestionInfo } from '../../../entities/question.info';
 import { QuestionsService } from '../../../shared/services/questions.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
-
 @Component({
   selector: 'app-test-questions',
   templateUrl: './test-questions.component.html',
@@ -57,7 +56,7 @@ export class TestQuestionsComponent implements OnInit {
                   question.params.options = new Array(question.params.options.length);
                 }
               });
-              this.setLanguages(this.fromLanguage, this.toLanguage);
+              this.setLanguages();
             }
           });
         },
@@ -68,38 +67,38 @@ export class TestQuestionsComponent implements OnInit {
     });
   }
 
-  setLanguages(fromLanguage, toLanguage) {
-    var fromLang;
-    var toLang;
-    if (fromLanguage === 'polish') {
+  setLanguages() {
+    let fromLang;
+    let toLang;
+    if (this.fromLanguage === 'polish') {
       fromLang = 'pl';
-    } else if (fromLanguage === 'english') {
+    } else if (this.fromLanguage === 'english') {
       fromLang = 'en';
-    } else if (fromLanguage === 'russian') {
+    } else if (this.fromLanguage === 'russian') {
       fromLang = 'ru';
-    } else if (fromLanguage === 'german') {
+    } else if (this.fromLanguage === 'german') {
       fromLang = 'de';
-    } else if (fromLanguage === 'italian') {
+    } else if (this.fromLanguage === 'italian') {
       fromLang = 'it';
-    } else if (fromLanguage === 'spanish') {
+    } else if (this.fromLanguage === 'spanish') {
       fromLang = 'es';
-    } else if (fromLanguage === 'latin') {
+    } else if (this.fromLanguage === 'latin') {
         fromLang = 'la';
     } else if (this.fromLanguage === 'esperanto') {
-        fromLanguage = 'eo';
+        fromLang = 'eo';
     }
 
-    if (toLanguage === 'polish') {
+    if (this.toLanguage === 'polish') {
       toLang = 'pl';
-    } else if (toLanguage === 'english') {
+    } else if (this.toLanguage === 'english') {
       toLang = 'en';
-    } else if (toLanguage === 'russian') {
+    } else if (this.toLanguage === 'russian') {
        toLang = 'ru';
-    } else if (toLanguage === 'german') {
+    } else if (this.toLanguage === 'german') {
       toLang = 'de';
-    } else if (toLanguage === 'italian') {
+    } else if (this.toLanguage === 'italian') {
       toLang = 'it';
-    } else if (toLanguage === 'spanish') {
+    } else if (this.toLanguage === 'spanish') {
       toLang = 'es';
     } else if (this.toLanguage === 'latin') {
         toLang = 'la';
@@ -121,7 +120,7 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   translateQuestion(question, targetQuestion) {
-    var myWindow: any = window;
+    let myWindow: any = window;
     myWindow.$.ajax({
       url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
       data: {
@@ -136,14 +135,14 @@ export class TestQuestionsComponent implements OnInit {
         if (x.text.length > 0) {
           targetQuestion.questionPhrase = x.text[0];
           } else {
-            alert("No translation found");
+            this.alertsService.addAlert('danger', "No translation found");
           }
         }
     });
   }
 
   translateOption(option, targetQuestions, jthQuestion, ithOption) {
-    var myWindow: any = window;
+    let myWindow: any = window;
     myWindow.$.ajax({
       url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
       data: {
@@ -155,14 +154,25 @@ export class TestQuestionsComponent implements OnInit {
         },
         dataType: 'jsonp',
         success: function (x) {
-          if (x.text.length > 0) {
-            targetQuestions[jthQuestion].params.options[ithOption] = x.text[0];
-          } else {
-            alert("No translation found");
-          }
+        if (x.text.length > 0) {
+          targetQuestions[jthQuestion].params.options[ithOption] = x.text[0];
+        } else {
+          this.alertsService.addAlert('danger', "No translation found");
         }
-      });
+      }
+    });
+  }
+
+  translateAllQuestions() {
+    for (let i in this.originalQuestions) {
+      this.translateQuestion(this.originalQuestions[i], this.test.questions[i]);
+      if (this.originalQuestions[i].params != null) {
+        for(let j in this.originalQuestions[i].params.options) {
+          this.translateOption(this.originalQuestions[i].params.options[j], this.test.questions, i, j);
+        }
+      }
     }
+  }
 
   addQuestionOption(question) {
     question.params.options.push('');

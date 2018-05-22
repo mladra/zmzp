@@ -7,7 +7,8 @@
 <div class="modal-body">
   <form name="testCreationForm" (ngSubmit)="testCreationForm.form.valid && submit()" #testCreationForm="ngForm" novalidate>
     <div class="form-group">
-      <select class="form-control" name="language" [(ngModel)]="language" #lang="ngModel" required>
+      <select class="form-control" name="language" placeholder="Select target language" [(ngModel)]="language" #lang="ngModel" required>
+        <option [ngValue]="undefined" disabled hidden selected> Please select target language </option>
         <option value="english">English</option>
         <option value="polish">Polish</option>
         <option value="russian">Russian</option>
