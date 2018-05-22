@@ -70,41 +70,58 @@ export class TestQuestionsComponent implements OnInit {
   setLanguages() {
     let fromLang;
     let toLang;
-    if (this.fromLanguage === 'polish') {
-      fromLang = 'pl';
-    } else if (this.fromLanguage === 'english') {
-      fromLang = 'en';
-    } else if (this.fromLanguage === 'russian') {
-      fromLang = 'ru';
-    } else if (this.fromLanguage === 'german') {
-      fromLang = 'de';
-    } else if (this.fromLanguage === 'italian') {
-      fromLang = 'it';
-    } else if (this.fromLanguage === 'spanish') {
-      fromLang = 'es';
-    } else if (this.fromLanguage === 'latin') {
-        fromLang = 'la';
-    } else if (this.fromLanguage === 'esperanto') {
-        fromLang = 'eo';
+    switch (this.fromLanguage) {
+        case "polish":
+            fromLang = 'pl';
+            break;
+        case "english":
+            fromLang = 'en';
+            break;
+        case "russian":
+            fromLang = 'ru';
+            break;
+        case "german":
+            fromLang = 'de';
+            break;
+        case "italian":
+            fromLang = 'it';
+            break;
+        case "spanish":
+            fromLang = 'es';
+            break;
+        case "latin":
+            fromLang = 'la';
+            break;
+        case "esperanto":
+            fromLang = 'eo';
+            break;
     }
-
-    if (this.toLanguage === 'polish') {
-      toLang = 'pl';
-    } else if (this.toLanguage === 'english') {
-      toLang = 'en';
-    } else if (this.toLanguage === 'russian') {
-       toLang = 'ru';
-    } else if (this.toLanguage === 'german') {
-      toLang = 'de';
-    } else if (this.toLanguage === 'italian') {
-      toLang = 'it';
-    } else if (this.toLanguage === 'spanish') {
-      toLang = 'es';
-    } else if (this.toLanguage === 'latin') {
-        toLang = 'la';
-    } else if (this.toLanguage === 'esperanto') {
-        toLang = 'eo';
-    }
+      switch (this.toLanguage) {
+          case "polish":
+              toLang = 'pl';
+              break;
+          case "english":
+              toLang = 'en';
+              break;
+          case "russian":
+              toLang = 'ru';
+              break;
+          case "german":
+              toLang = 'de';
+              break;
+          case "italian":
+              toLang = 'it';
+              break;
+          case "spanish":
+              toLang = 'es';
+              break;
+          case "latin":
+              toLang = 'la';
+              break;
+          case "esperanto":
+              toLang = 'eo';
+              break;
+      }
     this.lang = fromLang + '-' + toLang;
   }
 

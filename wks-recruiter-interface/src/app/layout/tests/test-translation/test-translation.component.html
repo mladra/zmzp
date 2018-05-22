@@ -9,14 +9,7 @@
     <div class="form-group">
       <select class="form-control" name="language" placeholder="Select target language" [(ngModel)]="language" #lang="ngModel" required>
         <option [ngValue]="undefined" disabled hidden selected> Please select target language </option>
-        <option value="english">English</option>
-        <option value="polish">Polish</option>
-        <option value="russian">Russian</option>
-        <option value="german">German</option>
-        <option value="italian">Italian</option>
-        <option value="spanish">Spanish</option>
-        <option value="latin">Latin</option>
-        <option value="esperanto">Esperanto</option>
+        <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language.id" >{{language.name}}</option>
       </select>
       <div *ngIf="testCreationForm.submitted && lang.invalid" class="alert alert-danger">
         <div *ngIf="lang.errors.required">

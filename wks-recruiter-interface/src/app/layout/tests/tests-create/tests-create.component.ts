@@ -17,6 +17,7 @@ export class TestsCreateComponent implements OnInit {
   public test: Test;
   private title: String;
   private modifying: Boolean;
+  private languages;
 
   constructor(public activeModal: NgbActiveModal,
     private alertsService: AlertsService,
@@ -24,7 +25,16 @@ export class TestsCreateComponent implements OnInit {
     private testsService: TestsService) { }
 
   ngOnInit() {
-
+    this.languages = [
+      {id: "polish", name: "Polish"},
+      {id: "english", name: "English"},
+      {id: "spanish", name: "Spanish"},
+      {id: "italian", name: "Italian"},
+      {id: "esperanto", name: "Esperanto"},
+      {id: "german", name: "German"},
+      {id: "latin", name: "Latin"},
+      {id: "russian", name: "Russian"}
+    ];
   }
 
   close() {

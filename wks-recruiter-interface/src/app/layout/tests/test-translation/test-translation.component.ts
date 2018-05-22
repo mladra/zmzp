@@ -16,11 +16,27 @@ export class TestTranslationComponent implements OnInit {
   private name: string;
   private language: String;
   private tests: Array<Test>;
+  private languages;
 
   constructor(public activeModal: NgbActiveModal,
     private alertsService: AlertsService) { }
 
   ngOnInit() {
+    this.languages = [
+      {id: "polish", name: "Polish"},
+      {id: "english", name: "English"},
+      {id: "spanish", name: "Spanish"},
+      {id: "italian", name: "Italian"},
+      {id: "esperanto", name: "Esperanto"},
+      {id: "german", name: "German"},
+      {id: "latin", name: "Latin"},
+      {id: "russian", name: "Russian"}
+    ];
+    for (let i in this.languages) {
+      if (this.languages[i].name === this.language) {
+        this.languages.remove(i);
+      }
+    }
   }
 
   setTests(tests: Array<Test>) {
