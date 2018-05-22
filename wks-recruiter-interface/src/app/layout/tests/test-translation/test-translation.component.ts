@@ -32,11 +32,6 @@ export class TestTranslationComponent implements OnInit {
       {id: "latin", name: "Latin"},
       {id: "russian", name: "Russian"}
     ];
-    for (let i in this.languages) {
-      if (this.languages[i].name === this.language) {
-        this.languages.remove(i);
-      }
-    }
   }
 
   setTests(tests: Array<Test>) {
