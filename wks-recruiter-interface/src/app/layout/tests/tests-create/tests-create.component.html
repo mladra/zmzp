@@ -10,7 +10,7 @@
       <label for="testName">Test name</label>
       <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="test.name"
         #name="ngModel" required minlength="3" pattern="^[A-Z].*">
-      <div *ngIf="testCreationForm.submitted && name.invalid" class="alert alert-danger">
+      <div *ngIf="testCreationForm.submitted && name.invalid" class="text-danger">
         <div *ngIf="name.errors.required">
           Test name can not be empty.
         </div>
@@ -28,15 +28,9 @@
             <option [ngValue]="undefined" disabled hidden selected>Please select language</option>
             <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language.id" >{{language.name}}</option>
         </select>
-      <div *ngIf="testCreationForm.submitted && language" class="alert alert-danger">
+      <div *ngIf="testCreationForm.submitted && language" class="text-danger">
         <div *ngIf="language.errors.required">
-          Language can not be empty.
-        </div>
-        <div *ngIf="language.errors.minlength">
-          Language must have at least 3 characters.
-        </div>
-        <div *ngIf="language.errors.pattern">
-          Language should contain only lower case letters.
+          Language must be chosen.
         </div>
       </div>
     </div>
@@ -44,7 +38,7 @@
       <label for="testDescription">Description</label>
       <textarea class="form-control input-underline input-lg" placeholder="Description" id="description" name="description" [(ngModel)]="test.description"
         #description="ngModel" required minlength="3" pattern="^[A-Z].*"></textarea>
-      <div *ngIf="testCreationForm.submitted && description.invalid" class="alert alert-danger">
+      <div *ngIf="testCreationForm.submitted && description.invalid" class="text-danger">
         <div *ngIf="description.errors.required">
           Description can not be empty.
         </div>

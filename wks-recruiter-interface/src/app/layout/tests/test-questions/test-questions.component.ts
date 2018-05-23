@@ -68,61 +68,40 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   setLanguages() {
-    let fromLang;
-    let toLang;
-    switch (this.fromLanguage) {
-        case "polish":
-            fromLang = 'pl';
-            break;
-        case "english":
-            fromLang = 'en';
-            break;
-        case "russian":
-            fromLang = 'ru';
-            break;
-        case "german":
-            fromLang = 'de';
-            break;
-        case "italian":
-            fromLang = 'it';
-            break;
-        case "spanish":
-            fromLang = 'es';
-            break;
-        case "latin":
-            fromLang = 'la';
-            break;
-        case "esperanto":
-            fromLang = 'eo';
-            break;
-    }
-      switch (this.toLanguage) {
-          case "polish":
-              toLang = 'pl';
-              break;
-          case "english":
-              toLang = 'en';
-              break;
-          case "russian":
-              toLang = 'ru';
-              break;
-          case "german":
-              toLang = 'de';
-              break;
-          case "italian":
-              toLang = 'it';
-              break;
-          case "spanish":
-              toLang = 'es';
-              break;
-          case "latin":
-              toLang = 'la';
-              break;
-          case "esperanto":
-              toLang = 'eo';
-              break;
-      }
+    let fromLang = this.selectLanguage(this.fromLanguage);
+    let toLang = this.selectLanguage(this.toLanguage);
     this.lang = fromLang + '-' + toLang;
+  }
+
+  selectLanguage(language) {
+    let lang;
+    switch (language) {
+      case "polish":
+        lang = 'pl';
+        break;
+      case "english":
+        lang = 'en';
+        break;
+      case "russian":
+        lang = 'ru';
+        break;
+      case "german":
+        lang = 'de';
+        break;
+      case "italian":
+        lang = 'it';
+        break;
+      case "spanish":
+        lang = 'es';
+        break;
+      case "latin":
+        lang = 'la';
+        break;
+      case "esperanto":
+        lang = 'eo';
+        break;
+      }
+    return lang;
   }
 
   addQuestion() {

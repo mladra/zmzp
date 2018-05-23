@@ -26,14 +26,14 @@ export class TestsCreateComponent implements OnInit {
 
   ngOnInit() {
     this.languages = [
-      {id: "polish", name: "Polish"},
-      {id: "english", name: "English"},
-      {id: "spanish", name: "Spanish"},
-      {id: "italian", name: "Italian"},
-      {id: "esperanto", name: "Esperanto"},
-      {id: "german", name: "German"},
-      {id: "latin", name: "Latin"},
-      {id: "russian", name: "Russian"}
+      {id: "polish", name: "polish"},
+      {id: "english", name: "english"},
+      {id: "spanish", name: "spanish"},
+      {id: "italian", name: "italian"},
+      {id: "esperanto", name: "esperanto"},
+      {id: "german", name: "german"},
+      {id: "latin", name: "latin"},
+      {id: "russian", name: "russian"}
     ];
   }
 

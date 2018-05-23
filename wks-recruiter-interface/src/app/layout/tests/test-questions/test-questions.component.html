@@ -23,11 +23,11 @@
     <div class="col">
       <div class="card">
         <div class="card-header font-weight-bold">Questions - {{ test.name }}</div>
+          <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-primary btn-lg btn-light" type="button" (click)="translateAllQuestions()">
+            Translate all questions
+          </button>
         <form name="questionsForm" id="questionsForm" (ngSubmit)="questionsForm.form.valid && submit()" #questionsForm="ngForm" novalidate>
           <div class="card-body p-3">
-            <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-primary btn-lg btn-light" type="button" (click)="translateAllQuestions()">
-              Translate all questions
-            </button>
             <div *ngFor="let question of test.questions; let j = index; trackBy: trackByFun">
               <div class="form-content">
                 <div>
@@ -67,7 +67,7 @@
                     <div class="col-5">
                       <input class="form-control input-underline input-lg w-75 d-inline" [ngbTooltip]="(originalQuestions !== undefined) ? originalQuestions[j].questionPhrase : ''" placeholder="Question phrase" name="{{j}}QuestionInput" [(ngModel)]="question.questionPhrase"
                         #questionPhrase="ngModel" required [ngClass]="{'border border-danger': questionsForm.submitted && questionPhrase.invalid}" >
-                      <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline"  type="button" (click)="translateQuestion(originalQuestions[j], question)">
+                      <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-sm mb-1 btn btn-outline-secondary" title="Translate this question" type="button" (click)="translateQuestion(originalQuestions[j], question)">
                         <i class="fa fa-language"></i>
                       </button>
                     </div>
@@ -118,7 +118,7 @@
                               <button *ngIf="i !== 0 && originalQuestions == undefined" type="button" class="btn btn-sm mb-1 btn-danger d-inline" name="{{i}}SingleSelectOptionButton" (click)="removeOptionFromQuestion(question, i)">
                                 <i class="fa fa-remove"></i>
                               </button>
-                              <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-sm mb-1 btn-light d-inline" type="button" (click)="translateOption(originalQuestions[j].params.options[i], test.questions, j, i)">
+                              <button *ngIf="originalQuestions !== undefined" type="button" class="btn btn-sm mb-1 btn-outline-secondary" title="Translate this option" type="button" (click)="translateOption(originalQuestions[j].params.options[i], test.questions, j, i)">
                                 <i class="fa fa-language"></i>
                               </button>
                             </div>
@@ -170,7 +170,7 @@
                         Maximum value has to be greater than minimum value.
                       </div>
                     </div>
-                  </div>l
+                  </div>
                 </div>
               </div>
               <div *ngIf="question.type === 'SCALE'">

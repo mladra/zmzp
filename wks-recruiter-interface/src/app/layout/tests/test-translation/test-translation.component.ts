@@ -15,23 +15,26 @@ export class TestTranslationComponent implements OnInit {
 
   private name: string;
   private language: String;
+  private currentLanguage: String;
   private tests: Array<Test>;
   private languages;
 
   constructor(public activeModal: NgbActiveModal,
-    private alertsService: AlertsService) { }
+    private alertsService: AlertsService) {
+  }
 
   ngOnInit() {
     this.languages = [
-      {id: "polish", name: "Polish"},
-      {id: "english", name: "English"},
-      {id: "spanish", name: "Spanish"},
-      {id: "italian", name: "Italian"},
-      {id: "esperanto", name: "Esperanto"},
-      {id: "german", name: "German"},
-      {id: "latin", name: "Latin"},
-      {id: "russian", name: "Russian"}
+      {id: "polish", name: "polish"},
+      {id: "english", name: "english"},
+      {id: "spanish", name: "spanish"},
+      {id: "italian", name: "italian"},
+      {id: "esperanto", name: "esperanto"},
+      {id: "german", name: "german"},
+      {id: "latin", name: "latin"},
+      {id: "russian", name: "russian"}
     ];
+    this.deleteCurrentLanguage(this.languages);
   }
 
   setTests(tests: Array<Test>) {
@@ -40,6 +43,19 @@ export class TestTranslationComponent implements OnInit {
 
   setTestName(name: string) {
     this.name = name;
+  }
+
+  setCurrentLanguage(language: String) {
+      this.currentLanguage = language;
+  }
+
+  deleteCurrentLanguage(languages) {
+    for (let idx in languages) {
+      if (languages[idx].id === this.currentLanguage) {
+        languages.splice(idx, 1);
+        break;
+      }
+    }
   }
 
   close() {
