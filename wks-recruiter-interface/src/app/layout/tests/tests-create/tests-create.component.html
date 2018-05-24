@@ -9,7 +9,7 @@
     <div class="form-group">
       <label for="testName">Test name</label>
       <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="test.name"
-        #name="ngModel" required minlength="3" pattern="^[A-Z].*">
+        #name="ngModel" required minlength="3" pattern="^[A-Z].*" [ngClass]="{'border border-danger': testCreationForm.submitted && name.invalid}">
       <div *ngIf="testCreationForm.submitted && name.invalid" class="text-danger">
         <div *ngIf="name.errors.required">
           Test name can not be empty.
@@ -24,9 +24,10 @@
     </div>
     <div class="form-group">
       <label for="language">Language</label>
-        <select class="form-control" name="language" [(ngModel)]="test.language" #language="ngModel" required>
+        <select class="form-control w-100" name="language" [(ngModel)]="test.language" #language="ngModel" required
+                [ngClass]="{'border border-danger': testCreationForm.submitted && language.invalid}">
             <option [ngValue]="undefined" disabled hidden selected>Please select language</option>
-            <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language.id" >{{language.name}}</option>
+            <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language" >{{language}}</option>
         </select>
       <div *ngIf="testCreationForm.submitted && language" class="text-danger">
         <div *ngIf="language.errors.required">
@@ -37,7 +38,7 @@
     <div class="form-group">
       <label for="testDescription">Description</label>
       <textarea class="form-control input-underline input-lg" placeholder="Description" id="description" name="description" [(ngModel)]="test.description"
-        #description="ngModel" required minlength="3" pattern="^[A-Z].*"></textarea>
+        #description="ngModel" required minlength="3" pattern="^[A-Z].*" [ngClass]="{'border border-danger': testCreationForm.submitted && description.invalid}"></textarea>
       <div *ngIf="testCreationForm.submitted && description.invalid" class="text-danger">
         <div *ngIf="description.errors.required">
           Description can not be empty.

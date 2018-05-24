@@ -25,16 +25,7 @@ export class TestsCreateComponent implements OnInit {
     private testsService: TestsService) { }
 
   ngOnInit() {
-    this.languages = [
-      {id: "polish", name: "polish"},
-      {id: "english", name: "english"},
-      {id: "spanish", name: "spanish"},
-      {id: "italian", name: "italian"},
-      {id: "esperanto", name: "esperanto"},
-      {id: "german", name: "german"},
-      {id: "latin", name: "latin"},
-      {id: "russian", name: "russian"}
-    ];
+    this.languages = ["polish", "english", "spanish", "italian", "esperanto", "german", "latin", "russian"];
   }
 
   close() {

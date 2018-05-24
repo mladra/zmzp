@@ -24,16 +24,7 @@ export class TestTranslationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.languages = [
-      {id: "polish", name: "polish"},
-      {id: "english", name: "english"},
-      {id: "spanish", name: "spanish"},
-      {id: "italian", name: "italian"},
-      {id: "esperanto", name: "esperanto"},
-      {id: "german", name: "german"},
-      {id: "latin", name: "latin"},
-      {id: "russian", name: "russian"}
-    ];
+    this.languages = ["polish", "english", "spanish", "italian", "esperanto", "german", "latin", "russian"];
     this.deleteCurrentLanguage(this.languages);
   }
 
@@ -50,11 +41,9 @@ export class TestTranslationComponent implements OnInit {
   }
 
   deleteCurrentLanguage(languages) {
-    for (let idx in languages) {
-      if (languages[idx].id === this.currentLanguage) {
-        languages.splice(idx, 1);
-        break;
-      }
+    let idx = languages.findIndex(x => x === this.currentLanguage);
+    if (idx > -1) {
+      this.languages.splice(idx, 1);
     }
   }
 
