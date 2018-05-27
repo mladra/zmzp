@@ -7,18 +7,14 @@
 <div class="modal-body">
   <form name="testCreationForm" (ngSubmit)="testCreationForm.form.valid && submit()" #testCreationForm="ngForm" novalidate>
     <div class="form-group">
-      <label for="testLanguage">Choose language</label>
-      <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="language"
-        #lang="ngModel" required minlength="3" pattern="^[a-z]+">
-      <div *ngIf="testCreationForm.submitted && lang.invalid" class="alert alert-danger">
+      <select class="form-control input-lg w-100" name="language" placeholder="Select target language" [(ngModel)]="language" #lang="ngModel" required
+          [ngClass]="{'border border-danger': testCreationForm.submitted && lang.invalid}">
+        <option [ngValue]="undefined" disabled hidden selected> Please select target language </option>
+        <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language" >{{language}}</option>
+      </select>
+      <div *ngIf="testCreationForm.submitted && lang.invalid" class="text-danger">
         <div *ngIf="lang.errors.required">
-          Language can not be empty.
-        </div>
-        <div *ngIf="lang.errors.minlength">
-          Language must have at least 3 characters.
-        </div>
-        <div *ngIf="lang.errors.pattern">
-          Language should contain only lower case letters.
+          Language must be chosen.
         </div>
       </div>
     </div>

@@ -15,12 +15,17 @@ export class TestTranslationComponent implements OnInit {
 
   private name: string;
   private language: String;
+  private currentLanguage: String;
   private tests: Array<Test>;
+  private languages;
 
   constructor(public activeModal: NgbActiveModal,
-    private alertsService: AlertsService) { }
+    private alertsService: AlertsService) {
+  }
 
   ngOnInit() {
+    this.languages = ["polish", "english", "spanish", "italian", "esperanto", "german", "latin", "russian"];
+    this.deleteCurrentLanguage(this.languages);
   }
 
   setTests(tests: Array<Test>) {
@@ -29,6 +34,17 @@ export class TestTranslationComponent implements OnInit {
 
   setTestName(name: string) {
     this.name = name;
+  }
+
+  setCurrentLanguage(language: String) {
+      this.currentLanguage = language;
+  }
+
+  deleteCurrentLanguage(languages) {
+    let idx = languages.findIndex(x => x === this.currentLanguage);
+    if (idx > -1) {
+      this.languages.splice(idx, 1);
+    }
   }
 
   close() {

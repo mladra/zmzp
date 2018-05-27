@@ -9,8 +9,8 @@
     <div class="form-group">
       <label for="testName">Test name</label>
       <input type="text" class="form-control input-underline input-lg" placeholder="Name" id="name" name="name" [(ngModel)]="test.name"
-        #name="ngModel" required minlength="3" pattern="^[A-Z].*">
-      <div *ngIf="testCreationForm.submitted && name.invalid" class="alert alert-danger">
+        #name="ngModel" required minlength="3" pattern="^[A-Z].*" [ngClass]="{'border border-danger': testCreationForm.submitted && name.invalid}">
+      <div *ngIf="testCreationForm.submitted && name.invalid" class="text-danger">
         <div *ngIf="name.errors.required">
           Test name can not be empty.
         </div>
@@ -23,26 +23,22 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="testLanguage">Language</label>
-      <input type="text" class="form-control input-underline input-lg" placeholder="Language" id="language" name="language" [(ngModel)]="test.language"
-        #language="ngModel" required minlength="3" pattern="^[a-z]+">
-      <div *ngIf="testCreationForm.submitted && language.invalid" class="alert alert-danger">
+      <label for="language">Language</label>
+        <select class="form-control w-100" name="language" [(ngModel)]="test.language" #language="ngModel" required
+          [ngClass]="{'border border-danger': testCreationForm.submitted && language.invalid}"><option [ngValue]="undefined" disabled hidden selected>Please select language</option>
+          <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language" >{{language}}</option>
+        </select>
+      <div *ngIf="testCreationForm.submitted && language.invalid" class="text-danger">
         <div *ngIf="language.errors.required">
-          Language can not be empty.
-        </div>
-        <div *ngIf="language.errors.minlength">
-          Language must have at least 3 characters.
-        </div>
-        <div *ngIf="language.errors.pattern">
-          Language should contain only lower case letters.
+          Language must be chosen.
         </div>
       </div>
     </div>
     <div class="form-group">
       <label for="testDescription">Description</label>
       <textarea class="form-control input-underline input-lg" placeholder="Description" id="description" name="description" [(ngModel)]="test.description"
-        #description="ngModel" required minlength="3" pattern="^[A-Z].*"></textarea>
-      <div *ngIf="testCreationForm.submitted && description.invalid" class="alert alert-danger">
+        #description="ngModel" required minlength="3" pattern="^[A-Z].*" [ngClass]="{'border border-danger': testCreationForm.submitted && description.invalid}"></textarea>
+      <div *ngIf="testCreationForm.submitted && description.invalid" class="text-danger">
         <div *ngIf="description.errors.required">
           Description can not be empty.
         </div>

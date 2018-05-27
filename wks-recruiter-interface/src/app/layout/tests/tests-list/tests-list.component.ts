@@ -214,6 +214,10 @@ export class TestsListComponent implements OnInit {
     const modalRef = this.modalService.open(TestTranslationComponent);
     modalRef.componentInstance.setTests(this.tests, true);
     modalRef.componentInstance.setTestName(name, true);
+    let test = this.tests.find(test => test.id === id && test.name === name);
+    if (test !== undefined) {
+      modalRef.componentInstance.setCurrentLanguage(test.language);
+    }
     modalRef.componentInstance.emitter.subscribe(
       emittedBoolean => {
         const language = modalRef.componentInstance.close();

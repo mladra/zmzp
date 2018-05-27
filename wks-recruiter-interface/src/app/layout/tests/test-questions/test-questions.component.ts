@@ -13,7 +13,6 @@ import { QuestionInfo } from '../../../entities/question.info';
 import { QuestionsService } from '../../../shared/services/questions.service';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
-
 @Component({
   selector: 'app-test-questions',
   templateUrl: './test-questions.component.html',
@@ -22,9 +21,10 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from
 })
 export class TestQuestionsComponent implements OnInit {
 
-
   private test: Test;
-  private language: string;
+  private fromLanguage: string;
+  private toLanguage: string;
+  private lang;
   private originalQuestions: Array<QuestionInfo>;
   private questionTypes: [string, any][];
   private numberForm: FormGroup;
@@ -45,9 +45,10 @@ export class TestQuestionsComponent implements OnInit {
       this.testService.getById(params['id']).subscribe(
         data => {
           this.test = data.body as Test;
+          this.fromLanguage = this.test.language;
           this.route.queryParams.subscribe(queryParams => {
             if (queryParams.translate) {
-              this.language = queryParams.language;
+              this.toLanguage = queryParams.language;
               this.originalQuestions = JSON.parse(JSON.stringify(this.test.questions));
               this.test.questions.forEach(question => {
                 question.questionPhrase = null;
@@ -55,6 +56,7 @@ export class TestQuestionsComponent implements OnInit {
                   question.params.options = new Array(question.params.options.length);
                 }
               });
+              this.setLanguages();
             }
           });
         },
@@ -65,6 +67,43 @@ export class TestQuestionsComponent implements OnInit {
     });
   }
 
+  setLanguages() {
+    let fromLang = this.selectLanguage(this.fromLanguage);
+    let toLang = this.selectLanguage(this.toLanguage);
+    this.lang = fromLang + '-' + toLang;
+  }
+
+  selectLanguage(language) {
+    let lang;
+    switch (language) {
+      case "polish":
+        lang = 'pl';
+        break;
+      case "english":
+        lang = 'en';
+        break;
+      case "russian":
+        lang = 'ru';
+        break;
+      case "german":
+        lang = 'de';
+        break;
+      case "italian":
+        lang = 'it';
+        break;
+      case "spanish":
+        lang = 'es';
+        break;
+      case "latin":
+        lang = 'la';
+        break;
+      case "esperanto":
+        lang = 'eo';
+        break;
+      }
+    return lang;
+  }
+
   addQuestion() {
     this.test.questions.push(new QuestionInfo());
   }
@@ -73,6 +112,61 @@ export class TestQuestionsComponent implements OnInit {
     const index = this.test.questions.indexOf(question, 0);
     if (index > -1) {
       this.test.questions.splice(index, 1);
+    }
+  }
+
+  translateQuestion(question, targetQuestion) {
+    let myWindow: any = window;
+    myWindow.$.ajax({
+      url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+      data: {
+        key: 'trnsl.1.1.20180517T202518Z.2b1415d40fcc9baf.1d23d85fc47ccdbb8a4ba43da6e73174cb54bdc6\n',
+        text: question.questionPhrase,
+        lang: this.lang,
+        format: 'plain',
+        options: 1,
+      },
+      dataType: 'jsonp',
+      success: function (x) {
+        if (x.text.length > 0) {
+          targetQuestion.questionPhrase = x.text[0];
+          } else {
+            this.alertsService.addAlert('danger', "No translation found");
+          }
+        }
+    });
+  }
+
+  translateOption(option, targetQuestions, jthQuestion, ithOption) {
+    let myWindow: any = window;
+    myWindow.$.ajax({
+      url: 'https://translate.yandex.net/api/v1.5/tr.json/translate',
+      data: {
+        key: 'trnsl.1.1.20180517T202518Z.2b1415d40fcc9baf.1d23d85fc47ccdbb8a4ba43da6e73174cb54bdc6\n',
+        text: option,
+        lang: this.lang,
+        format: 'plain',
+        options: 1,
+        },
+        dataType: 'jsonp',
+        success: function (x) {
+        if (x.text.length > 0) {
+          targetQuestions[jthQuestion].params.options[ithOption] = x.text[0];
+        } else {
+          this.alertsService.addAlert('danger', "No translation found");
+        }
+      }
+    });
+  }
+
+  translateAllQuestions() {
+    for (let i in this.originalQuestions) {
+      this.translateQuestion(this.originalQuestions[i], this.test.questions[i]);
+      if (this.originalQuestions[i].params != null) {
+        for(let j in this.originalQuestions[i].params.options) {
+          this.translateOption(this.originalQuestions[i].params.options[j], this.test.questions, i, j);
+        }
+      }
     }
   }
 
@@ -126,7 +220,7 @@ export class TestQuestionsComponent implements OnInit {
   submit() {
     if (this.originalQuestions !== undefined) {
       this.test.id = null;
-      this.test.language = this.language;
+      this.test.language = this.toLanguage;
       this.testService.createTest(this.test).subscribe(
         response => {
           this.alertsService.addAlert('success', 'Test "' + this.test.name + '"successfully translated.');
