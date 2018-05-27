@@ -25,11 +25,10 @@
     <div class="form-group">
       <label for="language">Language</label>
         <select class="form-control w-100" name="language" [(ngModel)]="test.language" #language="ngModel" required
-                [ngClass]="{'border border-danger': testCreationForm.submitted && language.invalid}">
-            <option [ngValue]="undefined" disabled hidden selected>Please select language</option>
-            <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language" >{{language}}</option>
+          [ngClass]="{'border border-danger': testCreationForm.submitted && language.invalid}"><option [ngValue]="undefined" disabled hidden selected>Please select language</option>
+          <option *ngFor="let language of languages; trackBy: trackByFun" [value]="language" >{{language}}</option>
         </select>
-      <div *ngIf="testCreationForm.submitted && language" class="text-danger">
+      <div *ngIf="testCreationForm.submitted && language.invalid" class="text-danger">
         <div *ngIf="language.errors.required">
           Language must be chosen.
         </div>
