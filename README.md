@@ -1,12 +1,12 @@
 # Zwinne WKS
-Projekt realizowany w ramach przedmiotu Zwinne metodyki zarządzania projektami
+The project was implemented during the classes of Zwinne metodyki zarządzania projektami.
 
-## Opis projektu
-Celem projektu było stworzenie systemu umożliwiającego tworzenie oraz podchodzenie do testów rekrutacyjnych. W systemie istniały trzy role uyżytkownika: ADMIN, RECRUITER, CANDIDATE. Admin był odpowiedzialny (miał możliwość) zarządzania użytkownikami (CRUD). Rekruter miał możliwość utworzenie testu rekrutacyjnego na daną pozycję oraz sprawdzenia poprawności rozwiązania testu przez kandydata. Kandydat miał możliwość podejścia do testu rekrutacyjnego.
+## Project description
+The goal of the project was to create a system which would allow to create and solve recruitment tests. There were 3 user roles: ADMIN, RECRUITER, CANDIDATE. ADMIN had ability to manage the users (CRUD). RECRUITER could create recruitment test for particular position in the firm and check correctness of candidates' answers. CANDIDATE could solve the test for position which he applied to.
 
-## Umiejętności
-Podczas realizacji projektu nauczyłem się:
- - tworzyć API RESTowe,
- - tworzyć przyjazny interfejs użytkownika z wykorzystaniem frameworka Angular oraz Bootstrap,
- - integracji projektu Spring z bazą danych MongoDB,
- - mapowaniu fragmentów dokumentów na odpowiednie obiekty w zależności od ich typów (patrz: `QuestionInfo`).
+## Gained skills and knowledge
+During creation of the project I learned:
+ - to create REST API,
+ - to create user friendly interface with use of the Angular framework and Bootstrap
+ - to integrate Spring project with MongoDB database
+ - to map documents' fragments to proper objects in dependence of their types (look: `QuestionInfo`).
