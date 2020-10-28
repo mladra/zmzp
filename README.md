@@ -9,4 +9,4 @@ During creation of the project I learned:
  - to create REST API,
  - to create user friendly interface with use of the Angular framework and Bootstrap
  - to integrate Spring project with MongoDB database
- - to map documents' fragments to proper objects in dependence of their types (look: `QuestionInfo`).
+ - to map documents' fragments to proper objects in dependence of their types (look: `pl.lodz.p.it.wks.wksrecruiter.collections.questions.QuestionInfo`).
